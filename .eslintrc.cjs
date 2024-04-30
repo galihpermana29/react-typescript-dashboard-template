@@ -11,5 +11,6 @@ module.exports = {
 			{ allowConstantExport: true },
 		],
 		'@typescript-eslint/no-explicit-any': 1,
+		'no-console': ['error', { allow: ['warn', 'error'] }],
 	},
 };
