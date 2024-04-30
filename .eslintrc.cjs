@@ -10,6 +10,6 @@ module.exports = {
 			'warn',
 			{ allowConstantExport: true },
 		],
-		'@typescript-eslint/no-explicit-any': 0,
+		'@typescript-eslint/no-explicit-any': 1,
 	},
 };
