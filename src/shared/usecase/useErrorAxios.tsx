@@ -7,7 +7,7 @@ export interface RootErrorResponseI {
 }
 
 const useErrorAxios = () => {
-  const navigate = useNavigate()
+	const navigate = useNavigate();
 	const generateErrorMsg = (error: AxiosError) => {
 		const axiosError = error as AxiosError;
 		const responseData = axiosError.response?.data as
@@ -15,11 +15,10 @@ const useErrorAxios = () => {
 			| undefined;
 
 		const err = responseData ? responseData?.message : 'Ouch, an error happen!';
-    if(err === 'Invalid token'){
-      localStorage.clear()
-      navigate('/login')
-    }
-
+		if (err === 'Invalid token') {
+			localStorage.clear();
+			navigate('/login');
+		}
 
 		return err ? err : '404 Not Found Server Error';
 	};
