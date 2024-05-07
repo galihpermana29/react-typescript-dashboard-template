@@ -5,9 +5,9 @@ export type MenuItem = Required<MenuProps>['items'][number];
 
 // interface
 export interface ItemsDataI {
-	label: string;
+	label: string | React.ReactNode;
 	key: string;
-	children: ItemsDataI[];
+	children: ItemsDataI[] | null;
 	icon: any;
 	components: React.ReactNode;
 	show: boolean;

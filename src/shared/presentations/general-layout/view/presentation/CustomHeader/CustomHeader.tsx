@@ -16,8 +16,8 @@ export default function CustomHeader() {
 	const handleLogout = useLogout();
 
 	return (
-		<div>
-			<Header className="bg-white flex justify-end relative">
+		<div className="border-b-[1px] border-ny-gray-200">
+			<Header className="flex justify-end relative bg-white">
 				<div
 					className="flex gap-[10px] items-center cursor-pointer"
 					onClick={() => setIsOpen(!isOpen)}>

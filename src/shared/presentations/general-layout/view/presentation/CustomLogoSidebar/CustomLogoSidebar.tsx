@@ -1,7 +1,9 @@
+import primaryLogo from '@/assets/primary-logo.svg';
+
 export default function CustomLogoSidebar() {
 	return (
-		<div className="p-[10px] m-2 rounded-xl mb-[20px] text-[15px] font-bold text-center">
-			Template Dashboard
+		<div className="p-[16px] border-b-[1px] border-ny-gray-200 flex justify-center">
+			<img src={primaryLogo} alt="primary-logo" />
 		</div>
 	);
 }

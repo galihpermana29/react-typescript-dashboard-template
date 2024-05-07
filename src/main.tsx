@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { router } from './shared/models/router-model.tsx';
+import { router } from './shared/models/routerModel.tsx';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import './index.scss';

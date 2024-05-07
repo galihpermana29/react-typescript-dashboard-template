@@ -1,0 +1,44 @@
+.ant-layout-sider {
+	width: 100% !important;
+	min-width: 250px !important;
+	max-width: initial !important;
+	padding: 0 0px;
+	flex: 0 0 270px !important;
+}
+
+.ant-menu-submenu-title {
+	padding: 10px !important;
+}
+
+.ant-menu {
+	&-item {
+		padding: 12px 14px !important;
+		display: flex !important;
+		justify-content: center !important;
+		&.ant-menu-item-active {
+			background-color: #e60b6a !important;
+			.ant-menu-title-content > div {
+				color: white !important;
+			}
+		}
+	}
+
+	&-submenu {
+		&-title {
+			padding-left: 10px !important;
+		}
+	}
+
+	&-light {
+		.ant-menu-item-selected {
+			background-color: #e60b6a;
+			.ant-menu-title-content > div {
+				color: white !important;
+			}
+		}
+	}
+}
+
+.ant-menu-light.ant-menu-root.ant-menu-inline {
+	border-inline-end: none;
+}

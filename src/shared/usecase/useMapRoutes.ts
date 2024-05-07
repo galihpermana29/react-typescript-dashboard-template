@@ -1,12 +1,20 @@
+import { RouteObject } from 'react-router-dom';
 import { ItemsDataI } from '../presentations/general-layout/model/types';
 import { actionType } from '../presentations/general-layout/usecase/useGenerateItems';
 
 const useMapRoutes = () => {
 	const mappingRoutes = (data: ItemsDataI[]) => {
-		const createBrowserRoutes = data.map((dx) => ({
-			path: dx.path,
-			element: dx.components,
-		}));
+		const createBrowserRoutes: RouteObject[] | undefined = [];
+
+		data.forEach((dx) => {
+			if (dx.children && dx.children?.length > 0) {
+				dx.children.forEach((dy) => {
+					createBrowserRoutes.push({ path: dy.path, element: dy.components });
+				});
+			} else {
+				createBrowserRoutes.push({ path: dx.path, element: dx.components });
+			}
+		});
 
 		return createBrowserRoutes;
 	};

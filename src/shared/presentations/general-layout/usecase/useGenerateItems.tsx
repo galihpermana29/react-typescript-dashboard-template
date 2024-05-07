@@ -20,6 +20,15 @@ const UseGenerateItems = () => {
 		icon?: React.ReactNode,
 		children?: MenuItem[]
 	): MenuItem {
+		if (children) {
+			return {
+				key,
+				icon,
+				children,
+				label,
+				type: 'group',
+			} as MenuItem;
+		}
 		return {
 			key,
 			icon,
@@ -37,7 +46,7 @@ const UseGenerateItems = () => {
 
 		// if (!data.show) return;
 
-		if (data.children.length) {
+		if (data.children && data.children.length > 0) {
 			data.children.forEach((child) => childrens.push(child));
 			return getItem(data.label, data.key, data.icon, childrens);
 		}
