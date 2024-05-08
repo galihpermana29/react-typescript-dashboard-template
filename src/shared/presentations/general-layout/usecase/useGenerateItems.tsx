@@ -3,16 +3,13 @@ import React from 'react';
 import { MenuItem } from '../model/types';
 import { staffRoutes } from '../model/routesData';
 import { useNavigate } from 'react-router-dom';
-import useMapRoutes from '../../../usecase/useMapRoutes';
 
 export type actionType = 'manage' | 'staff';
 
 const UseGenerateItems = () => {
 	const navigate = useNavigate();
-	const { getUserType } = useMapRoutes();
-	const type = getUserType();
 
-	const whichData = type === 'staff' ? staffRoutes : staffRoutes;
+	const whichData = staffRoutes;
 
 	function getItem(
 		label: React.ReactNode,
