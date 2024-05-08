@@ -15,9 +15,7 @@ export class ApiClass {
 
 		this.axiosInstance = axios.create({
 			baseURL: this.baseURL,
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-			},
+
 			...this.config,
 		});
 
