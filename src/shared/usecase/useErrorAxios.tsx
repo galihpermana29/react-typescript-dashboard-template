@@ -1,20 +1,19 @@
 import { AxiosError } from 'axios';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
-export interface RootErrorResponseI {
-	message: string;
-}
+import { IErrorResponseRoot } from '../models/errorInterfaces';
 
 const useErrorAxios = () => {
 	const navigate = useNavigate();
 	const generateErrorMsg = (error: AxiosError) => {
 		const axiosError = error as AxiosError;
 		const responseData = axiosError.response?.data as
-			| RootErrorResponseI
+			| IErrorResponseRoot
 			| undefined;
+		const err = responseData
+			? responseData?.errors[0]
+			: 'Ouch, an error happen!';
 
-		const err = responseData ? responseData?.message : 'Ouch, an error happen!';
 		if (err === 'Invalid token') {
 			localStorage.clear();
 			navigate('/login');

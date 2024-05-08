@@ -4,18 +4,18 @@ export default {
 	theme: {
 		extend: {
 			fontSize: {
-				'caption-1': ['14px', '19.6px'],
-				'caption-2': ['12px', '19.6px'],
-				'body-1': ['18px', '19.6px'],
-				'body-2': ['16px', '19.6px'],
-				'heading-1': ['48px', '57.6px'],
-				'heading-2': ['38px', '57.6px'],
-				'heading-3': ['32px', '57.6px'],
-				'heading-4': ['28px', '57.6px'],
-				'heading-5': ['24px', '57.6px'],
-				'heading-6': ['20px', '57.6px'],
-				'display-1': ['72px', '57.6px'],
-				'display-2': ['54px', '57.6px'],
+				'caption-1': ['14px', 'auto'],
+				'caption-2': ['12px', 'auto'],
+				'body-1': ['18px', 'auto'],
+				'body-2': ['16px', 'auto'],
+				'heading-1': ['48px', 'auto'],
+				'heading-2': ['38px', 'auto'],
+				'heading-3': ['32px', 'auto'],
+				'heading-4': ['28px', 'auto'],
+				'heading-5': ['24px', 'auto'],
+				'heading-6': ['20px', 'auto'],
+				'display-1': ['72px', 'auto'],
+				'display-2': ['54px', 'auto'],
 			},
 			colors: {
 				'ny-gray': {
