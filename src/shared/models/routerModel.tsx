@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import RootLayout from '../presentations/general-layout/view/RootLayout';
-import NotFound from '../presentations/not-found/NotFound';
+import RootLayout from '../view/container/general-layout/view/RootLayout';
+import NotFound from '../view/container/not-found/NotFound';
 import generateRoutesChild from '../usecase/useRenderRoutes';
 import LoginContainer from '@/routes/login/Login';
 

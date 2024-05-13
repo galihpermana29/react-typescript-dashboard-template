@@ -1,4 +1,4 @@
-import { staffRoutes } from '../presentations/general-layout/model/routesData';
+import { staffRoutes } from '../view/container/general-layout/model/routesData';
 import useMapRoutes from './useMapRoutes';
 
 function generateRoutesChild() {

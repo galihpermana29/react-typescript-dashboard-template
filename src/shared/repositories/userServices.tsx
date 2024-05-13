@@ -1,4 +1,8 @@
 import {
+	IAllUserResponseRoot,
+	ICreateUserPayloadRoot,
+	ICreateUserResponseRoot,
+	IDetailUserResponseRoot,
 	ILoginPayloadRoot,
 	ILoginResponseRoot,
 } from '../models/userServicesInterface';
@@ -16,39 +20,44 @@ class DashboardUserServices extends ApiClass {
 		return data;
 	}
 
-	// public async getAllRoles(query: string): Promise<RootRolesResponseI> {
-	// 	try {
-	// 		const token = JSON.parse(localStorage.getItem('token')!);
+	public async getUserById(id: string): Promise<IDetailUserResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } = await this.axiosInstance.get<IDetailUserResponseRoot>(
+			`/users/${id}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return data;
+	}
 
-	// 		const { data } = await this.axiosInstance.get<RootRolesResponseI>(
-	// 			`/roles${query ? `?${query}` : ''}`,
-	// 			{ headers: { Authorization: `Bearer ${token}` } }
-	// 		);
-	// 		return data;
-	// 	} catch (error) {
-	// 		throw error;
-	// 	}
-	// }
+	public async getAllAdminUser(query?: string): Promise<IAllUserResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
 
-	// public async creteRoles(
-	// 	payload: RootRolesPayloadI
-	// ): Promise<RootCreateRolesResponseI> {
-	// 	try {
-	// 		const token = JSON.parse(localStorage.getItem('token')!);
-	// 		const { data } = await this.axiosInstance.post<RootCreateRolesResponseI>(
-	// 			'/roles',
-	// 			payload,
-	// 			{
-	// 				headers: {
-	// 					Authorization: `Bearer ${token}`,
-	// 				},
-	// 			}
-	// 		);
-	// 		return data;
-	// 	} catch (error) {
-	// 		throw error;
-	// 	}
-	// }
+		const { data } = await this.axiosInstance.get<IAllUserResponseRoot>(
+			`/users?type=admin${query ? `&${query}` : ''}`,
+			{ headers: { Authorization: `Bearer ${token}` } }
+		);
+		return data;
+	}
+
+	public async createUser(
+		payload: ICreateUserPayloadRoot
+	): Promise<ICreateUserResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } = await this.axiosInstance.post<ICreateUserResponseRoot>(
+			'/users',
+			payload,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return data;
+	}
 
 	// public async editRoles(
 	// 	payload: RootRolesPayloadI,
@@ -65,24 +74,6 @@ class DashboardUserServices extends ApiClass {
 	// 				},
 	// 			}
 	// 		);
-	// 		return data;
-	// 	} catch (error) {
-	// 		throw error;
-	// 	}
-	// }
-
-	// public async deleteRoles(id: string): Promise<RootCreateRolesResponseI> {
-	// 	try {
-	// 		const token = JSON.parse(localStorage.getItem('token')!);
-	// 		const { data } =
-	// 			await this.axiosInstance.delete<RootCreateRolesResponseI>(
-	// 				`/roles/${id}`,
-	// 				{
-	// 					headers: {
-	// 						Authorization: `Bearer ${token}`,
-	// 					},
-	// 				}
-	// 			);
 	// 		return data;
 	// 	} catch (error) {
 	// 		throw error;

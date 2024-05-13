@@ -1,7 +1,8 @@
 import { ItemsDataI } from './types';
-import DashboardContainer from '../../../../routes/dashboard/Dashboard';
+import DashboardContainer from '../../../../../routes/dashboard/Dashboard';
 import dashboardIconGray from '@/assets/icon/dashboard-icon-gray.svg';
 import adminManagIconGray from '@/assets/icon/admin-manag-icon-gray.svg';
+import AdminUserManagementContainer from '@/routes/admin-management/admin-user-management/AdminUserManagement';
 export const staffRoutes: ItemsDataI[] = [
 	{
 		label: (
@@ -37,7 +38,7 @@ export const staffRoutes: ItemsDataI[] = [
 				path: 'admin-user-management',
 				children: null,
 				icon: <img src={adminManagIconGray} alt="icon" />,
-				components: <DashboardContainer />,
+				components: <AdminUserManagementContainer />,
 				show: true,
 			},
 			{

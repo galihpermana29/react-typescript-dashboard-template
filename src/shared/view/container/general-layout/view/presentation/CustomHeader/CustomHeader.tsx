@@ -2,15 +2,13 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
 import { useState } from 'react';
 import useLogout from '../../../usecase/useLogout';
+import { IDetailUserData } from '@/shared/models/userServicesInterface';
 
-export default function CustomHeader() {
-	{
-		/**
-		 * TODO:
-		 *  Get user data if its stored on localstorage
-		 */
-	}
-	// const admin = JSON.parse(localStorage.getItem('admin')!);
+interface ICustomHeader {
+	data: IDetailUserData;
+}
+export default function CustomHeader({ data }: ICustomHeader) {
+	const { name } = data;
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const handleLogout = useLogout();
@@ -21,14 +19,13 @@ export default function CustomHeader() {
 				<div
 					className="flex gap-[10px] items-center cursor-pointer"
 					onClick={() => setIsOpen(!isOpen)}>
-					{/**
-					 * TODO:
-					 *  User name on header/navigation bar
-					 */}
-					{/* <h1 className="capitalize">{admin ? admin.name : '...'}</h1> */}
+					<h1 className="capitalize">{name}</h1>
 
-					<h1 className="capitalize">Template admin</h1>
-					{isOpen ? <UpOutlined /> : <DownOutlined />}
+					{isOpen ? (
+						<UpOutlined className="text-[12px]" />
+					) : (
+						<DownOutlined className="text-[12px]" />
+					)}
 				</div>
 				{isOpen && (
 					<div className="absolute top-[60px] z-[20] right-[2%] bg-white shadow-lg rounded-lg min-w-[150px] flex flex-col px-[10px]">

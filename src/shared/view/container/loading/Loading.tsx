@@ -4,17 +4,22 @@ import { Spin } from 'antd';
 const LoadingHandler = ({
 	children,
 	isLoading,
+	fullscreen,
+	classname,
 }: {
 	children: React.ReactNode;
 	isLoading: boolean;
+	classname?: string;
+	fullscreen?: boolean;
 }) => {
 	if (isLoading) {
 		return (
-			<div className="flex items-center justify-center h-[150px]">
+			<div className={`flex items-center justify-center w-full ${classname}`}>
 				<Spin
 					indicator={
 						<LoadingOutlined style={{ fontSize: 24, color: '#F76A8B' }} spin />
 					}
+					fullscreen={fullscreen}
 				/>
 			</div>
 		);

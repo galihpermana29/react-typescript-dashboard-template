@@ -2,7 +2,7 @@ import loginImg from '@/assets/login-image.png';
 import logo from '@/assets/primary-logo.svg';
 import { Button, Form, Input } from 'antd';
 import useMutateLogin from './repositories/useMutateLogin';
-import LoadingHandler from '@/shared/presentations/loading/Loading';
+import LoadingHandler from '@/shared/view/container/loading/Loading';
 
 const LoginContainer = () => {
 	const { mutate, isLoading } = useMutateLogin();
@@ -25,7 +25,7 @@ const LoginContainer = () => {
 							Silakan masuk menggunakan email dan password yang telah diberikan
 						</p>
 					</div>
-					<LoadingHandler isLoading={isLoading}>
+					<LoadingHandler isLoading={isLoading} classname="h-[150px]">
 						<Form layout="vertical" onFinish={mutate}>
 							<Form.Item
 								name={'email'}

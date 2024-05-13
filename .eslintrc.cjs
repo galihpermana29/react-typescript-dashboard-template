@@ -12,5 +12,6 @@ module.exports = {
 		],
 		'@typescript-eslint/no-explicit-any': 1,
 		'no-console': ['error', { allow: ['warn', 'error'] }],
+		'no-mixed-spaces-and-tabs': 1,
 	},
 };

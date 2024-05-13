@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
-import { ItemsDataI } from '../presentations/general-layout/model/types';
-import { actionType } from '../presentations/general-layout/usecase/useGenerateItems';
+import { ItemsDataI } from '../view/container/general-layout/model/types';
+import { actionType } from '../view/container/general-layout/usecase/useGenerateItems';
 
 const useMapRoutes = () => {
 	const mappingRoutes = (data: ItemsDataI[]) => {
