@@ -57,11 +57,10 @@ const RootLayout: React.FC = () => {
 							<Content style={{ margin: '0 16px' }}>
 								<div
 									style={{
-										padding: 24,
+										padding: 30,
 										minHeight: '100vh',
 										borderRadius: borderRadiusLG,
-										marginTop: 20,
-										marginBottom: 20,
+										backgroundColor: 'white',
 									}}>
 									<Outlet />
 								</div>

@@ -15,6 +15,9 @@ import useMutateCreateAdmins from './repositories/useCreateUser';
 import useQueryAdmins from './repositories/useGetAllUser';
 import FormEdit from './view/presentations/Modal/FormEdit';
 import useQueryAdminsDetail from './repositories/useGetDetailUser';
+import LoadingHandler from '@/shared/view/container/loading/Loading';
+import useMutateEditAdmins from './repositories/useUpdateUser';
+import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
 
 const AdminUserManagementContainer = () => {
 	const [form] = useForm();
@@ -40,8 +43,8 @@ const AdminUserManagementContainer = () => {
 		modalState,
 		formModal
 	);
-
-	const { columns } = useGenerateColumnAdminUser(openModal, null);
+	const { mutate: mutateEdit } = useMutateEditAdmins(closeModal, refetch);
+	const { columns } = useGenerateColumnAdminUser(openModal, mutateEdit);
 
 	const modalType = {
 		create: (
@@ -62,40 +65,60 @@ const AdminUserManagementContainer = () => {
 			/>
 		),
 		detail: (
-			<FormEdit
-				roles={roles as TGeneralSelectOptions[]}
-				form={formModal}
-				handleMutate={null}
-				disable={true}
-				footer={
-					<FormFooter
-						secondaryText="Cancel"
-						secondaryProps={{
-							onClick: () => closeModal!(),
-						}}
-						primaryText="Edit"
-						primaryProps={{ onClick: () => openModal!('edit'), type: 'button' }}
-					/>
-				}
-			/>
+			<LoadingHandler
+				isLoading={loadingGetDetail}
+				fullscreen={false}
+				classname="h-[400px]">
+				<FormEdit
+					id={modalState?.id}
+					roles={roles as TGeneralSelectOptions[]}
+					form={formModal}
+					handleMutate={undefined}
+					disable={true}
+					footer={
+						<FormFooter
+							secondaryText="Cancel"
+							secondaryProps={{
+								onClick: () => closeModal!(),
+							}}
+							primaryText="Edit"
+							primaryProps={{
+								onClick: (e) => {
+									e.preventDefault();
+									openModal!('edit', modalState?.id);
+								},
+								type: 'button',
+							}}
+						/>
+					}
+				/>
+			</LoadingHandler>
 		),
 		edit: (
-			<FormEdit
-				roles={roles as TGeneralSelectOptions[]}
-				form={formModal}
-				handleMutate={null}
-				disable={false}
-				footer={
-					<FormFooter
-						secondaryText="Cancel"
-						secondaryProps={{
-							onClick: () => closeModal!(),
-						}}
-						primaryText="Save"
-						primaryProps={{ type: 'submit' }}
-					/>
-				}
-			/>
+			<LoadingHandler
+				isLoading={loadingGetDetail}
+				fullscreen={false}
+				classname="h-[500px]">
+				<FormEdit
+					id={modalState?.id}
+					handleMutate={mutateEdit}
+					roles={roles as TGeneralSelectOptions[]}
+					form={formModal}
+					disable={false}
+					footer={
+						<FormFooter
+							secondaryText="Cancel"
+							secondaryProps={{
+								onClick: () => closeModal!(),
+							}}
+							primaryText="Save"
+							primaryProps={{
+								type: 'submit',
+							}}
+						/>
+					}
+				/>
+			</LoadingHandler>
 		),
 	};
 
@@ -103,8 +126,11 @@ const AdminUserManagementContainer = () => {
 		<div>
 			<ErrorBoundary error={error as AxiosError} refetch={refetch}>
 				<>
+					<TableHeaderTitle title="Admin User Management" />
 					<Modal
-						title="Basic Modal"
+						title={
+							<div className="capitalize">{`${modalState?.type} User`}</div>
+						}
 						open={modalState?.isOpen}
 						footer={null}
 						onCancel={closeModal}>
@@ -121,7 +147,7 @@ const AdminUserManagementContainer = () => {
 								buttonComponents={
 									<Button
 										onClick={() => openModal!('create')}
-										className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px]">
+										className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
 										<img src={addIcon} alt="add-icon" />
 										Create User
 									</Button>

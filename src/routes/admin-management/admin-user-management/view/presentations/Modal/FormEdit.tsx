@@ -1,14 +1,30 @@
 import { TGeneralSelectOptions } from '@/shared/models/generalInterfaces';
+import {
+	IUpdateUserPayloadRoot,
+	IUpdateUserResponseRoot,
+} from '@/shared/models/userServicesInterface';
 
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { DatePicker, Form, FormInstance, Input, Select } from 'antd';
+import { AxiosError } from 'axios';
+import { UseMutateFunction } from 'react-query';
 
 interface IFormEdit {
 	form: FormInstance<any>;
-	handleMutate: any;
+	handleMutate?: UseMutateFunction<
+		IUpdateUserResponseRoot,
+		AxiosError<unknown, any>,
+		{
+			payload: IUpdateUserPayloadRoot;
+			id: string;
+			type: 'delete' | 'update';
+		},
+		unknown
+	>;
 	footer: React.ReactNode;
 	roles: TGeneralSelectOptions[];
 	disable: boolean;
+	id?: string;
 }
 const FormEdit = ({
 	form,
@@ -16,13 +32,16 @@ const FormEdit = ({
 	footer,
 	roles,
 	disable,
+	id,
 }: IFormEdit) => {
 	return (
 		<div>
 			<Form
 				form={form}
 				layout="vertical"
-				onFinish={handleMutate}
+				onFinish={(value) => {
+					handleMutate!({ payload: value, id: id!, type: 'update' });
+				}}
 				disabled={disable}>
 				<div className="flex gap-[20px]">
 					<div className="w-full max-w-[187px] flex-1">

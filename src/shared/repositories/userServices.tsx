@@ -5,6 +5,8 @@ import {
 	IDetailUserResponseRoot,
 	ILoginPayloadRoot,
 	ILoginResponseRoot,
+	IUpdateUserPayloadRoot,
+	IUpdateUserResponseRoot,
 } from '../models/userServicesInterface';
 import { ApiClass } from './generalApi';
 
@@ -59,26 +61,22 @@ class DashboardUserServices extends ApiClass {
 		return data;
 	}
 
-	// public async editRoles(
-	// 	payload: RootRolesPayloadI,
-	// 	id: string
-	// ): Promise<RootCreateRolesResponseI> {
-	// 	try {
-	// 		const token = JSON.parse(localStorage.getItem('token')!);
-	// 		const { data } = await this.axiosInstance.put<RootCreateRolesResponseI>(
-	// 			`/roles/${id}`,
-	// 			payload,
-	// 			{
-	// 				headers: {
-	// 					Authorization: `Bearer ${token}`,
-	// 				},
-	// 			}
-	// 		);
-	// 		return data;
-	// 	} catch (error) {
-	// 		throw error;
-	// 	}
-	// }
+	public async editUser(
+		payload: IUpdateUserPayloadRoot,
+		id: string
+	): Promise<IUpdateUserResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } = await this.axiosInstance.patch<IUpdateUserResponseRoot>(
+			`/users/${id}`,
+			payload,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return data;
+	}
 }
 
 export const DashboardUserAPI = new DashboardUserServices();

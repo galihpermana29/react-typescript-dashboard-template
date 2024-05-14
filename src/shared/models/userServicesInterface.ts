@@ -59,3 +59,20 @@ export interface ICreateUserPayloadRoot {
 export interface ICreateUserResponseRoot {
 	data: string;
 }
+
+// Update User
+export interface IUpdateUserPayloadRoot {
+	id?: string;
+	name?: string;
+	email?: string;
+	date_of_birth?: string;
+	type?: string;
+	role_id?: number;
+	role_name?: string;
+	status?: string;
+	profile_image_uri?: string;
+}
+
+export interface IUpdateUserResponseRoot {
+	data: string;
+}

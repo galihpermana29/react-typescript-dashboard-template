@@ -1,10 +1,25 @@
 import { DownOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Row, Space, TableProps, Tag } from 'antd';
 import { TModalType } from './useModalReducer';
+import { UseMutateFunction } from 'react-query';
+import {
+	IUpdateUserPayloadRoot,
+	IUpdateUserResponseRoot,
+} from '@/shared/models/userServicesInterface';
+import { AxiosError } from 'axios';
 
 const useGenerateColumnAdminUser = (
 	onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
-	onChangeStatus?: any
+	onChangeStatus?: UseMutateFunction<
+		IUpdateUserResponseRoot,
+		AxiosError<unknown, any>,
+		{
+			payload: IUpdateUserPayloadRoot;
+			id: string;
+			type: 'delete' | 'update';
+		},
+		unknown
+	>
 ) => {
 	const columns: TableProps<any>['columns'] = [
 		{
@@ -63,7 +78,14 @@ const useGenerateColumnAdminUser = (
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
 									key: '3',
-									onClick: () => onChangeStatus(),
+									onClick: () =>
+										onChangeStatus!({
+											payload: {
+												status: status === 'active' ? 'inactive' : 'active',
+											},
+											id,
+											type: 'delete',
+										}),
 								},
 							],
 						}}>
