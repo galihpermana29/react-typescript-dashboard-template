@@ -1,44 +1,182 @@
 import addIcon from "@/assets/icon/add.png";
+import LoadingHandler from "@/shared/view/container/loading/Loading";
 import DashboardTable from "@/shared/view/presentations/dashboard-table/DashboardTable";
 import DashboardTableFilter from "@/shared/view/presentations/dashboard-table/DashboardTableFilter";
 import TableHeaderTitle from "@/shared/view/presentations/table-header-title/TableHeaderTitle";
-import { Button, Form, Select } from "antd";
-import ErrorBoundary from "antd/es/alert/ErrorBoundary";
+import { Button, Form, Modal, Select } from "antd";
+import ErrorBoundary from "@/shared/view/container/error-boundary/ErrorBoundary";
 import { useForm } from "antd/es/form/Form";
+import useMutateCreateVendorUser from "./repositories/useCreateVendorUser";
 import useQueryVendorUser from "./repositories/useGetAllVendorUser";
+import useQueryVendorUserDetail from "./repositories/useGetDetailVendorUser";
+import useMutateEditVendorUser from "./repositories/useUpdateVendorUser";
 import useGenerateColumnVendorUser from "./usecase/useGenerateColumn";
+import useModalReducer from "./usecase/useModalReducer";
+import FormCreation from "./view/presentations/Modal/FormCreation";
+import FormEdit from "./view/presentations/Modal/FormEdit";
+import { IDetailUserData } from "@/shared/models/userServicesInterface";
+import { AxiosError } from "axios";
+import FormFooter from "./view/presentations/Modal/FormFooter";
+import FormChangePassword from "@/shared/view/presentations/modal/ChangePasswordModal";
 
 export const VendorUserManagementContainer = () => {
   const [form] = useForm();
+  const [formModal] = useForm();
 
-  const { columns } = useGenerateColumnVendorUser();
+  const { openModal, modalState, closeModal } = useModalReducer(formModal);
 
   const {
-    queryVendorContent,
-    setQueryVendorContent,
-    isLoading,
+    data,
+    queryVendorUser,
+    setQueryVendorUser,
+    isLoading: loadingGetAll,
     handleFilter,
     clearFilter,
+    refetch,
+    error,
   } = useQueryVendorUser(form);
 
+  const { mutate: mutateCreate } = useMutateCreateVendorUser(
+    closeModal,
+    refetch
+  );
+  const { mutate: mutateEdit } = useMutateEditVendorUser(closeModal, refetch);
+
+  const { isLoading: loadingGetDetail } = useQueryVendorUserDetail(
+    modalState,
+    formModal
+  );
+
+  const { columns } = useGenerateColumnVendorUser(openModal, mutateEdit);
+
+  const modalType = {
+    create: (
+      <FormCreation
+        form={formModal}
+        handleMutate={mutateCreate}
+        footer={
+          <FormFooter
+            secondaryText="Cancel"
+            secondaryProps={{
+              onClick: () => closeModal!(),
+            }}
+            primaryText="Create"
+            primaryProps={{ type: "submit" }}
+          />
+        }
+      />
+    ),
+    detail: (
+      <LoadingHandler
+        isLoading={loadingGetDetail}
+        fullscreen={false}
+        classname="h-[400px]"
+      >
+        <FormEdit
+          id={modalState?.id}
+          form={formModal}
+          handleMutate={undefined}
+          disable={true}
+          onChangePasswordClick={() => openModal!("password")}
+          footer={
+            <FormFooter
+              secondaryText="Cancel"
+              secondaryProps={{
+                onClick: () => closeModal!(),
+              }}
+              primaryText="Edit"
+              primaryProps={{
+                onClick: (e) => {
+                  e.preventDefault();
+                  openModal!("edit", modalState?.id);
+                },
+                type: "button",
+              }}
+            />
+          }
+        />
+      </LoadingHandler>
+    ),
+    edit: (
+      <LoadingHandler
+        isLoading={loadingGetDetail}
+        fullscreen={false}
+        classname="h-[500px]"
+      >
+        <FormEdit
+          id={modalState?.id}
+          handleMutate={mutateEdit}
+          form={formModal}
+          disable={false}
+          onChangePasswordClick={() => openModal!("password")}
+          footer={
+            <FormFooter
+              secondaryText="Cancel"
+              secondaryProps={{
+                onClick: () => closeModal!(),
+              }}
+              primaryText="Save"
+              primaryProps={{
+                type: "submit",
+              }}
+            />
+          }
+        />
+      </LoadingHandler>
+    ),
+    password: (
+      <FormChangePassword
+        form={formModal}
+        handleMutate={mutateEdit}
+        footer={
+          <FormFooter
+            secondaryText="Cancel"
+            secondaryProps={{
+              onClick: () => closeModal!(),
+            }}
+            primaryText="Save"
+            primaryProps={{ type: "submit" }}
+          />
+        }
+      />
+    ),
+  };
+
   return (
-    <ErrorBoundary>
+    <ErrorBoundary error={error as AxiosError} refetch={refetch}>
       <TableHeaderTitle title="Vendor User Management" />
 
-      <DashboardTable<any>
+      <Modal
+        title={
+          <div className="capitalize">
+            {modalState?.type === "password"
+              ? "Change Password"
+              : `${modalState?.type} User`}
+          </div>
+        }
+        open={modalState?.isOpen}
+        footer={null}
+        onCancel={closeModal}
+      >
+        {modalType[modalState!.type]}
+      </Modal>
+
+      <DashboardTable<IDetailUserData>
         columns={columns}
-        onPaginationChanges={setQueryVendorContent}
-        loading={isLoading}
+        data={data}
+        onPaginationChanges={setQueryVendorUser}
+        loading={loadingGetAll || loadingGetDetail}
+        metadata={undefined}
         filterComponents={
           <DashboardTableFilter
             form={form}
-            queryAdmins={queryVendorContent}
+            queryAdmins={queryVendorUser}
             onApplyFilter={handleFilter}
             onClearFilter={clearFilter}
-            onSearch={setQueryVendorContent}
+            onSearch={setQueryVendorUser}
             buttonComponents={
               <Button
-                onClick={() => {}}
+                onClick={() => openModal!("create")}
                 className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer"
               >
                 <img src={addIcon} alt="add-icon" />
@@ -49,7 +187,7 @@ export const VendorUserManagementContainer = () => {
               <Form.Item
                 name={"status"}
                 label="Status"
-                initialValue={queryVendorContent.status}
+                initialValue={queryVendorUser.status}
                 className="my-[10px]"
               >
                 <Select

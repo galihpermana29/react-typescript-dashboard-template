@@ -16,6 +16,7 @@ const useQueryVendorUser = (
   const [searchParams, setSearchParams] = useSearchParams();
 
   const keyword = searchParams.get("keyword");
+  const status = searchParams.get("status");
 
   const initialFilterState: TGeneralFilter = {
     limit: limit,
@@ -24,35 +25,36 @@ const useQueryVendorUser = (
     status: "default",
   };
 
-  const [queryVendorContent, setQueryVendorContent] = useState<TGeneralFilter>({
+  const [queryVendorUser, setQueryVendorUser] = useState<TGeneralFilter>({
     ...initialFilterState,
     keyword: keyword ? keyword : "",
+    status: status ? status : "default",
   });
 
   const { objectToQueryParams } = useConvertQuery();
   const { addIndexToData } = useSuccessAxios();
-  const queries = useDebounce(queryVendorContent, 1000);
+  const queries = useDebounce(queryVendorUser, 1000);
 
-  const getVendorContent = async () => {
+  const getVendorUser = async () => {
     const keywordQuery = {
-      keyword: queryVendorContent.keyword,
+      keyword: queryVendorUser.keyword,
     };
     const queryParams = objectToQueryParams(keywordQuery);
     setSearchParams(queryParams);
-    const { data } = await DashboardUserAPI.getAllAdminUser(queryParams);
+    const { data } = await DashboardUserAPI.getAllVendorUser(queryParams);
 
     return addIndexToData(data);
   };
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["vendor", { ...queries }],
-    queryFn: getVendorContent,
+    queryFn: getVendorUser,
   });
 
   const handleFilter = (value: any) => {
     for (const x in value) {
       if (value[x]) {
-        setQueryVendorContent((val) => ({ ...val, [x]: value[x] }));
+        setQueryVendorUser((val) => ({ ...val, [x]: value[x] }));
       }
     }
   };
@@ -65,7 +67,7 @@ const useQueryVendorUser = (
     };
     form.setFieldsValue(clearFilterQuery);
 
-    setQueryVendorContent(() => ({
+    setQueryVendorUser(() => ({
       ...clearFilterQuery,
     }));
   };
@@ -75,8 +77,8 @@ const useQueryVendorUser = (
     error,
     isLoading,
     refetch,
-    setQueryVendorContent,
-    queryVendorContent,
+    setQueryVendorUser,
+    queryVendorUser,
     handleFilter,
     clearFilter,
   };

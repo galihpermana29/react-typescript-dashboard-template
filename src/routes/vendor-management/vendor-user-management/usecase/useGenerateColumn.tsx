@@ -1,6 +1,26 @@
-import { TableProps, Tag } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Row, Space, TableProps, Tag } from "antd";
+import { TModalType } from "./useModalReducer";
+import { UseMutateFunction } from "react-query";
+import {
+  IUpdateUserPayloadRoot,
+  IUpdateUserResponseRoot,
+} from "@/shared/models/userServicesInterface";
+import { AxiosError } from "axios";
 
-const useGenerateColumnVendorUser = () => {
+const useGenerateColumnVendorUser = (
+  onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
+  onChangeStatus?: UseMutateFunction<
+    IUpdateUserResponseRoot,
+    AxiosError<unknown, any>,
+    {
+      payload: IUpdateUserPayloadRoot;
+      id: string;
+      type: "delete" | "update";
+    },
+    unknown
+  >
+) => {
   const columns: TableProps<any>["columns"] = [
     {
       title: "Id",
@@ -40,7 +60,49 @@ const useGenerateColumnVendorUser = () => {
       title: "Actions",
       dataIndex: "",
       key: "actions",
-      render: () => <div>adsads</div>,
+      render: ({ id, status }) => (
+        <Row gutter={[12, 12]}>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  label: "Edit",
+                  key: "1",
+                  onClick: () => {
+                    onOpenModal!("edit", id);
+                  },
+                },
+                {
+                  label: "View Detail",
+                  key: "2",
+                  onClick: () => {
+                    onOpenModal!("detail", id);
+                  },
+                },
+                {
+                  label: status === "active" ? "Deactivate" : "Activate",
+                  key: "3",
+                  onClick: () =>
+                    onChangeStatus!({
+                      payload: {
+                        status: status === "active" ? "inactive" : "active",
+                      },
+                      id,
+                      type: "delete",
+                    }),
+                },
+              ],
+            }}
+          >
+            <Button className="bg-ny-primary-100 text-caption-1 text-ny-primary-500 hover:!bg-ny-primary-100 hover:!text-ny-primary-500">
+              <Space>
+                Actions
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        </Row>
+      ),
     },
   ];
 
