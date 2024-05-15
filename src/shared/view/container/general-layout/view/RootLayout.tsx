@@ -55,7 +55,7 @@ const RootLayout: React.FC = () => {
             INFO: This is the header/navigation bar
           */}
               <CustomHeader data={data!} />
-              <Content style={{ margin: "0 16px" }}>
+              <Content style={{ margin: "0 16px", overflow: "auto" }}>
                 <div
                   style={{
                     padding: 30,

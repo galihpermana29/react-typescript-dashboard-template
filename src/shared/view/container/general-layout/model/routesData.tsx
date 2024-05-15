@@ -1,9 +1,11 @@
-import { ItemsDataI } from "./types";
-import DashboardContainer from "../../../../../routes/dashboard/Dashboard";
-import dashboardIconGray from "@/assets/icon/dashboard-icon-gray.svg";
 import adminManagIconGray from "@/assets/icon/admin-manag-icon-gray.svg";
+import dashboardIconGray from "@/assets/icon/dashboard-icon-gray.svg";
 import AdminUserManagementContainer from "@/routes/admin-management/admin-user-management/AdminUserManagement";
 import { VendorContentContainer } from "@/routes/vendor-management/vendor-content/VendorContent";
+import { VendorUserManagementContainer } from "@/routes/vendor-management/vendor-user-management/VendorUserManagement";
+import DashboardContainer from "../../../../../routes/dashboard/Dashboard";
+import { ItemsDataI } from "./types";
+
 export const staffRoutes: ItemsDataI[] = [
   {
     label: (
@@ -81,7 +83,7 @@ export const staffRoutes: ItemsDataI[] = [
         path: "vendor-user-management",
         children: null,
         icon: <img src={adminManagIconGray} alt="icon" />,
-        components: <DashboardContainer />,
+        components: <VendorUserManagementContainer />,
         show: true,
       },
       {
