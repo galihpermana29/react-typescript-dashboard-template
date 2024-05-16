@@ -38,9 +38,12 @@ const useQueryVendorUser = (
   const getVendorUser = async () => {
     const keywordQuery = {
       keyword: queryVendorUser.keyword,
+      status: queryVendorUser.status,
     };
+
     const queryParams = objectToQueryParams(keywordQuery);
     setSearchParams(queryParams);
+
     const { data } = await DashboardUserAPI.getAllVendorUser(queryParams);
 
     return addIndexToData(data);
