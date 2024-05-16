@@ -1,31 +1,136 @@
+import {
+  IRolePermission,
+  IUpdateRolePayloadRoot,
+  IUpdateRoleResponseRoot,
+} from "@/shared/models/roleServicesInterface";
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Row, Space, TableProps, Tag } from "antd";
+import {
+  Button,
+  Checkbox,
+  ConfigProvider,
+  Dropdown,
+  Row,
+  Space,
+  TableProps,
+  Tag,
+} from "antd";
+import { AxiosError } from "axios";
+import { UseMutateFunction } from "react-query";
+import { TModalType } from "./useModalReducer";
 
-const useGenerateColumnAdminRole = () => {
+const formatPermission = (permission: string) => {
+  switch (permission) {
+    case "admin management":
+      return "Admin User Management";
+    case "vendor management":
+      return "Vendor Management";
+  }
+};
+
+const formatLabelSubject = (permission: string) => {
+  switch (permission) {
+    case "admin management":
+      return "Admin User";
+    case "vendor management":
+      return "Vendor";
+  }
+};
+
+const useGenerateColumnAdminRole = (
+  onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
+  onChangeStatus?: UseMutateFunction<
+    IUpdateRoleResponseRoot,
+    AxiosError<unknown, any>,
+    {
+      payload: IUpdateRolePayloadRoot;
+      id: string;
+      type: "delete" | "update";
+    },
+    unknown
+  >
+) => {
   const columns: TableProps<any>["columns"] = [
     {
-      title: "No",
-      dataIndex: "no",
-      key: "no",
-      render: (text) => <a>{text}</a>,
+      title: "No.",
+      dataIndex: "id",
+      key: "index",
+      render: (id, __, index) => (
+        <a>
+          {id} {index + 1}
+        </a>
+      ),
     },
     {
       title: "Role",
-      dataIndex: "role",
+      dataIndex: "name",
       key: "role",
-      render: (text) => <a>{text}</a>,
+      render: (text) => {
+        return <a>{text}</a>;
+      },
     },
     {
       title: "Feature Permission",
-      dataIndex: "feature_permission",
+      dataIndex: "permissions",
       key: "feature_permission",
-      render: (text) => <a>{text}</a>,
+      render: (permissions) => (
+        <div className="grid grid-rows-2 items-center h-[6rem]">
+          {permissions.map(({ feature_permission }) => {
+            return <div>{formatPermission(feature_permission)}</div>;
+          })}
+        </div>
+      ),
     },
     {
       title: "Feature Access",
-      dataIndex: "feature_access",
+      dataIndex: "permissions",
       key: "feature_access",
-      render: (text) => <a className="capitalize">{text}</a>,
+      render: (permissions: IRolePermission[]) => (
+        <div className="flex flex-col gap-2">
+          {permissions.map(({ feature_access, feature_permission }) => {
+            return (
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#E60B6A",
+                  },
+                }}
+              >
+                <div className="grid grid-cols-2">
+                  <Checkbox
+                    checked={feature_access.includes("create")}
+                    className="cursor-default"
+                  >
+                    <span className="text-black">
+                      Create {formatLabelSubject(feature_permission)}
+                    </span>
+                  </Checkbox>
+                  <Checkbox checked className="cursor-default">
+                    <span className="text-black">
+                      View {formatLabelSubject(feature_permission)}
+                    </span>
+                  </Checkbox>
+                  <Checkbox
+                    checked={feature_access.includes("create")}
+                    className="cursor-default"
+                  >
+                    <span className="text-black">
+                      Update {formatLabelSubject(feature_permission)}
+                    </span>
+                  </Checkbox>
+                  <Checkbox
+                    checked={feature_access.includes("create")}
+                    className="cursor-default"
+                  >
+                    <span className="text-black">
+                      Create {formatLabelSubject(feature_permission)}
+                    </span>
+                  </Checkbox>
+                </div>
+              </ConfigProvider>
+            );
+          })}
+        </div>
+      ),
     },
     {
       title: "Status",
@@ -41,7 +146,7 @@ const useGenerateColumnAdminRole = () => {
       title: "Actions",
       dataIndex: "",
       key: "actions",
-      render: () => (
+      render: ({ id, status }) => (
         <Row gutter={[12, 12]}>
           <Dropdown
             menu={{
@@ -49,17 +154,19 @@ const useGenerateColumnAdminRole = () => {
                 {
                   label: "Edit",
                   key: "1",
-                  onClick: () => {},
-                },
-                {
-                  label: "View Detail",
-                  key: "2",
-                  onClick: () => {},
+                  onClick: () => onOpenModal!("edit", id),
                 },
                 {
                   label: status === "active" ? "Deactivate" : "Activate",
                   key: "3",
-                  onClick: () => {},
+                  onClick: () =>
+                    onChangeStatus!({
+                      payload: {
+                        status: status === "active" ? "inactive" : "active",
+                      },
+                      id,
+                      type: "delete",
+                    }),
                 },
               ],
             }}

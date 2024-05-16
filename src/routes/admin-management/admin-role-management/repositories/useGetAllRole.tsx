@@ -1,6 +1,5 @@
 import { TGeneralFilter } from "@/shared/models/generalInterfaces";
 import { DashboardRoleAPI } from "@/shared/repositories/roleServies";
-import { DashboardUserAPI } from "@/shared/repositories/userServices";
 import useConvertQuery from "@/shared/usecase/useConvertQuery";
 import useSuccessAxios from "@/shared/usecase/useSuccessAxios";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -33,10 +32,10 @@ const useQueryAdminRoles = (
   });
 
   const { objectToQueryParams } = useConvertQuery();
-  const { addIndexToData, dataToSelectOptions } = useSuccessAxios();
+  const { addIndexToData } = useSuccessAxios();
   const queries = useDebounce(queryAdminRoles, 1000);
 
-  const getAdmins = async () => {
+  const getAllRoles = async () => {
     //  TODO: change to limit and page
     const keywordQuery = {
       keyword: queryAdminRoles.keyword,
@@ -44,24 +43,13 @@ const useQueryAdminRoles = (
     };
     const queryParams = objectToQueryParams(keywordQuery);
     setSearchParams(queryParams);
-    const { data } = await DashboardUserAPI.getAllAdminUser(queryParams);
+    const { data } = await DashboardRoleAPI.getAllRoles(queryParams);
 
     return addIndexToData(data);
   };
-
-  const getRoles = async () => {
-    const { data } = await DashboardRoleAPI.getAllRoles("status=active");
-    return dataToSelectOptions(data, "id", "name");
-  };
-
-  const { data: roles } = useQuery({
-    queryKey: ["roles"],
-    queryFn: getRoles,
-  });
-
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["admins", { ...queries }],
-    queryFn: getAdmins,
+    queryFn: getAllRoles,
   });
 
   const handleFilter = (value: any) => {
@@ -87,7 +75,6 @@ const useQueryAdminRoles = (
 
   return {
     data,
-    roles,
     error,
     isLoading,
     refetch,

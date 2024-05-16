@@ -1,38 +1,96 @@
 import addIcon from "@/assets/icon/add.png";
-import { IDetailUserData } from "@/shared/models/userServicesInterface";
+import ErrorBoundary from "@/shared/view/container/error-boundary/ErrorBoundary";
 import DashboardTable from "@/shared/view/presentations/dashboard-table/DashboardTable";
 import DashboardTableFilter from "@/shared/view/presentations/dashboard-table/DashboardTableFilter";
 import TableHeaderTitle from "@/shared/view/presentations/table-header-title/TableHeaderTitle";
-import { Button, Form, Select } from "antd";
+import { Button, Form, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import useGenerateColumnAdminRole from "./usecase/useGenerateColumn";
+import { AxiosError } from "axios";
+import useMutateCreateAdminRole from "./repositories/useCreateRole";
 import useQueryAdminRoles from "./repositories/useGetAllRole";
+import useMutateEditAdminRoles from "./repositories/useUpdateRole";
+import useGenerateColumnAdminRole from "./usecase/useGenerateColumn";
+import useModalReducer from "./usecase/useModalReducer";
+import FormCreation from "./view/presentation/Modal/FormCreation";
+import { IAllRolesData } from "@/shared/models/roleServicesInterface";
 
 export const AdminRoleManagementContainer = () => {
   const [form] = useForm();
+  const [formModal] = useForm();
 
-  const { queryAdminRoles } = useQueryAdminRoles(form);
+  const { openModal, closeModal, modalState } = useModalReducer(formModal);
 
-  const { columns } = useGenerateColumnAdminRole();
+  const {
+    data,
+    error,
+    isLoading,
+    setQueryAdminRoles,
+    queryAdminRoles,
+    refetch,
+    handleFilter,
+    clearFilter,
+  } = useQueryAdminRoles(form);
+
+  const { mutate: mutateCreate } = useMutateCreateAdminRole(
+    closeModal,
+    refetch
+  );
+  const { mutate: mutateEdit } = useMutateEditAdminRoles(closeModal, refetch);
+
+  const { columns } = useGenerateColumnAdminRole(closeModal, mutateEdit);
+
+  const modalType = {
+    create: (
+      <FormCreation
+        form={formModal}
+        handleMutate={mutateCreate}
+        footer={undefined}
+      />
+    ),
+    // edit: (
+    //   <LoadingHandler
+    //     isLoading={isLoading}
+    //     fullscreen={false}
+    //     classname="h-[500px]"
+    //   >
+    //     <FormEdit
+    //       id={modalState?.id}
+    //       handleMutate={mutateEdit}
+    //       form={formModal}
+    //       disable={false}
+    //       footer={undefined}
+    //     />
+    //   </LoadingHandler>
+    // ),
+  };
 
   return (
-    <>
+    <ErrorBoundary error={error as AxiosError} refetch={refetch}>
       <TableHeaderTitle title="Admin Role Management" />
 
-      <DashboardTable<IDetailUserData>
+      <Modal
+        title={<div className="capitalize">{`${modalState?.type} Role`}</div>}
+        open={modalState?.isOpen}
+        footer={null}
+        onCancel={closeModal}
+      >
+        {modalType[modalState!.type]}
+      </Modal>
+
+      <DashboardTable<IAllRolesData>
         filterComponents={
           <DashboardTableFilter
             form={form}
             queryAdmins={queryAdminRoles}
-            onApplyFilter={() => {}}
-            onClearFilter={() => {}}
+            onApplyFilter={handleFilter}
+            onClearFilter={clearFilter}
             buttonComponents={
               <Button
-                onClick={() => {}}
+                onClick={() => openModal!("create")}
                 className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer"
               >
                 <img src={addIcon} alt="add-icon" />
-                Create User
+                Create Role
               </Button>
             }
             filterComponents={
@@ -40,7 +98,7 @@ export const AdminRoleManagementContainer = () => {
                 <Form.Item
                   name={"status"}
                   label="Status"
-                  initialValue={null}
+                  initialValue={queryAdminRoles.status}
                   className="my-[10px]"
                 >
                   <Select
@@ -54,14 +112,14 @@ export const AdminRoleManagementContainer = () => {
                 </Form.Item>
               </>
             }
-            onSearch={() => {}}
+            onSearch={setQueryAdminRoles}
           />
         }
         columns={columns}
-        data={undefined}
-        loading={false}
-        onPaginationChanges={() => {}}
+        data={data}
+        loading={isLoading}
+        onPaginationChanges={setQueryAdminRoles}
       />
-    </>
+    </ErrorBoundary>
   );
 };
