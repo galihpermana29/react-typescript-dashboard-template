@@ -4,7 +4,7 @@ import TableHeaderTitle from "@/shared/view/presentations/table-header-title/Tab
 import { Form, Select } from "antd";
 import ErrorBoundary from "antd/es/alert/ErrorBoundary";
 import { useForm } from "antd/es/form/Form";
-import useQueryVendor from "./repositories/useGetAllContent";
+import useQueryVendorContent from "./repositories/useGetAllContent";
 import useGenerateColumnVendorProduct from "./usecase/useGenerateColumn";
 
 export const VendorContentContainer = () => {
@@ -13,12 +13,14 @@ export const VendorContentContainer = () => {
   const { columns } = useGenerateColumnVendorProduct();
 
   const {
+    data,
     queryVendorContent,
     setQueryVendorContent,
     isLoading,
     handleFilter,
     clearFilter,
-  } = useQueryVendor(form);
+  } = useQueryVendorContent(form);
+
 
   return (
     <ErrorBoundary>
@@ -28,6 +30,7 @@ export const VendorContentContainer = () => {
         columns={columns}
         onPaginationChanges={setQueryVendorContent}
         loading={isLoading}
+        data={data}
         filterComponents={
           <DashboardTableFilter
             form={form}
