@@ -100,7 +100,10 @@ const useGenerateColumnAdminRole = (
                       Create {formatLabelSubject(feature_permission)}
                     </span>
                   </Checkbox>
-                  <Checkbox checked className="cursor-default">
+                  <Checkbox
+                    checked={feature_access.includes("view")}
+                    className="cursor-default"
+                  >
                     <span className="text-black">
                       View {formatLabelSubject(feature_permission)}
                     </span>

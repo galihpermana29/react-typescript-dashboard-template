@@ -13,11 +13,7 @@ const useMutateCreateAdminRole = (
   const { showSuccessMessage } = useSuccessAxios();
 
   const createRole = async (payload: ICreateRolePayloadRoot) => {
-    const newPayload: ICreateRolePayloadRoot = {
-      ...payload,
-    };
-
-    const data = await DashboardRoleAPI.createRole(newPayload);
+    const data = await DashboardRoleAPI.createRole(payload);
     return data;
   };
 

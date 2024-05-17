@@ -15,13 +15,13 @@ export interface IAllRolesData {
 export interface IAllRolesResponseRoot {
   data: IAllRolesData[];
 }
-export interface IRoleDetailResponseRoot {
+export interface IDetailRoleResponseRoot {
   data: IAllRolesData;
 }
 
 export interface ICreateRolePayloadRoot {
   name: string;
-  permission: IRolePermission[];
+  permissions: IRolePermission[];
 }
 
 export interface ICreateRoleResponseRoot {

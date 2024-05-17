@@ -2,6 +2,7 @@ import {
   IAllRolesResponseRoot,
   ICreateRolePayloadRoot,
   ICreateRoleResponseRoot,
+  IDetailRoleResponseRoot,
   IUpdateRolePayloadRoot,
   IUpdateRoleResponseRoot,
 } from "../models/roleServicesInterface";
@@ -20,6 +21,19 @@ class DashboardRoleServices extends ApiClass {
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
+    return data;
+  }
+
+  public async getRoleById(id: string): Promise<IDetailRoleResponseRoot> {
+    const token = JSON.parse(localStorage.getItem("token")!);
+    const { data } = await this.axiosInstance.get<IDetailRoleResponseRoot>(
+      `/roles/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return data;
   }
 
