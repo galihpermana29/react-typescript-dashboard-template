@@ -60,6 +60,7 @@ const useGenerateColumnAdminRole = (
       title: "Role",
       dataIndex: "name",
       key: "role",
+
       render: (text) => {
         return <a>{text}</a>;
       },
@@ -68,6 +69,7 @@ const useGenerateColumnAdminRole = (
       title: "Feature Permission",
       dataIndex: "permissions",
       key: "feature_permission",
+
       render: (permissions) => (
         <div className="grid grid-rows-2 items-center h-[6rem]">
           {permissions.map(({ feature_permission }) => {
@@ -158,6 +160,7 @@ const useGenerateColumnAdminRole = (
                 {
                   label: status === "active" ? "Deactivate" : "Activate",
                   key: "3",
+
                   onClick: () =>
                     onChangeStatus!({
                       payload: {

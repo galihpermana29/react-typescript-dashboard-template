@@ -13,6 +13,7 @@ import useGenerateColumnAdminRole from "./usecase/useGenerateColumn";
 import useModalReducer from "./usecase/useModalReducer";
 import FormCreation from "./view/presentation/Modal/FormCreation";
 import { IAllRolesData } from "@/shared/models/roleServicesInterface";
+import FormFooter from "./view/presentation/Modal/FormFooter";
 
 export const AdminRoleManagementContainer = () => {
   const [form] = useForm();
@@ -44,7 +45,16 @@ export const AdminRoleManagementContainer = () => {
       <FormCreation
         form={formModal}
         handleMutate={mutateCreate}
-        footer={undefined}
+        footer={
+          <FormFooter
+            secondaryText="Cancel"
+            secondaryProps={{
+              onClick: () => closeModal!(),
+            }}
+            primaryText="Create"
+            primaryProps={{ type: "submit" }}
+          />
+        }
       />
     ),
     // edit: (

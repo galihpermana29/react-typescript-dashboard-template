@@ -5,6 +5,11 @@ export interface IRolePermission {
   feature_access: string[];
 }
 
+export interface IRolePermission {
+  feature_permission: string;
+  feature_access: string[];
+}
+
 export interface IAllRolesData {
   id: number;
   name: string;
