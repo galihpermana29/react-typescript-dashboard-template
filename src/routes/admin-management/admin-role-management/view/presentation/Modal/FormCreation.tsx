@@ -3,10 +3,10 @@ import {
   ICreateRoleResponseRoot,
 } from "@/shared/models/roleServicesInterface";
 import {
+  Cascader,
   Form,
   FormInstance,
-  Input,
-  Table
+  Input
 } from "antd";
 import { AxiosError } from "axios";
 import { UseMutateFunction } from "react-query";
@@ -25,11 +25,11 @@ interface IFormCreation {
 
 const FormCreation = ({ form, handleMutate, footer }: IFormCreation) => {
 
-  const {columns, data, parseFormValues, handleRowSelection} = useGenerateModalProps(form)
+  const {options, transformToPayload} = useGenerateModalProps()
 
   return (
     <div>
-      <Form form={form} layout="vertical" onFinish={(value) => handleMutate(parseFormValues(value))}>
+      <Form form={form} layout="vertical" onFinish={(value) => handleMutate(transformToPayload(value))} className="w-[30rem]">
         <div className="flex gap-[20px]">
           <div className="flex-1">
             <Form.Item
@@ -60,14 +60,14 @@ const FormCreation = ({ form, handleMutate, footer }: IFormCreation) => {
               </p>
             </div>
 
-            <Table
-              pagination={false}
-              rowSelection={{
-                onChange: handleRowSelection,
-              }}
-              columns={columns}
-              dataSource={data}
-            />
+            <Form.Item name={'permissions'}>
+              <Cascader
+                style={{ width: '100%' }}
+                options={options}
+                multiple
+                maxTagCount="responsive"
+              />
+            </Form.Item>
           </div>
         </div>
         {footer}

@@ -7,25 +7,15 @@ import { DownOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
-  ConfigProvider,
   Dropdown,
   Row,
   Space,
   TableProps,
-  Tag,
+  Tag
 } from "antd";
 import { AxiosError } from "axios";
 import { UseMutateFunction } from "react-query";
 import { TModalType } from "./useModalReducer";
-
-const formatPermission = (permission: string) => {
-  switch (permission) {
-    case "admin management":
-      return "Admin User Management";
-    case "vendor management":
-      return "Vendor Management";
-  }
-};
 
 const formatLabelSubject = (permission: string) => {
   switch (permission) {
@@ -33,8 +23,25 @@ const formatLabelSubject = (permission: string) => {
       return "Admin User";
     case "vendor management":
       return "Vendor";
+    case "vendor content":
+      return "Vendor Content";
   }
 };
+
+const permissionList = [
+  {
+    label: "Admin User Management",
+    value: 'admin management'
+  },
+  {
+    label: "Vendor Management",
+    value: 'vendor management'
+  },
+  {
+    label: "Vendor Content",
+    value: 'vendor content'
+  },
+]
 
 const useGenerateColumnAdminRole = (
   onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
@@ -70,10 +77,10 @@ const useGenerateColumnAdminRole = (
       dataIndex: "permissions",
       key: "feature_permission",
 
-      render: (permissions) => (
-        <div className="grid grid-rows-2 items-center h-[6rem]">
-          {permissions.map(({ feature_permission }) => {
-            return <div>{formatPermission(feature_permission)}</div>;
+      render: () => (
+        <div className="grid grid-rows-3 items-stretch h-max">
+          {permissionList.map(({ label }) => {
+            return <div>{label}</div>;
           })}
         </div>
       ),
@@ -84,51 +91,51 @@ const useGenerateColumnAdminRole = (
       key: "feature_access",
       render: (permissions: IRolePermission[]) => (
         <div className="flex flex-col gap-2">
-          {permissions.map(({ feature_access, feature_permission }) => {
+          {permissionList.map(({value}) => {
+
+            let index = -1
+
+            for (let i = 0; i < permissions.length; i++) {
+                if (permissions[i]?.feature_permission.includes(value)) {
+                    index = i
+                }
+            }
 
             return (
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorPrimary: "#E60B6A",
-                  },
-                }}
-              >
                 <div className="grid grid-cols-2">
                   <Checkbox
-                    checked={feature_access.includes("create")}
+                    checked={permissions[index]?.feature_access.includes('create') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
-                      Create {formatLabelSubject(feature_permission)}
+                      Create {formatLabelSubject(value)}
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={feature_access.includes("view")}
+                    checked={permissions[index]?.feature_access.includes('view') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
-                      View {formatLabelSubject(feature_permission)}
+                      View {formatLabelSubject(value)}
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={feature_access.includes("update")}
+                    checked={permissions[index]?.feature_access.includes('update') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
-                      Update {formatLabelSubject(feature_permission)}
+                      Update {formatLabelSubject(value)}
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={feature_access.includes("delete")}
+                    checked={permissions[index]?.feature_access.includes('delete') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
-                      Delete {formatLabelSubject(feature_permission)}
+                      Delete {formatLabelSubject(value)}
                     </span>
                   </Checkbox>
                 </div>
-              </ConfigProvider>
             );
           })}
         </div>

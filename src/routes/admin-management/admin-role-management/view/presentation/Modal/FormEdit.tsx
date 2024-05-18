@@ -3,7 +3,7 @@ import {
   ICreateRoleResponseRoot,
   IUpdateRolePayloadRoot
 } from "@/shared/models/roleServicesInterface";
-import { Form, FormInstance, Input, Table } from "antd";
+import { Cascader, Form, FormInstance, Input } from "antd";
 import { AxiosError } from "axios";
 import { UseMutateFunction } from "react-query";
 import useGenerateModalProps from "../../../usecase/useGenerateModalProps";
@@ -26,16 +26,14 @@ interface IFormEdit {
   detail: IAllRolesData | undefined
 }
 const FormEdit = ({ form, handleMutate, footer, id, detail}: IFormEdit) => {
-  const {columns, data, transformRoleData, handleRowSelection, parseFormValues} = useGenerateModalProps(form)
+  const {options, transformToPayload, transformToCascaderData} = useGenerateModalProps()
 
-  const defaultValues = transformRoleData(detail)
-
-  form.setFieldsValue(defaultValues)
+  const defaultValue = transformToCascaderData(detail)
 
   return (
     <div>
       <Form form={form} layout="vertical" onFinish={(value) => {
-					handleMutate!({ payload: parseFormValues(value), id: id!, type: 'update' });
+					handleMutate!({ payload: transformToPayload(value), id: id!, type: 'update' });
 				}}>
         <div className="flex gap-[20px]">
           <div className="flex-1">
@@ -67,14 +65,16 @@ const FormEdit = ({ form, handleMutate, footer, id, detail}: IFormEdit) => {
               </p>
             </div>
 
-            <Table
-              pagination={false}
-              rowSelection={{
-                onChange: handleRowSelection,
-              }}
-              columns={columns}
-              dataSource={data}
-            />
+            <Form.Item name="permissions_edit">
+              <Cascader
+                style={{ width: '100%' }}
+                options={options}
+                multiple
+                maxTagCount="responsive"
+                defaultValue={defaultValue.permissions_edit}
+              />
+            </Form.Item> 
+
           </div>
         </div>
         {footer}

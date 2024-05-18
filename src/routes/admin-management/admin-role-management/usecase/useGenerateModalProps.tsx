@@ -1,125 +1,144 @@
-import { Checkbox, Form, FormInstance, TableColumnsType } from "antd";
 
-const formatPermission = (permission: string) => {
-  switch (permission) {
-    case "admin management":
-      return "Admin User Management";
-    case "vendor management":
-      return "Vendor Management";
-    case "vendor content":
-      return "Vendor Content";
-  }
-};
-
-function transformRoleData(input) {
-  const output = { name: input.name };
-
-  input.permissions.forEach((permission, index) => {
-    output[`feature_access${index}`] = permission.feature_access;
-  });
-
-  return output;
+interface Option {
+  value: string | number;
+  label: string;
+  children?: Option[];
 }
-
-const data = [
-  {
-    key: "1",
-    feature_permission: "admin management",
-    feature_access: [
-      {
-        label: "Create Admin user",
-        value: "create",
-      },
-      {
-        label: "View Admin user",
-        value: "view",
-      },
-      {
-        label: "Update Admin user",
-        value: "update",
-      },
-      {
-        label: "Delete Admin user",
-        value: "delete",
-      },
-    ],
-  },
-  {
-    key: "2",
-    feature_permission: "vendor management",
-    feature_access: [
-      {
-        label: "Create Vendor",
-        value: "create",
-      },
-      {
-        label: "View Vendor",
-        value: "view",
-      },
-      {
-        label: "Update Vendor",
-        value: "update",
-      },
-      {
-        label: "Delete Vendor",
-        value: "delete",
-      },
-    ],
-  },
-];
 
 
 const useGenerateModalProps = (
-  form: FormInstance,
 ) => {
-    const columns: TableColumnsType = [
+
+  const options: Option[] = [
   {
-    title: "Access Permission",
-    dataIndex: "feature_permission",
-    render: (feature_permission) => (
-      <a>{formatPermission(feature_permission)} (P1)</a>
-    ),
+    label: 'Admin User Management (P1)',
+    value: 'admin management',
+    children: [
+      {
+        label: 'Create Admin User',
+        value: 'create'
+      },
+      {
+        label: 'View Admin User',
+        value: 'view'
+      },
+      {
+        label: 'Update Admin User',
+        value: 'update'
+      },
+      {
+        label: 'Delete Admin User',
+        value: 'delete'
+      },
+    ]
   },
   {
-    title: "Feature Permission",
-    dataIndex: "feature_access",
-    render: (feature_access, _, index) => (
-      <Form.Item name={`feature_access${index}`} valuePropName="value">
-        <Checkbox.Group className="grid grid-cols-2" options={feature_access}   />
-      </Form.Item>
-    ),
+    label: 'Vendor Management (P1)',
+    value: 'vendor management',
+    children: [
+      {
+        label: 'Create Vendor',
+        value: 'create'
+      },
+      {
+        label: 'View Vendor',
+        value: 'view'
+      },
+      {
+        label: 'Update Vendor',
+        value: 'update'
+      },
+      {
+        label: 'Delete Vendor',
+        value: 'delete'
+      },
+    ]
   },
-  ]
+  {
+    label: 'Vendor Content (P1)',
+    value: 'vendor content',
+    children: [
+      {
+        label: 'Create Vendor Content',
+        value: 'create'
+      },
+      {
+        label: 'View Vendor Content',
+        value: 'view'
+      },
+      {
+        label: 'Update Vendor Content',
+        value: 'update'
+      },
+      {
+        label: 'Delete Vendor Content',
+        value: 'delete'
+      },
+    ]
+  },
+];
 
-    const handleRowSelection = (_, selectedRows: any[]) => {
-    const allPermissions = ["create", "view", "update", "delete"];
+  const transformToPayload = (input) => {
+    const permissionsKey = input.permissions ? 'permissions' : 'permissions_edit';
 
-    data.forEach((_, index) => {
-      form.setFieldValue(`feature_access${index}`, []);
-    });
-
-    selectedRows.forEach((row) => {
-      const rowIndex = data.findIndex((item) => item.key === row.key);
-      if (rowIndex !== -1) {
-        form.setFieldValue(`feature_access${rowIndex}`, allPermissions);
-      }                                               
-    });
-
-  };
-
-  const parseFormValues = (values) => {
-    const permissions = data.map((item, index) => ({
-      feature_permission: item.feature_permission,
-      feature_access: values[`feature_access${index}`] || [],
-    }));
-
-    return {
-      name: values.name,
-      permissions,
+    const result = {
+        name: input.name,
+        permissions: []
     };
+
+    const permissionMap = new Map();
+
+    input[permissionsKey].forEach(permission => {
+        const feature = permission[0];
+        const access = permission[1] || "all";
+
+        if (!permissionMap.has(feature)) {
+            permissionMap.set(feature, []);
+        }
+
+        if (access === "all") {
+            permissionMap.set(feature, ["create", "delete", "update", "view"]);
+        } else {
+            permissionMap.get(feature).push(access);
+        }
+    });
+
+    permissionMap.forEach((accessList, feature) => {
+        result.permissions.push({
+            feature_permission: feature,
+            feature_access: accessList
+        } as never);
+    });
+
+    return result;
   }
 
-  return {columns, data, parseFormValues, handleRowSelection, transformRoleData}
+  function transformToCascaderData(input) {
+      const result = {
+          name: input.name,
+          permissions_edit: []
+      };
+
+      input.permissions.forEach(permission => {
+          const feature = permission.feature_permission;
+          const accesses = permission.feature_access;
+
+          if (accesses.length === 0) {
+              result.permissions_edit.push([feature] as never);
+          } else {
+              accesses.forEach(access => {
+                  result.permissions_edit.push([feature, access] as never);
+              });
+          }
+      });
+
+      // Remove any empty permission arrays
+      result.permissions_edit = result.permissions_edit.filter((permission: any) => permission?.length > 1);
+
+      return result;
+  }
+
+  return {options, transformToPayload, transformToCascaderData}
 }
 
 export default useGenerateModalProps
