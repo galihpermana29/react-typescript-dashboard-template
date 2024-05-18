@@ -53,6 +53,7 @@ const useMutateEditAdmins = (closeModal?: () => void, refetch?: () => void) => {
 			showSuccessMessage('Admin has successfully edited!');
 		},
 	});
+	
 	return { mutate, error, isLoading };
 };
 

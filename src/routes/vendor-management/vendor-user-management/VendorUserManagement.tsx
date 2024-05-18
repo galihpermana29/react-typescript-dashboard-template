@@ -18,6 +18,7 @@ import { IDetailUserData } from "@/shared/models/userServicesInterface";
 import { AxiosError } from "axios";
 import FormFooter from "./view/presentations/Modal/FormFooter";
 import FormChangePassword from "@/shared/view/presentations/modal/ChangePasswordModal";
+import useMutateEditPassword from "@/shared/repositories/useUpdatePassword";
 
 export const VendorUserManagementContainer = () => {
   const [form] = useForm();
@@ -48,6 +49,8 @@ export const VendorUserManagementContainer = () => {
   );
 
   const { columns } = useGenerateColumnVendorUser(openModal, mutateEdit);
+
+  const {mutate: mutateEditPassword} = useMutateEditPassword(closeModal)
 
   const modalType = {
     create: (
@@ -126,8 +129,9 @@ export const VendorUserManagementContainer = () => {
     ),
     password: (
       <FormChangePassword
+        id={modalState?.id}
         form={formModal}
-        handleMutate={mutateEdit}
+        handleMutate={mutateEditPassword}
         footer={
           <FormFooter
             secondaryText="Cancel"

@@ -5,15 +5,15 @@ import {
 } from '@/shared/models/userServicesInterface';
 
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
-import { DatePicker, Form, FormInstance, Input, Select } from 'antd';
+import { Button, DatePicker, Form, FormInstance, Input, Select } from 'antd';
 import { AxiosError } from 'axios';
 import { UseMutateFunction } from 'react-query';
 
 interface IFormEdit {
-	form: FormInstance<any>;
+	form: FormInstance;
 	handleMutate?: UseMutateFunction<
 		IUpdateUserResponseRoot,
-		AxiosError<unknown, any>,
+		AxiosError,
 		{
 			payload: IUpdateUserPayloadRoot;
 			id: string;
@@ -25,6 +25,7 @@ interface IFormEdit {
 	roles: TGeneralSelectOptions[];
 	disable: boolean;
 	id?: string;
+	onChangePasswordClick: () => void;
 }
 const FormEdit = ({
 	form,
@@ -33,6 +34,7 @@ const FormEdit = ({
 	roles,
 	disable,
 	id,
+	onChangePasswordClick
 }: IFormEdit) => {
 	return (
 		<div>
@@ -119,6 +121,16 @@ const FormEdit = ({
 								className="h-[40px] rounded-[8px]"
 							/>
 						</Form.Item>
+						<div className="flex justify-end">
+              <Button
+                type="text"
+                disabled={disable}
+                onClick={onChangePasswordClick}
+                className="text-ny-primary-500"
+              >
+                Change Password
+              </Button>
+            </div>
 					</div>
 				</div>
 				{footer}

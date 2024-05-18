@@ -49,18 +49,21 @@ const FormCreation = ({ form, handleMutate, footer }: IFormCreation) => {
               />
             </Form.Item>
 
-            <div>
-              <div className="flex items-center gap-[3px]">
-                <div className="text-red-400/90 text-lg translate-y-1">*</div>{" "}
-                Feature Permission
-              </div>
-              <p className="text-sm text-ny-gray-400">
-                Select all permissions you'd like to assign to this role. Feel
-                free to make multiple selections
-              </p>
-            </div>
-
-            <Form.Item name={'permissions'}>
+            <Form.Item
+              name={'permissions'}
+              label={(
+                <div>
+                  <div className="flex items-center gap-[3px]">
+                    <div className="text-red-400/90 text-lg translate-y-1">*</div>{" "}
+                    Feature Permission
+                  </div>
+                  <p className="text-sm text-ny-gray-400">
+                    Select all permissions you'd like to assign to this role. Feel
+                    free to make multiple selections
+                  </p>
+                </div>
+              )}
+            >
               <Cascader
                 style={{ width: '100%' }}
                 options={options}

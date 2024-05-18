@@ -17,7 +17,7 @@ const useMutateEditVendorUser = (
     const newPayload: IUpdateUserPayloadRoot = {
       ...payload,
       profile_image_uri: "",
-      type: "admin",
+      type: "vendor",
       date_of_birth: dayjs(payload.date_of_birth).format("YYYY-MM-DD"),
     };
     const data = await DashboardUserAPI.editUser(newPayload, id);

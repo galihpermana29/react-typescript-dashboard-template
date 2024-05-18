@@ -5,6 +5,8 @@ import {
   IDetailUserResponseRoot,
   ILoginPayloadRoot,
   ILoginResponseRoot,
+  IUpdatePasswordPayloadRoot,
+  IUpdatePasswordResponseRoot,
   IUpdateUserPayloadRoot,
   IUpdateUserResponseRoot,
 } from "../models/userServicesInterface";
@@ -68,6 +70,23 @@ class DashboardUserServices extends ApiClass {
     const token = JSON.parse(localStorage.getItem("token")!);
     const { data } = await this.axiosInstance.patch<IUpdateUserResponseRoot>(
       `/users/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  }
+
+  public async updateUserPassword(
+    payload: IUpdatePasswordPayloadRoot,
+  ): Promise<IUpdatePasswordResponseRoot> {
+    const token = JSON.parse(localStorage.getItem("token")!);
+
+    const { data } = await this.axiosInstance.patch<IUpdatePasswordResponseRoot>(
+      `/users/password`,
       payload,
       {
         headers: {

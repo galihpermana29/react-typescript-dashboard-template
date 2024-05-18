@@ -9,10 +9,10 @@ import { AxiosError } from "axios";
 import { UseMutateFunction } from "react-query";
 
 interface IFormEdit {
-  form: FormInstance<any>;
+  form: FormInstance;
   handleMutate?: UseMutateFunction<
     IUpdateUserResponseRoot,
-    AxiosError<unknown, any>,
+    AxiosError,
     {
       payload: IUpdateUserPayloadRoot;
       id: string;
@@ -110,7 +110,7 @@ const FormEdit = ({
             <div className="flex justify-end">
               <Button
                 type="text"
-                disabled={false}
+                disabled={disable}
                 onClick={onChangePasswordClick}
                 className="text-ny-primary-500"
               >
