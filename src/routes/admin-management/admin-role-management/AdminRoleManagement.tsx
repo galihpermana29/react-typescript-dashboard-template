@@ -14,6 +14,9 @@ import useModalReducer from "./usecase/useModalReducer";
 import FormCreation from "./view/presentation/Modal/FormCreation";
 import { IAllRolesData } from "@/shared/models/roleServicesInterface";
 import FormFooter from "./view/presentation/Modal/FormFooter";
+import LoadingHandler from "@/shared/view/container/loading/Loading";
+import FormEdit from "./view/presentation/Modal/FormEdit";
+import useQueryRoleDetail from "./repositories/useGetDetailRole";
 
 export const AdminRoleManagementContainer = () => {
   const [form] = useForm();
@@ -24,7 +27,7 @@ export const AdminRoleManagementContainer = () => {
   const {
     data,
     error,
-    isLoading,
+    isLoading: loadingGetAll,
     setQueryAdminRoles,
     queryAdminRoles,
     refetch,
@@ -38,7 +41,9 @@ export const AdminRoleManagementContainer = () => {
   );
   const { mutate: mutateEdit } = useMutateEditAdminRoles(closeModal, refetch);
 
-  const { columns } = useGenerateColumnAdminRole(closeModal, mutateEdit);
+  const {isLoading: loadingGetDetail, data: detailData} = useQueryRoleDetail(modalState, formModal)
+
+  const { columns } = useGenerateColumnAdminRole(openModal, mutateEdit);
 
   const modalType = {
     create: (
@@ -57,21 +62,31 @@ export const AdminRoleManagementContainer = () => {
         }
       />
     ),
-    // edit: (
-    //   <LoadingHandler
-    //     isLoading={isLoading}
-    //     fullscreen={false}
-    //     classname="h-[500px]"
-    //   >
-    //     <FormEdit
-    //       id={modalState?.id}
-    //       handleMutate={mutateEdit}
-    //       form={formModal}
-    //       disable={false}
-    //       footer={undefined}
-    //     />
-    //   </LoadingHandler>
-    // ),
+    edit: (
+      <LoadingHandler
+        isLoading={loadingGetDetail}
+        fullscreen={false}
+        classname="h-[500px]"
+      >
+        <FormEdit
+          id={modalState?.id}
+          detail={detailData}
+          handleMutate={mutateEdit}
+          form={formModal}
+          disable={true}
+          footer={
+            <FormFooter
+              secondaryText="Cancel"
+              secondaryProps={{
+                onClick: () => closeModal!(),
+              }}
+              primaryText="Edit"
+              primaryProps={{ type: "submit" }}
+            />
+          }
+        />
+      </LoadingHandler>
+    ),
   };
 
   return (
@@ -127,7 +142,7 @@ export const AdminRoleManagementContainer = () => {
         }
         columns={columns}
         data={data}
-        loading={isLoading}
+        loading={loadingGetAll}
         onPaginationChanges={setQueryAdminRoles}
       />
     </ErrorBoundary>

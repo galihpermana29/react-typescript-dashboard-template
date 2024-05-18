@@ -25,11 +25,11 @@ interface IFormCreation {
 
 const FormCreation = ({ form, handleMutate, footer }: IFormCreation) => {
 
-  const {columns, data, handleFinish, handleRowSelection} = useGenerateModalProps(form, handleMutate)
+  const {columns, data, parseFormValues, handleRowSelection} = useGenerateModalProps(form)
 
   return (
     <div>
-      <Form form={form} layout="vertical" onFinish={handleFinish}>
+      <Form form={form} layout="vertical" onFinish={(value) => handleMutate(parseFormValues(value))}>
         <div className="flex gap-[20px]">
           <div className="flex-1">
             <Form.Item

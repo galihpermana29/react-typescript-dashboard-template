@@ -49,7 +49,7 @@ const useMutateEditAdminRoles = (
     onSuccess: () => {
       closeModal!();
       refetch!();
-      showSuccessMessage("Role has successfully edited!");
+      showSuccessMessage("Role successfully edited!");
     },
   });
   return { mutate, error, isLoading };

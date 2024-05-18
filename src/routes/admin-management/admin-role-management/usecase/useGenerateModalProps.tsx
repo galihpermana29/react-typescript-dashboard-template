@@ -1,7 +1,4 @@
-import { ICreateRolePayloadRoot, ICreateRoleResponseRoot } from "@/shared/models/roleServicesInterface";
-import { Checkbox, Form, FormInstance, FormProps, TableColumnsType } from "antd"
-import { AxiosError } from "axios";
-import { UseMutateFunction } from "react-query";
+import { Checkbox, Form, FormInstance, TableColumnsType } from "antd";
 
 const formatPermission = (permission: string) => {
   switch (permission) {
@@ -13,6 +10,16 @@ const formatPermission = (permission: string) => {
       return "Vendor Content";
   }
 };
+
+function transformRoleData(input) {
+  const output = { name: input.name };
+
+  input.permissions.forEach((permission, index) => {
+    output[`feature_access${index}`] = permission.feature_access;
+  });
+
+  return output;
+}
 
 const data = [
   {
@@ -61,14 +68,9 @@ const data = [
   },
 ];
 
+
 const useGenerateModalProps = (
-  form: FormInstance<any>,
-  handleMutate: UseMutateFunction<
-    ICreateRoleResponseRoot,
-    AxiosError<unknown, any>,
-    ICreateRolePayloadRoot,
-    unknown
-  >
+  form: FormInstance,
 ) => {
     const columns: TableColumnsType = [
   {
@@ -105,22 +107,19 @@ const useGenerateModalProps = (
 
   };
 
-  const handleFinish: FormProps["onFinish"] = (values) => {
+  const parseFormValues = (values) => {
     const permissions = data.map((item, index) => ({
       feature_permission: item.feature_permission,
       feature_access: values[`feature_access${index}`] || [],
     }));
 
-    const formattedValues = {
+    return {
       name: values.name,
       permissions,
     };
+  }
 
-
-    handleMutate(formattedValues as ICreateRolePayloadRoot);
-  };
-
-  return {columns, data, handleFinish, handleRowSelection}
+  return {columns, data, parseFormValues, handleRowSelection, transformRoleData}
 }
 
 export default useGenerateModalProps

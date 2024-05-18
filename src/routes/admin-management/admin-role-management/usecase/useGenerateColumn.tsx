@@ -40,7 +40,7 @@ const useGenerateColumnAdminRole = (
   onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
   onChangeStatus?: UseMutateFunction<
     IUpdateRoleResponseRoot,
-    AxiosError<unknown, any>,
+    AxiosError,
     {
       payload: IUpdateRolePayloadRoot;
       id: string;
@@ -49,11 +49,11 @@ const useGenerateColumnAdminRole = (
     unknown
   >
 ) => {
-  const columns: TableProps<any>["columns"] = [
+  const columns: TableProps["columns"] = [
     {
       title: "No.",
       dataIndex: "id",
-      key: "no",
+      key: "index",
       render: (_, __, index) => <a>{index + 1}</a>,
     },
     {
@@ -160,7 +160,7 @@ const useGenerateColumnAdminRole = (
                 },
                 {
                   label: status === "active" ? "Deactivate" : "Activate",
-                  key: "3",
+                  key: "2",
 
                   onClick: () =>
                     onChangeStatus!({
