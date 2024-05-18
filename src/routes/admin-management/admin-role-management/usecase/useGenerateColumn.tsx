@@ -53,7 +53,7 @@ const useGenerateColumnAdminRole = (
     {
       title: "No.",
       dataIndex: "id",
-      key: "index",
+      key: "no",
       render: (_, __, index) => <a>{index + 1}</a>,
     },
     {
@@ -85,6 +85,7 @@ const useGenerateColumnAdminRole = (
       render: (permissions: IRolePermission[]) => (
         <div className="flex flex-col gap-2">
           {permissions.map(({ feature_access, feature_permission }) => {
+
             return (
               <ConfigProvider
                 theme={{
@@ -111,7 +112,7 @@ const useGenerateColumnAdminRole = (
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={feature_access.includes("create")}
+                    checked={feature_access.includes("update")}
                     className="cursor-default"
                   >
                     <span className="text-black">
@@ -119,11 +120,11 @@ const useGenerateColumnAdminRole = (
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={feature_access.includes("create")}
+                    checked={feature_access.includes("delete")}
                     className="cursor-default"
                   >
                     <span className="text-black">
-                      Create {formatLabelSubject(feature_permission)}
+                      Delete {formatLabelSubject(feature_permission)}
                     </span>
                   </Checkbox>
                 </div>

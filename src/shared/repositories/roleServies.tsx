@@ -41,6 +41,7 @@ class DashboardRoleServices extends ApiClass {
     payload: ICreateRolePayloadRoot
   ): Promise<ICreateRoleResponseRoot> {
     const token = JSON.parse(localStorage.getItem("token")!);
+
     const { data } = await this.axiosInstance.post<ICreateRoleResponseRoot>(
       "/roles",
       payload,
@@ -60,7 +61,7 @@ class DashboardRoleServices extends ApiClass {
     const token = JSON.parse(localStorage.getItem("token")!);
 
     const { data } = await this.axiosInstance.patch<IUpdateRoleResponseRoot>(
-      `/role/${id}`,
+      `/roles/${id}`,
       payload,
       {
         headers: {
