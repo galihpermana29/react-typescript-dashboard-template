@@ -19,13 +19,13 @@ const useGenerateColumnVendorProduct = () => {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (text) => <a>{text.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</a>,
+      render: (text) => <a>{text?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</a>,
     },
     {
       title: "Tag",
       dataIndex: "tags",
       key: "tags",
-      render: (tags) => <a className="capitalize">{tags.join(', ')}</a>,
+      render: (tags) => <a className="capitalize">{tags?.join(', ')}</a>,
     },
     {
       title: "Description",
