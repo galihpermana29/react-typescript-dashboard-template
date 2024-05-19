@@ -2,6 +2,7 @@ import { Metadata } from '@/shared/models/generalInterfaces';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { ReactNode } from 'react';
+import DashboardTableFooter from './DashboardTableFooter';
 
 interface IDashboardTable {
 	columns: ColumnsType<any>;
@@ -45,6 +46,7 @@ const DashboardTable = <T extends object>({
 						},
 						current: metadata ? metadata.current_page : 1,
 					}}
+					footer={metadata ? () => <DashboardTableFooter metadata={metadata} /> : undefined}
 				/>
 			</div>
 		</div>
