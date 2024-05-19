@@ -3,8 +3,8 @@ export interface Metadata {
 	total_pages: number;
 	current_page: number;
 	limit: number;
-	next_page: any;
-	previous_page: any;
+	next_page: number;
+	previous_page: number;
 }
 
 export type TGeneralFilter = {
