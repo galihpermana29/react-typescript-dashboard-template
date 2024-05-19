@@ -27,7 +27,7 @@ export const VendorUserManagementContainer = () => {
   const { openModal, modalState, closeModal } = useModalReducer(formModal);
 
   const {
-    data,
+    result,
     queryVendorUser,
     setQueryVendorUser,
     isLoading: loadingGetAll,
@@ -167,10 +167,10 @@ export const VendorUserManagementContainer = () => {
 
       <DashboardTable<IDetailUserData>
         columns={columns}
-        data={data}
+        data={result?.data}
         onPaginationChanges={setQueryVendorUser}
         loading={loadingGetAll || loadingGetDetail}
-        metadata={undefined}
+        metadata={result?.meta_data}
         filterComponents={
           <DashboardTableFilter
             form={form}
