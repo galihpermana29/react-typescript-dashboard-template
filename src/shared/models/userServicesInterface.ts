@@ -72,7 +72,19 @@ export interface IUpdateUserPayloadRoot {
 	status?: string;
 	profile_image_uri?: string;
 }
-
 export interface IUpdateUserResponseRoot {
+	data: string;
+}
+
+export interface IUpdatePasswordInputRoot {
+	old_password: string
+	new_password: string
+}
+
+export interface IUpdatePasswordPayloadRoot extends IUpdatePasswordInputRoot {
+	user_id: string
+}
+
+export interface IUpdatePasswordResponseRoot {
 	data: string;
 }

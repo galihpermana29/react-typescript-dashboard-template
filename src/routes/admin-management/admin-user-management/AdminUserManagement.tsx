@@ -18,6 +18,8 @@ import useQueryAdminsDetail from "./repositories/useGetDetailUser";
 import LoadingHandler from "@/shared/view/container/loading/Loading";
 import useMutateEditAdmins from "./repositories/useUpdateUser";
 import TableHeaderTitle from "@/shared/view/presentations/table-header-title/TableHeaderTitle";
+import FormChangePassword from "@/shared/view/presentations/modal/ChangePasswordModal";
+import useMutateEditPassword from "@/shared/repositories/useUpdatePassword";
 
 const AdminUserManagementContainer = () => {
   const [form] = useForm();
@@ -45,6 +47,8 @@ const AdminUserManagementContainer = () => {
   );
   const { mutate: mutateEdit } = useMutateEditAdmins(closeModal, refetch);
   const { columns } = useGenerateColumnAdminUser(openModal, mutateEdit);
+
+  const {mutate: mutateEditPassword} = useMutateEditPassword(closeModal, refetch)
 
   const modalType = {
     create: (
@@ -75,6 +79,7 @@ const AdminUserManagementContainer = () => {
           roles={roles as TGeneralSelectOptions[]}
           form={formModal}
           handleMutate={undefined}
+          onChangePasswordClick={() => openModal!('password', modalState?.id)}
           disable={true}
           footer={
             <FormFooter
@@ -107,6 +112,7 @@ const AdminUserManagementContainer = () => {
           roles={roles as TGeneralSelectOptions[]}
           form={formModal}
           disable={false}
+          onChangePasswordClick={() => openModal!('password', modalState?.id)}
           footer={
             <FormFooter
               secondaryText="Cancel"
@@ -122,6 +128,30 @@ const AdminUserManagementContainer = () => {
         />
       </LoadingHandler>
     ),
+    password: (
+       <LoadingHandler
+        isLoading={loadingGetDetail}
+        fullscreen={false}
+        classname="h-[500px]"
+      >
+        <FormChangePassword
+        id={modalState?.id}
+        form={formModal}
+        handleMutate={mutateEditPassword}
+        footer={
+          <FormFooter
+            secondaryText="Cancel"
+            secondaryProps={{
+              onClick: () => closeModal!(),
+            }}
+            primaryText="Save"
+            primaryProps={{ type: "submit" }}
+          />
+        }
+      />
+      </LoadingHandler>
+      
+    ),
   };
 
   return (
@@ -131,7 +161,11 @@ const AdminUserManagementContainer = () => {
           <TableHeaderTitle title="Admin User Management" />
           <Modal
             title={
-              <div className="capitalize">{`${modalState?.type} User`}</div>
+              <div className="capitalize">
+                {modalState?.type === "password"
+                  ? "Change Password"
+                  : `${modalState?.type} User`}
+              </div>
             }
             open={modalState?.isOpen}
             footer={null}

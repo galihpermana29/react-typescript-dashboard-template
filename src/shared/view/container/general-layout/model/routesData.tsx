@@ -5,6 +5,8 @@ import { VendorContentContainer } from "@/routes/vendor-management/vendor-conten
 import { VendorUserManagementContainer } from "@/routes/vendor-management/vendor-user-management/VendorUserManagement";
 import DashboardContainer from "../../../../../routes/dashboard/Dashboard";
 import { ItemsDataI } from "./types";
+import { AdminRoleManagementContainer } from "@/routes/admin-management/admin-role-management/AdminRoleManagement";
+
 
 export const staffRoutes: ItemsDataI[] = [
   {
@@ -54,7 +56,7 @@ export const staffRoutes: ItemsDataI[] = [
         path: "admin-role-management",
         children: null,
         icon: <img src={adminManagIconGray} alt="icon" />,
-        components: <DashboardContainer />,
+        components: <AdminRoleManagementContainer />,
         show: true,
       },
     ],

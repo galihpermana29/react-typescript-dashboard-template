@@ -1,31 +1,27 @@
-import { IUpdateUserPayloadRoot } from "@/shared/models/userServicesInterface";
-import { DashboardUserAPI } from "@/shared/repositories/userServices";
+import { IUpdateRolePayloadRoot } from "@/shared/models/roleServicesInterface";
+import { DashboardRoleAPI } from "@/shared/repositories/roleServies";
 import useErrorAxios from "@/shared/usecase/useErrorAxios";
 import useSuccessAxios from "@/shared/usecase/useSuccessAxios";
 import { AxiosError } from "axios";
-import dayjs from "dayjs";
 import { useMutation } from "react-query";
 
-const useMutateEditVendorUser = (
+const useMutateEditAdminRoles = (
   closeModal?: () => void,
   refetch?: () => void
 ) => {
   const { generateErrorMsg, showPopError } = useErrorAxios();
   const { showSuccessMessage } = useSuccessAxios();
 
-  const editRoles = async (payload: IUpdateUserPayloadRoot, id: string) => {
-    const newPayload: IUpdateUserPayloadRoot = {
+  const editRoles = async (payload: IUpdateRolePayloadRoot, id: string) => {
+    const newPayload: IUpdateRolePayloadRoot = {
       ...payload,
-      profile_image_uri: "",
-      type: "vendor",
-      date_of_birth: dayjs(payload.date_of_birth).format("YYYY-MM-DD"),
     };
-    const data = await DashboardUserAPI.editUser(newPayload, id);
+    const data = await DashboardRoleAPI.editRole(newPayload, id);
     return data;
   };
 
-  const updateStatus = async (payload: IUpdateUserPayloadRoot, id: string) => {
-    const data = await DashboardUserAPI.editUser(payload, id);
+  const updateStatus = async (payload: IUpdateRolePayloadRoot, id: string) => {
+    const data = await DashboardRoleAPI.editRole(payload, id);
     return data;
   };
 
@@ -40,7 +36,7 @@ const useMutateEditVendorUser = (
       id,
       type,
     }: {
-      payload: IUpdateUserPayloadRoot;
+      payload: IUpdateRolePayloadRoot;
       id: string;
       type: "delete" | "update";
     }) => {
@@ -53,10 +49,10 @@ const useMutateEditVendorUser = (
     onSuccess: () => {
       closeModal!();
       refetch!();
-      showSuccessMessage("Vendor has been successfully edited!");
+      showSuccessMessage("Role successfully edited!");
     },
   });
   return { mutate, error, isLoading };
 };
 
-export default useMutateEditVendorUser;
+export default useMutateEditAdminRoles;

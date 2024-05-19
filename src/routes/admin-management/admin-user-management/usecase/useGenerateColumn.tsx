@@ -12,7 +12,7 @@ const useGenerateColumnAdminUser = (
   onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
   onChangeStatus?: UseMutateFunction<
     IUpdateUserResponseRoot,
-    AxiosError<unknown, any>,
+    AxiosError,
     {
       payload: IUpdateUserPayloadRoot;
       id: string;
@@ -21,7 +21,7 @@ const useGenerateColumnAdminUser = (
     unknown
   >
 ) => {
-  const columns: TableProps<any>["columns"] = [
+  const columns: TableProps["columns"] = [
     {
       title: "Name",
       dataIndex: "name",

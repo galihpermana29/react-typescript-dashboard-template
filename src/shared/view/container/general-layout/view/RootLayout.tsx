@@ -1,7 +1,7 @@
 import "./style.scss";
 import { AxiosError } from "axios";
 import { ILoginData } from "@/shared/models/userServicesInterface";
-import { Layout, Menu, theme } from "antd";
+import { ConfigProvider, Layout, Menu, theme } from "antd";
 import { Outlet } from "react-router-dom";
 import CustomHeader from "./presentation/CustomHeader/CustomHeader";
 import CustomLogoSidebar from "./presentation/CustomLogoSidebar/CustomLogoSidebar";
@@ -31,49 +31,57 @@ const RootLayout: React.FC = () => {
     <GuardRoute>
       <LoadingHandler isLoading={isLoading} fullscreen={true}>
         <ErrorBoundary error={error as AxiosError} refetch={refetch}>
-          <Layout style={{ height: "100vh", overflow: "hidden" }}>
-            <Sider
-              theme="light"
-              className="border-r-[1px] border-ny-gray-200 h-screen"
-              collapsed={false}
-            >
-              {/*
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#E60B6A",
+              },
+            }}
+          >
+            <Layout style={{ height: "100vh", overflow: "hidden" }}>
+              <Sider
+                theme="light"
+                className="border-r-[1px] border-ny-gray-200 h-screen"
+                collapsed={false}
+              >
+                {/*
 					    INFO: this is logo sidebar
           */}
-              <CustomLogoSidebar />
-              <Menu
-                className=" mt-[16px] px-[16px]"
-                theme="light"
-                defaultSelectedKeys={["/home"]}
-                mode="inline"
-                items={items}
-                onClick={({ key }) => handleClickMenu(key)}
-              />
-            </Sider>
-            <Layout>
-              {/* 
+                <CustomLogoSidebar />
+                <Menu
+                  className=" mt-[16px] px-[16px]"
+                  theme="light"
+                  defaultSelectedKeys={["/home"]}
+                  mode="inline"
+                  items={items}
+                  onClick={({ key }) => handleClickMenu(key)}
+                />
+              </Sider>
+              <Layout>
+                {/* 
             INFO: This is the header/navigation bar
           */}
-              <CustomHeader data={data!} />
-              <Content style={{ margin: "0 16px", overflow: "auto" }}>
-                <div
-                  style={{
-                    padding: 30,
-                    minHeight: "100vh",
-                    borderRadius: borderRadiusLG,
-                    backgroundColor: "white",
-                  }}
+                <CustomHeader data={data!} />
+                <Content style={{ margin: "0 16px", overflow: "auto" }}>
+                  <div
+                    style={{
+                      padding: 30,
+                      minHeight: "100vh",
+                      borderRadius: borderRadiusLG,
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <Outlet />
+                  </div>
+                </Content>
+                <Footer
+                  style={{ textAlign: "center", background: colorBgContainer }}
                 >
-                  <Outlet />
-                </div>
-              </Content>
-              <Footer
-                style={{ textAlign: "center", background: colorBgContainer }}
-              >
-                Nikahyook Dashboard
-              </Footer>
+                  Nikahyook Dashboard
+                </Footer>
+              </Layout>
             </Layout>
-          </Layout>
+          </ConfigProvider>
         </ErrorBoundary>
       </LoadingHandler>
     </GuardRoute>
