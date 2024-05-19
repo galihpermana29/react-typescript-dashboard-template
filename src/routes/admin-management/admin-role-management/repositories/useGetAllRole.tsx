@@ -10,25 +10,27 @@ import { useSearchParams } from "react-router-dom";
 
 const useQueryAdminRoles = (
   form: FormInstance<any>,
-  page: number = 1,
-  limit: number = 5
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const keyword = searchParams.get("keyword");
   const status = searchParams.get("status");
+  const limit = searchParams.get("limit");
+  const page = searchParams.get("page");
 
+  // Default filter state
   const initialFilterState: TGeneralFilter = {
-    limit: limit,
-    page: page,
+    limit: 10,
+    page: 1,
     keyword: "",
     status: "default",
   };
 
   const [queryAdminRoles, setQueryAdminRoles] = useState<TGeneralFilter>({
-    ...initialFilterState,
-    keyword: keyword ? keyword : "",
-    status: status ? status : "default",
+    limit: limit ? parseInt(limit) : initialFilterState.limit,
+    page: page ? parseInt(page) : initialFilterState.page,
+    keyword: keyword ?? initialFilterState.keyword,
+    status: status ?? initialFilterState.status,
   });
 
   const { objectToQueryParams } = useConvertQuery();
@@ -36,18 +38,13 @@ const useQueryAdminRoles = (
   const queries = useDebounce(queryAdminRoles, 1000);
 
   const getAllRoles = async () => {
-    //  TODO: change to limit and page
-    const keywordQuery = {
-      keyword: queryAdminRoles.keyword,
-      status: queryAdminRoles.status,
-    };
-    const queryParams = objectToQueryParams(keywordQuery);
+    const queryParams = objectToQueryParams(queryAdminRoles);
     setSearchParams(queryParams);
-    const { data } = await DashboardRoleAPI.getAllRoles(queryParams);
+    const { data, meta_data } = await DashboardRoleAPI.getAllRoles(queryParams);
 
-    return addIndexToData(data);
+    return { data: addIndexToData(data), meta_data };
   };
-  const { data, error, isLoading, refetch } = useQuery({
+  const { data: result, error, isLoading, refetch } = useQuery({
     queryKey: ["admins", { ...queries }],
     queryFn: getAllRoles,
   });
@@ -74,7 +71,7 @@ const useQueryAdminRoles = (
   };
 
   return {
-    data,
+    result,
     error,
     isLoading,
     refetch,
