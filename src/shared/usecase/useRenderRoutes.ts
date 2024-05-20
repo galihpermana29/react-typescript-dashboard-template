@@ -11,6 +11,7 @@ function generateRoutesChild() {
 	const userType: actionType | null = JSON.parse(
 		localStorage.getItem('type_user')!
 	) as actionType;
+	if (!userType) window.location.reload();
 	const whichData = userType === 'admin' ? staffRoutes : vendorRoutes;
 
 	const renderedRoutes = mappingRoutes(whichData);
