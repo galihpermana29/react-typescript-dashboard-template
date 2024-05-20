@@ -28,7 +28,7 @@ const AdminUserManagementContainer = () => {
   const { openModal, closeModal, modalState } = useModalReducer(formModal);
 
   const {
-    data,
+    result,
     roles,
     error,
     isLoading: loadingGetAll,
@@ -37,7 +37,7 @@ const AdminUserManagementContainer = () => {
     refetch,
     handleFilter,
     clearFilter,
-  } = useQueryAdmins(5, 1, form);
+  } = useQueryAdmins(form);
 
   const { mutate: mutateCreate } = useMutateCreateAdmins(closeModal, refetch);
 
@@ -213,10 +213,9 @@ const AdminUserManagementContainer = () => {
               />
             }
             columns={columns}
-            data={data}
+            data={result ? result.data : undefined}
             loading={loadingGetAll || loadingGetDetail}
-            // metadata={data ? data.metadata : undefined}
-            metadata={undefined}
+            metadata={result ? result.meta_data : undefined}
             onPaginationChanges={setQueryAdmins}
           />
         </>

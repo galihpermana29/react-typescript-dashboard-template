@@ -1,3 +1,5 @@
+import type { Metadata } from "./generalInterfaces";
+
 // Login
 export interface ILoginPayloadRoot {
 	email: string;
@@ -41,6 +43,7 @@ export interface IDetailUserResponseRoot {
 // Response
 export interface IAllUserResponseRoot {
 	data: IDetailUserData[];
+	meta_data: Metadata;
 }
 
 // Create user

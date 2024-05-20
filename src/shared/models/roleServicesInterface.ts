@@ -1,5 +1,7 @@
 // Get all roles
 
+import type { Metadata } from "./generalInterfaces";
+
 export interface IRolePermission {
   feature_permission: string;
   feature_access: string[];
@@ -19,7 +21,9 @@ export interface IAllRolesData {
 
 export interface IAllRolesResponseRoot {
   data: IAllRolesData[];
+  meta_data: Metadata;
 }
+
 export interface IDetailRoleResponseRoot {
   data: IAllRolesData;
 }

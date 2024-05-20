@@ -2,6 +2,7 @@ import { Metadata } from '@/shared/models/generalInterfaces';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { ReactNode } from 'react';
+import DashboardTableFooter from './DashboardTableFooter';
 
 interface IDashboardTable {
 	columns: ColumnsType<any>;
@@ -29,22 +30,25 @@ const DashboardTable = <T extends object>({
 	loading,
 	filterComponents,
 }: DashboardTableProps<T>) => {
+	const paginationProps = {
+		total: metadata ? metadata.total_items : 10,
+		pageSize: metadata ? metadata.limit : 10,
+		onChange(page) {
+			onPaginationChanges((state) => ({ ...state, page }));
+		},
+		current: metadata ? metadata.current_page : 1,
+	}
+
 	return (
 		<div>
 			<div className="mb-[20px]">{filterComponents}</div>
-			<div>
+		<div>
 				<Table
 					loading={loading}
 					columns={columns}
 					dataSource={data}
-					pagination={{
-						total: metadata ? metadata.total_items : 10,
-						pageSize: metadata ? metadata.limit : 10,
-						onChange(page) {
-							onPaginationChanges((state) => ({ ...state, page }));
-						},
-						current: metadata ? metadata.current_page : 1,
-					}}
+					pagination={false}
+					footer={() => <DashboardTableFooter paginationProps={paginationProps} metadata={metadata} />}
 				/>
 			</div>
 		</div>

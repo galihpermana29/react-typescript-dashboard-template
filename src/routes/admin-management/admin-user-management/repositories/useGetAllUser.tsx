@@ -10,26 +10,30 @@ import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
 
 const useQueryAdmins = (
-  limit: number = 5,
-  page: number = 1,
   form: FormInstance<any>
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const keyword = searchParams.get("keyword");
   const status = searchParams.get("status");
+  const limit = searchParams.get("limit");
+  const page = searchParams.get("page");
 
+  // Default filter state
   const initialFilterState: TGeneralFilter = {
-    limit: limit,
-    page: page,
+    limit: 10,
+    page: 1,
     keyword: "",
     status: "default",
   };
 
+  // Change filter state based on searchParams
+  // use default filter state if its searchParams' key doesn't exist
   const [queryAdmins, setQueryAdmins] = useState<TGeneralFilter>({
-    ...initialFilterState,
-    keyword: keyword ? keyword : "",
-    status: status ? status : "default",
+    limit: limit ? parseInt(limit) : initialFilterState.limit,
+    page: page ? parseInt(page) : initialFilterState.page,
+    keyword: keyword ?? initialFilterState.keyword,
+    status: status ?? initialFilterState.status,
   });
 
   const { objectToQueryParams } = useConvertQuery();
@@ -37,16 +41,11 @@ const useQueryAdmins = (
   const queries = useDebounce(queryAdmins, 1000);
 
   const getAdmins = async () => {
-    //  TODO: change to limit and page
-    const keywordQuery = {
-      keyword: queryAdmins.keyword,
-      status: queryAdmins.status,
-    };
-    const queryParams = objectToQueryParams(keywordQuery);
+    const queryParams = objectToQueryParams(queryAdmins);
     setSearchParams(queryParams);
-    const { data } = await DashboardUserAPI.getAllAdminUser(queryParams);
+    const { data, meta_data } = await DashboardUserAPI.getAllAdminUser(queryParams);
 
-    return addIndexToData(data);
+    return { data: addIndexToData(data), meta_data };
   };
 
   const getRoles = async () => {
@@ -59,7 +58,7 @@ const useQueryAdmins = (
     queryFn: getRoles,
   });
 
-  const { data, error, isLoading, refetch } = useQuery({
+  const { data: result, error, isLoading, refetch } = useQuery({
     queryKey: ["admins", { ...queries }],
     queryFn: getAdmins,
   });
@@ -86,7 +85,7 @@ const useQueryAdmins = (
   };
 
   return {
-    data,
+    result,
     roles,
     error,
     isLoading,

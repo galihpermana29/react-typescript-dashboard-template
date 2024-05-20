@@ -25,7 +25,7 @@ export const AdminRoleManagementContainer = () => {
   const { openModal, closeModal, modalState } = useModalReducer(formModal);
 
   const {
-    data,
+    result,
     error,
     isLoading: loadingGetAll,
     setQueryAdminRoles,
@@ -141,9 +141,10 @@ export const AdminRoleManagementContainer = () => {
           />
         }
         columns={columns}
-        data={data}
+        data={result?.data}
         loading={loadingGetAll}
         onPaginationChanges={setQueryAdminRoles}
+        metadata={result?.meta_data}
       />
     </ErrorBoundary>
   );
