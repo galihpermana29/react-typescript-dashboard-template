@@ -1,4 +1,4 @@
-import type { Metadata } from "./generalInterfaces";
+import type { Metadata } from './generalInterfaces';
 
 // Login
 export interface ILoginPayloadRoot {
@@ -10,6 +10,8 @@ export interface ILoginData {
 	user_id: string;
 	email: string;
 	token: string;
+	permissions: any[];
+	type: string;
 }
 
 // Response
@@ -80,12 +82,12 @@ export interface IUpdateUserResponseRoot {
 }
 
 export interface IUpdatePasswordInputRoot {
-	old_password: string
-	new_password: string
+	old_password: string;
+	new_password: string;
 }
 
 export interface IUpdatePasswordPayloadRoot extends IUpdatePasswordInputRoot {
-	user_id: string
+	user_id: string;
 }
 
 export interface IUpdatePasswordResponseRoot {

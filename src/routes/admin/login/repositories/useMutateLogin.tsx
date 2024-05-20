@@ -23,9 +23,12 @@ const useMutateLogin = () => {
 		mutationFn: (payload: ILoginPayloadRoot) => login(payload),
 		onError: handleError,
 		onSuccess: (response) => {
-			const { token, user_id, email } = response.data;
+			const { token, user_id, email, permissions, type } = response.data;
 			localStorage.setItem('token', JSON.stringify(token));
-			localStorage.setItem('admin', JSON.stringify({ user_id, email }));
+			localStorage.setItem(
+				'admin',
+				JSON.stringify({ user_id, email, permissions, type })
+			);
 			navigate('/home');
 			window.location.reload();
 		},
