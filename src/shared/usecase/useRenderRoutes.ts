@@ -1,13 +1,19 @@
-import { staffRoutes } from '../view/container/general-layout/model/routesData';
+import {
+	staffRoutes,
+	vendorRoutes,
+} from '../view/container/general-layout/model/routesData';
+import { actionType } from '../view/container/general-layout/usecase/useGenerateItems';
 import useMapRoutes from './useMapRoutes';
 
 function generateRoutesChild() {
 	const { mappingRoutes } = useMapRoutes();
 
-	// TODO: roles switcher if we want render different type of user/roles
-	const whichData = staffRoutes;
-	const renderedRoutes = mappingRoutes(whichData);
+	const userType: actionType | null = JSON.parse(
+		localStorage.getItem('type_user')!
+	) as actionType;
+	const whichData = userType === 'admin' ? staffRoutes : vendorRoutes;
 
+	const renderedRoutes = mappingRoutes(whichData);
 	return renderedRoutes;
 }
 

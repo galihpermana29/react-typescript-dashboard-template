@@ -79,8 +79,8 @@ const useGenerateColumnAdminRole = (
 
       render: () => (
         <div className="grid grid-rows-3 items-stretch h-max">
-          {permissionList.map(({ label }) => {
-            return <div>{label}</div>;
+          {permissionList?.map(({ label }, idx) => {
+            return <div key={idx}>{label}</div>;
           })}
         </div>
       ),
@@ -91,20 +91,20 @@ const useGenerateColumnAdminRole = (
       key: "feature_access",
       render: (permissions: IRolePermission[]) => (
         <div className="flex flex-col gap-2">
-          {permissionList.map(({value}) => {
+          {permissionList?.map(({value}, idx) => {
 
             let index = -1
 
-            for (let i = 0; i < permissions.length; i++) {
+            for (let i = 0; i < permissions?.length; i++) {
                 if (permissions[i]?.feature_permission.includes(value)) {
                     index = i
                 }
             }
 
             return (
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2" key={idx}>
                   <Checkbox
-                    checked={permissions[index]?.feature_access.includes('create') ?? false}
+                    checked={permissions?.[index]?.feature_access.includes('create') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
@@ -112,7 +112,7 @@ const useGenerateColumnAdminRole = (
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={permissions[index]?.feature_access.includes('view') ?? false}
+                    checked={permissions?.[index]?.feature_access.includes('view') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
@@ -120,7 +120,7 @@ const useGenerateColumnAdminRole = (
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={permissions[index]?.feature_access.includes('update') ?? false}
+                    checked={permissions?.[index]?.feature_access.includes('update') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">
@@ -128,7 +128,7 @@ const useGenerateColumnAdminRole = (
                     </span>
                   </Checkbox>
                   <Checkbox
-                    checked={permissions[index]?.feature_access.includes('delete') ?? false}
+                    checked={permissions?.[index]?.feature_access.includes('delete') ?? false}
                     className="cursor-default"
                   >
                     <span className="text-black">

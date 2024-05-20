@@ -2,26 +2,31 @@ import { ICreateUserPayloadRoot } from '@/shared/models/userServicesInterface';
 import { DashboardUserAPI } from '@/shared/repositories/userServices';
 import useErrorAxios from '@/shared/usecase/useErrorAxios';
 import useSuccessAxios from '@/shared/usecase/useSuccessAxios';
+import useUploadImage from '@/shared/usecase/useUploadImage';
+import { FormInstance } from 'antd';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useMutation } from 'react-query';
 
 const useMutateCreateAdmins = (
+	form: FormInstance<any>,
 	closeModal?: () => void,
 	refetch?: () => void
 ) => {
 	const { generateErrorMsg, showPopError } = useErrorAxios();
 	const { showSuccessMessage } = useSuccessAxios();
+	const { mutate: mutateImage, resultImage } = useUploadImage();
 
 	const createAdmins = async (payload: ICreateUserPayloadRoot) => {
-		// TODO: Change profile image uri once the api ready
+		// TODO: integrate and test with error state while upload the image
+		// TODO: modal should still be opened while error
+		mutateImage({ form, fieldName: 'profile_image_uri' });
 		const newPayload: ICreateUserPayloadRoot = {
 			...payload,
-			profile_image_uri: '',
+			profile_image_uri: resultImage?.data as string,
 			type: 'admin',
 			date_of_birth: dayjs(payload.date_of_birth).format('YYYY-MM-DD'),
 		};
-
 		const data = await DashboardUserAPI.createUser(newPayload);
 		return data;
 	};

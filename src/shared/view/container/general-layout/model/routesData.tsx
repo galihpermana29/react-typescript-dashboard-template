@@ -1,12 +1,43 @@
 import adminManagIconGray from "@/assets/icon/admin-manag-icon-gray.svg";
 import dashboardIconGray from "@/assets/icon/dashboard-icon-gray.svg";
-import AdminUserManagementContainer from "@/routes/admin-management/admin-user-management/AdminUserManagement";
-import { VendorContentContainer } from "@/routes/vendor-management/vendor-content/VendorContent";
-import { VendorUserManagementContainer } from "@/routes/vendor-management/vendor-user-management/VendorUserManagement";
-import DashboardContainer from "../../../../../routes/dashboard/Dashboard";
+import AdminUserManagementContainer from "@/routes/admin/admin-management/admin-user-management/AdminUserManagement";
+import { VendorContentContainer } from "@/routes/admin/vendor-management/vendor-content/VendorContent";
+import { VendorUserManagementContainer } from "@/routes/admin/vendor-management/vendor-user-management/VendorUserManagement";
+import DashboardContainer from "../../../../../routes/admin/dashboard/Dashboard";
 import { ItemsDataI } from "./types";
-import { AdminRoleManagementContainer } from "@/routes/admin-management/admin-role-management/AdminRoleManagement";
+import { AdminRoleManagementContainer } from "@/routes/admin/admin-management/admin-role-management/AdminRoleManagement";
+import VendorDashboardContainer from "@/routes/vendor/dashboard/VendorDashboard";
 
+
+
+export const vendorRoutes: ItemsDataI[] = [
+  {
+    label: (
+      <div className="text-caption-1 font-[400] text-ny-gray-300">
+        Dashboard
+      </div>
+    ),
+    key: "/home",
+    path: "home",
+    children: [],
+    icon: <img src={dashboardIconGray} alt="icon" />,
+    components: <VendorDashboardContainer />,
+    show: true,
+  },
+  {
+    label: (
+      <div className="text-caption-1 font-[400] text-ny-gray-300">
+        Product
+      </div>
+    ),
+    key: "/vendor-product",
+    path: "vendor-product",
+    children: [],
+    icon: <img src={dashboardIconGray} alt="icon" />,
+    components: <VendorDashboardContainer />,
+    show: true,
+  },
+]
 
 export const staffRoutes: ItemsDataI[] = [
   {

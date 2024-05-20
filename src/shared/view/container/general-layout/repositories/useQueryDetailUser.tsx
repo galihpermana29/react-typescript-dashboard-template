@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 const useQueryDetailUser = (id: string) => {
 	const getlUserById = async () => {
 		const { data } = await DashboardUserAPI.getUserById(id);
+    localStorage.setItem('type_user', JSON.stringify(data.type))
 		return data;
 	};
 

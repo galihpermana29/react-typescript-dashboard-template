@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { MenuItem } from '../model/types';
-import { staffRoutes } from '../model/routesData';
+import { staffRoutes, vendorRoutes } from '../model/routesData';
 import { useNavigate } from 'react-router-dom';
 
-export type actionType = 'manage' | 'staff';
+export type actionType = 'vendor' | 'admin';
 
-const UseGenerateItems = () => {
+const UseGenerateItems = (type:actionType) => {
 	const navigate = useNavigate();
 
-	const whichData = staffRoutes;
+	const whichData = type === 'vendor'? vendorRoutes: staffRoutes;
 
 	function getItem(
 		label: React.ReactNode,

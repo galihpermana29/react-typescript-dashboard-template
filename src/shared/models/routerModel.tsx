@@ -2,11 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../view/container/general-layout/view/RootLayout';
 import NotFound from '../view/container/not-found/NotFound';
 import generateRoutesChild from '../usecase/useRenderRoutes';
-import LoginContainer from '@/routes/login/Login';
-
-/**
- * INFO: This is where routes and components belongs
- */
+import LoginContainer from '@/routes/admin/login/Login';
 
 export const router = createBrowserRouter([
 	{

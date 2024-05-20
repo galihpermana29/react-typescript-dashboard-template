@@ -5,20 +5,24 @@ import { useState } from 'react';
 import docIcon from '@/assets/icon/document-upload.png';
 
 interface DraggerUploadI {
-	data?: any;
+	profileImageURL?: string;
 	formItemName: string;
 	form: FormInstance<any>;
 }
 
-const DraggerUpload = ({ data, form, formItemName }: DraggerUploadI) => {
+const DraggerUpload = ({
+	profileImageURL,
+	form,
+	formItemName,
+}: DraggerUploadI) => {
 	const [fileList, setFileList] = useState<UploadFile[]>(
-		data
+		profileImageURL
 			? [
 					{
 						uid: '-1',
 						name: 'image.png',
 						status: 'done',
-						url: data.photo,
+						url: profileImageURL,
 					},
 			  ]
 			: []
@@ -43,7 +47,6 @@ const DraggerUpload = ({ data, form, formItemName }: DraggerUploadI) => {
 				beforeUpload={async (file) => {
 					const value = await form.getFieldsValue();
 					const newValue = { ...value, [formItemName]: file };
-
 					form.setFieldValue(formItemName, newValue);
 					return false;
 				}}
