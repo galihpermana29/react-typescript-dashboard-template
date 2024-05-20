@@ -48,7 +48,7 @@ const DashboardTable = <T extends object>({
 					columns={columns}
 					dataSource={data}
 					pagination={false}
-					footer={() => <DashboardTableFooter paginationProps={paginationProps} metadata={undefined} />}
+					footer={() => <DashboardTableFooter paginationProps={paginationProps} metadata={metadata} />}
 				/>
 			</div>
 		</div>
