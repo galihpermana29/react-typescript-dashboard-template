@@ -1,7 +1,13 @@
 import type { Metadata } from "@/shared/models/generalInterfaces"
 import { Pagination, Row, type PaginationProps } from "antd";
 
-export default function DashboardTableFooter({ metadata, paginationProps }: { metadata: Metadata, paginationProps: PaginationProps }) {
+export default function DashboardTableFooter({ metadata, paginationProps }: { metadata: Metadata | undefined, paginationProps: PaginationProps }) {
+    if (!metadata) return (
+        <Row justify="end">
+            <Pagination {...paginationProps} />
+        </Row>
+    );
+
     const { current_page, limit, total_items } = metadata;
 
     return (
