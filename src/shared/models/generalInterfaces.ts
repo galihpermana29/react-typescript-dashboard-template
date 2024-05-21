@@ -12,6 +12,9 @@ export type TGeneralFilter = {
 	page: number;
 	keyword?: string;
 	status?: string;
+	tag?: string[]
+	max_price?: string;
+	min_price?: string;
 };
 
 export type TGeneralSelectOptions = {

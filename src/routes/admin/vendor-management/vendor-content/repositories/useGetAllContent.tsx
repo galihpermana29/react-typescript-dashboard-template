@@ -17,18 +17,27 @@ const useQueryVendorContent = (
 
   const keyword = searchParams.get("keyword");
   const status = searchParams.get("status");
+  const tags = searchParams.getAll("tag").filter(tag => tag !== "");
+  const maxPrice = searchParams.get("max_price");
+  const minPrice = searchParams.get("min_price");
 
   const initialFilterState: TGeneralFilter = {
     limit: limit,
     page: page,
     keyword: "",
+    tag: [],
     status: "default",
+    max_price: "",
+    min_price: "",
   };
 
   const [queryVendorContent, setQueryVendorContent] = useState<TGeneralFilter>({
     ...initialFilterState,
     keyword: keyword ? keyword : "",
     status: status ? status : "default",
+    tag: tags ? tags : [""],
+    max_price: maxPrice ? maxPrice : "",
+    min_price: minPrice ? minPrice : "",
   });
 
   const { objectToQueryParams } = useConvertQuery();
@@ -36,10 +45,7 @@ const useQueryVendorContent = (
   const queries = useDebounce(queryVendorContent, 1000);
 
   const getVendorContent = async () => {
-    const keywordQuery = {
-      keyword: queryVendorContent.keyword,
-    };
-    const queryParams = objectToQueryParams(keywordQuery);
+    const queryParams = objectToQueryParams(queryVendorContent);
     setSearchParams(queryParams);
     const { data } = await DashboardProductAPI.getAllProducts(queryParams);
 
