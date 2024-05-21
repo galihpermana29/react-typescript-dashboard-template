@@ -9,29 +9,104 @@ import { AxiosError } from 'axios';
 import { UseMutateFunction } from 'react-query';
 import { TModalType } from './useModalReducer';
 
+interface Option {
+	value: string | number;
+	label: string;
+	children?: Option[];
+}
+
 const formatLabelSubject = (permission: string) => {
-	switch (permission) {
-		case 'admin management':
-			return 'Admin User';
-		case 'vendor management':
-			return 'Vendor';
-		case 'vendor content':
-			return 'Vendor Content';
-	}
+	return permission.split(' ')[0] + ' ' + permission.split(' ')[1];
 };
 
-const permissionList = [
+export const options: Option[] = [
 	{
 		label: 'Admin User Management',
-		value: 'admin management',
+		value: 'admin user management',
+		children: [
+			{
+				label: 'Create Admin User',
+				value: 'create',
+			},
+			{
+				label: 'View Admin User',
+				value: 'view',
+			},
+			{
+				label: 'Update Admin User',
+				value: 'update',
+			},
+			{
+				label: 'Delete Admin User',
+				value: 'delete',
+			},
+		],
 	},
 	{
-		label: 'Vendor Management',
-		value: 'vendor management',
+		label: 'Admin Role Management',
+		value: 'admin role management',
+		children: [
+			{
+				label: 'Create Admin Role',
+				value: 'create',
+			},
+			{
+				label: 'View Admin Role',
+				value: 'view',
+			},
+			{
+				label: 'Update Admin Role',
+				value: 'update',
+			},
+			{
+				label: 'Delete Admin Role',
+				value: 'delete',
+			},
+		],
+	},
+	{
+		label: 'Vendor User Management',
+		value: 'vendor user management',
+		children: [
+			{
+				label: 'Create Vendor User',
+				value: 'create',
+			},
+			{
+				label: 'View Vendor User',
+				value: 'view',
+			},
+			{
+				label: 'Update Vendor User',
+				value: 'update',
+			},
+			{
+				label: 'Delete Vendor User',
+				value: 'delete',
+			},
+		],
 	},
 	{
 		label: 'Vendor Content',
 		value: 'vendor content',
+		children: [
+			{
+				label: 'Create Vendor Content',
+				value: 'create',
+			},
+			{
+				label: 'View Vendor Content',
+				value: 'view',
+			},
+			{
+				label: 'Update Vendor Content',
+				value: 'update',
+			},
+			{
+				label: 'Delete Vendor Content',
+				value: 'delete',
+			},
+		],
 	},
 ];
 
@@ -67,11 +142,13 @@ const useGenerateColumnAdminRole = (
 				return {
 					children: (
 						<div className="flex flex-col gap-4 bg-transparent divide-y">
-							{permissionList?.map(({ label, value }, idx) => {
+							{options?.map(({ label, value }, idx) => {
 								let index = -1;
 
 								for (let i = 0; i < permissions?.length; i++) {
-									if (permissions[i]?.feature_permission.includes(value)) {
+									if (
+										permissions[i]?.feature_permission.includes(value as string)
+									) {
 										index = i;
 									}
 								}
@@ -89,8 +166,8 @@ const useGenerateColumnAdminRole = (
 													) ?? false
 												}
 												className="cursor-default items-center h-fit">
-												<span className="text-black">
-													Create {formatLabelSubject(value)}
+												<span className="text-black capitalize">
+													Create {formatLabelSubject(value as string)}
 												</span>
 											</Checkbox>
 											<Checkbox
@@ -100,8 +177,8 @@ const useGenerateColumnAdminRole = (
 													) ?? false
 												}
 												className="cursor-default">
-												<span className="text-black">
-													View {formatLabelSubject(value)}
+												<span className="text-black capitalize">
+													View {formatLabelSubject(value as string)}
 												</span>
 											</Checkbox>
 											<Checkbox
@@ -111,8 +188,8 @@ const useGenerateColumnAdminRole = (
 													) ?? false
 												}
 												className="cursor-default">
-												<span className="text-black">
-													Update {formatLabelSubject(value)}
+												<span className="text-black capitalize">
+													Update {formatLabelSubject(value as string)}
 												</span>
 											</Checkbox>
 											<Checkbox
@@ -122,8 +199,8 @@ const useGenerateColumnAdminRole = (
 													) ?? false
 												}
 												className="cursor-default">
-												<span className="text-black">
-													Delete {formatLabelSubject(value)}
+												<span className="text-black capitalize">
+													Delete {formatLabelSubject(value as string)}
 												</span>
 											</Checkbox>
 										</div>
