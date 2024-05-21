@@ -26,3 +26,7 @@
 		aspect-ratio: 1/1 !important;
 	}
 }
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+    background: none !important;
+}
