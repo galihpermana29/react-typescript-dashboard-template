@@ -111,6 +111,8 @@ export const options: Option[] = [
 ];
 
 const useGenerateColumnAdminRole = (
+	remove: boolean,
+	edit: boolean,
 	onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
 	onChangeStatus?: UseMutateFunction<
 		IUpdateRoleResponseRoot,
@@ -247,6 +249,7 @@ const useGenerateColumnAdminRole = (
 									label: 'Edit',
 									key: '1',
 									onClick: () => onOpenModal!('edit', id),
+									disabled: !edit,
 								},
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
@@ -260,6 +263,7 @@ const useGenerateColumnAdminRole = (
 											id,
 											type: 'delete',
 										}),
+									disabled: !remove,
 								},
 							],
 						}}>
