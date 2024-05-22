@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 export type actionType = 'vendor' | 'admin';
 
-const UseGenerateItems = (type:actionType) => {
+const UseGenerateItems = (type: actionType) => {
 	const navigate = useNavigate();
 
-	const whichData = type === 'vendor'? vendorRoutes: staffRoutes;
+	const whichData = type === 'vendor' ? vendorRoutes : staffRoutes;
 
 	function getItem(
 		label: React.ReactNode,
@@ -40,11 +40,14 @@ const UseGenerateItems = (type:actionType) => {
 
 	const items: MenuItem[] = whichData.map((data) => {
 		const childrens: any = [];
-
-		// if (!data.show) return;
+		if (!data.show) return null;
 
 		if (data.children && data.children.length > 0) {
-			data.children.forEach((child) => childrens.push(child));
+			data.children.forEach((child) => {
+				if (child.show) {
+					childrens.push(child);
+				}
+			});
 			return getItem(data.label, data.key, data.icon, childrens);
 		}
 
