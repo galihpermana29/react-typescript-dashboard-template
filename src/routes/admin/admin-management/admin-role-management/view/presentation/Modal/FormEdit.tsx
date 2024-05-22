@@ -1,89 +1,97 @@
 import {
-  IAllRolesData,
-  ICreateRoleResponseRoot,
-  IUpdateRolePayloadRoot
-} from "@/shared/models/roleServicesInterface";
-import { Cascader, Form, FormInstance, Input } from "antd";
-import { AxiosError } from "axios";
-import { UseMutateFunction } from "react-query";
-import useGenerateModalProps from "../../../usecase/useGenerateModalProps";
+	IAllRolesData,
+	ICreateRoleResponseRoot,
+	IUpdateRolePayloadRoot,
+} from '@/shared/models/roleServicesInterface';
+import { Cascader, Form, FormInstance, Input } from 'antd';
+import { AxiosError } from 'axios';
+import { UseMutateFunction } from 'react-query';
+import useGenerateModalProps from '../../../usecase/useGenerateModalProps';
+import { options } from '../../../usecase/useGenerateColumn';
 
 interface IFormEdit {
-  form: FormInstance;
-  handleMutate: UseMutateFunction<
-    ICreateRoleResponseRoot,
-    AxiosError,
-    {
+	form: FormInstance;
+	handleMutate: UseMutateFunction<
+		ICreateRoleResponseRoot,
+		AxiosError,
+		{
 			payload: IUpdateRolePayloadRoot;
 			id: string;
 			type: 'delete' | 'update';
 		},
-    unknown
-  >;
-  footer: React.ReactNode;
+		unknown
+	>;
+	footer: React.ReactNode;
 	disable: boolean;
 	id?: string;
-  detail: IAllRolesData | undefined
+	detail: IAllRolesData | undefined;
 }
-const FormEdit = ({ form, handleMutate, footer, id, detail}: IFormEdit) => {
-  const {options, transformToPayload, transformToCascaderData} = useGenerateModalProps()
+const FormEdit = ({ form, handleMutate, footer, id, detail }: IFormEdit) => {
+	const { transformToPayload, transformToCascaderData } =
+		useGenerateModalProps();
 
-  const defaultValue = transformToCascaderData(detail)
+	const defaultValue = transformToCascaderData(detail);
 
-  return (
-    <div>
-      <Form form={form} layout="vertical" onFinish={(value) => {
-					handleMutate!({ payload: transformToPayload(value), id: id!, type: 'update' });
+	return (
+		<div>
+			<Form
+				form={form}
+				layout="vertical"
+				onFinish={(value) => {
+					handleMutate!({
+						payload: transformToPayload(value),
+						id: id!,
+						type: 'update',
+					});
 				}}>
-        <div className="flex gap-[20px]">
-          <div className="flex-1">
-            <Form.Item
-              className="my-[8px]"
-              name={"name"}
-              label="Role"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input role name!",
-                },
-              ]}
-            >
-              <Input
-                placeholder="Enter your detail here"
-                className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
-              />
-            </Form.Item>
+				<div className="flex gap-[20px]">
+					<div className="flex-1">
+						<Form.Item
+							className="my-[8px]"
+							name={'name'}
+							label="Role"
+							rules={[
+								{
+									required: true,
+									message: 'Please input role name!',
+								},
+							]}>
+							<Input
+								placeholder="Enter your detail here"
+								className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
+							/>
+						</Form.Item>
 
-            <Form.Item
-              name={'permissions_edit'}
-              label={(
-                <div>
-                  <div className="flex items-center gap-[3px]">
-                    <div className="text-red-400/90 text-lg translate-y-1">*</div>{" "}
-                    Feature Permission
-                  </div>
-                  <p className="text-sm text-ny-gray-400">
-                    Select all permissions you'd like to assign to this role. Feel
-                    free to make multiple selections
-                  </p>
-                </div>
-              )}
-            >
-              <Cascader
-                style={{ width: '100%' }}
-                options={options}
-                multiple
-                maxTagCount="responsive"
-                defaultValue={defaultValue.permissions_edit}
-              />
-            </Form.Item> 
-
-          </div>
-        </div>
-        {footer}
-      </Form>
-    </div>
-  );
+						<Form.Item
+							name={'permissions_edit'}
+							label={
+								<div>
+									<div className="flex items-center gap-[3px]">
+										<div className="text-red-400/90 text-lg translate-y-1">
+											*
+										</div>{' '}
+										Feature Permission
+									</div>
+									<p className="text-sm text-ny-gray-400">
+										Select all permissions you'd like to assign to this role.
+										Feel free to make multiple selections
+									</p>
+								</div>
+							}>
+							<Cascader
+								style={{ width: '100%' }}
+								options={options}
+								multiple
+								maxTagCount="responsive"
+								defaultValue={defaultValue.permissions_edit}
+							/>
+						</Form.Item>
+					</div>
+				</div>
+				{footer}
+			</Form>
+		</div>
+	);
 };
 
 export default FormEdit;

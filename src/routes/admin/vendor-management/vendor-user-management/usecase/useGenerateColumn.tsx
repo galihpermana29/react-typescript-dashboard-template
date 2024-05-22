@@ -9,6 +9,9 @@ import {
 import { AxiosError } from 'axios';
 
 const useGenerateColumnVendorUser = (
+	remove: boolean,
+	edit: boolean,
+	view: boolean,
 	onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
 	onChangeStatus?: UseMutateFunction<
 		IUpdateUserResponseRoot,
@@ -65,6 +68,7 @@ const useGenerateColumnVendorUser = (
 									onClick: () => {
 										onOpenModal!('edit', id);
 									},
+									disabled: !edit,
 								},
 								{
 									label: 'View Detail',
@@ -72,6 +76,7 @@ const useGenerateColumnVendorUser = (
 									onClick: () => {
 										onOpenModal!('detail', id);
 									},
+									disabled: !view,
 								},
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
@@ -84,6 +89,7 @@ const useGenerateColumnVendorUser = (
 											id,
 											type: 'delete',
 										}),
+									disabled: !remove,
 								},
 							],
 						}}>

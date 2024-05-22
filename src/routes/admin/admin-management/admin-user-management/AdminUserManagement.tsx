@@ -21,10 +21,15 @@ import useMutateEditAdmins from './repositories/useUpdateUser';
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
 import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
 import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
+import { useLoaderData } from 'react-router-dom';
+import { ILoaderData } from '@/routes/root';
 
 const AdminUserManagementContainer = () => {
 	const [form] = useForm();
 	const [formModal] = useForm();
+
+	const { permissions } = useLoaderData() as ILoaderData;
+	const { create, view, edit, remove } = permissions;
 
 	const { openModal, closeModal, modalState } = useModalReducer(formModal);
 
@@ -51,7 +56,13 @@ const AdminUserManagementContainer = () => {
 		formModal
 	);
 	const { mutate: mutateEdit } = useMutateEditAdmins(closeModal, refetch);
-	const { columns } = useGenerateColumnAdminUser(openModal, mutateEdit);
+	const { columns } = useGenerateColumnAdminUser(
+		remove,
+		edit,
+		view,
+		openModal,
+		mutateEdit
+	);
 
 	const { mutate: mutateEditPassword } = useMutateEditPassword(
 		closeModal,
@@ -101,6 +112,7 @@ const AdminUserManagementContainer = () => {
 									openModal!('edit', modalState?.id);
 								},
 								type: 'button',
+								disabled: !edit,
 							}}
 						/>
 					}
@@ -186,6 +198,7 @@ const AdminUserManagementContainer = () => {
 								onClearFilter={clearFilter}
 								buttonComponents={
 									<Button
+										disabled={!create}
 										onClick={() => openModal!('create')}
 										className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
 										<img src={addIcon} alt="add-icon" />

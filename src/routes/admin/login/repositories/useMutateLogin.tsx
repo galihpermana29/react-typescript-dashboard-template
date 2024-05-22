@@ -30,7 +30,9 @@ const useMutateLogin = () => {
 				JSON.stringify({ user_id, email, permissions, type })
 			);
 			navigate('/home');
-			window.location.reload();
+			setTimeout(() => {
+				window.location.reload();
+			}, 1000);
 		},
 	});
 	return { mutate, error, isLoading };

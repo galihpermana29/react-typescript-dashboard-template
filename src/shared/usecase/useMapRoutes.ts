@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { ItemsDataI } from '../view/container/general-layout/model/types';
 import { actionType } from '../view/container/general-layout/usecase/useGenerateItems';
+import { PermissionLoader } from '@/routes/root';
 
 const useMapRoutes = () => {
 	const mappingRoutes = (data: ItemsDataI[]) => {
@@ -9,10 +10,18 @@ const useMapRoutes = () => {
 		data.forEach((dx) => {
 			if (dx.children && dx.children?.length > 0) {
 				dx.children.forEach((dy) => {
-					createBrowserRoutes.push({ path: dy.path, element: dy.components });
+					createBrowserRoutes.push({
+						path: dy.path,
+						element: dy.components,
+						loader: () => PermissionLoader(),
+					});
 				});
 			} else {
-				createBrowserRoutes.push({ path: dx.path, element: dx.components });
+				createBrowserRoutes.push({
+					path: dx.path,
+					element: dx.components,
+					loader: () => PermissionLoader(),
+				});
 			}
 		});
 
