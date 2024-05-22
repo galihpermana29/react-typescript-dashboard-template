@@ -3,9 +3,8 @@ import { Button, Divider } from 'antd';
 interface IPageHeader {
 	title: string;
 	onCancel: any;
-	onSave: any;
 }
-const PageHeader = ({ title, onCancel, onSave }: IPageHeader) => {
+const PageHeader = ({ title, onCancel }: IPageHeader) => {
 	return (
 		<>
 			<div className="flex justify-between items-center">
@@ -17,7 +16,7 @@ const PageHeader = ({ title, onCancel, onSave }: IPageHeader) => {
 						Cancel
 					</Button>
 					<Button
-						onClick={onSave}
+						htmlType="submit"
 						className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
 						Save
 					</Button>

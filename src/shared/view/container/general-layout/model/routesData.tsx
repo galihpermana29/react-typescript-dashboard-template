@@ -136,7 +136,7 @@ export const staffRoutes: ItemsDataI[] = [
 					</div>
 				),
 				key: '/vendor-content/edit-product',
-				path: 'vendor-content/edit-product',
+				path: 'vendor-content/edit-product/:id',
 				children: [],
 				icon: <img src={adminManagIconGray} alt="icon" />,
 				components: <VendorContentEditContainer />,

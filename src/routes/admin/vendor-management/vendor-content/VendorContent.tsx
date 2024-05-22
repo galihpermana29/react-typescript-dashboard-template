@@ -33,14 +33,11 @@ export const VendorContentContainer = () => {
 	} = useQueryVendorContent(form);
 
 	const { isLoading: loadingGetDetail } = useQueryVendorContentsDetail(
-		modalState,
+		'11',
 		formModal
 	);
 
-	const { mutate: mutateEdit } = useMutateEditVendorContent(
-		closeModal,
-		refetch
-	);
+	const { mutate: mutateEdit } = useMutateEditVendorContent(refetch);
 
 	const { columns } = useGenerateColumnVendorProduct(navigate, mutateEdit);
 

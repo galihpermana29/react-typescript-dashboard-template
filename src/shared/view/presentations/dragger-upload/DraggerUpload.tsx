@@ -8,12 +8,14 @@ interface DraggerUploadI {
 	profileImageURL?: string;
 	formItemName: string;
 	form: FormInstance<any>;
+	limit?: number;
 }
 
 const DraggerUpload = ({
 	profileImageURL,
 	form,
 	formItemName,
+	limit = 1,
 }: DraggerUploadI) => {
 	const [fileList, setFileList] = useState<UploadFile[]>(
 		profileImageURL
@@ -45,15 +47,16 @@ const DraggerUpload = ({
 			<Upload
 				className="dragger-upload !bg-white"
 				beforeUpload={async (file) => {
-					const value = await form.getFieldsValue();
-					const newValue = { ...value, [formItemName]: file };
-					form.setFieldValue(formItemName, newValue);
+					// const value = await form.getFieldsValue();
+					// console.log(value, 'formmm?');
+					// const newValue = { ...value, [formItemName]: file };
+					form.setFieldValue(formItemName, file);
 					return false;
 				}}
 				listType="picture-card"
 				fileList={fileList}
 				onChange={handleChange}>
-				{fileList.length === 1 ? null : uploadButton}
+				{fileList.length === limit ? null : uploadButton}
 			</Upload>
 			<div className="text-caption-2 text-ny-gray-300 text-center mt-[10px]">
 				Supported: JPEG, JPG, PNG, Max size: 2 MB
