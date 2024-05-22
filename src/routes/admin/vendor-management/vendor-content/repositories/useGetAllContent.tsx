@@ -10,11 +10,11 @@ import { useSearchParams } from "react-router-dom";
 
 const useQueryVendorContent = (
   form: FormInstance<any>,
-  page: number = 1,
-  limit: number = 5
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const limit = searchParams.get("limit");
+  const page = searchParams.get("page");
   const keyword = searchParams.get("keyword");
   const status = searchParams.get("status");
   const tags = searchParams.getAll("tag").filter(tag => tag !== "");
@@ -22,8 +22,8 @@ const useQueryVendorContent = (
   const minPrice = searchParams.get("min_price");
 
   const initialFilterState: TGeneralFilter = {
-    limit: limit,
-    page: page,
+    limit: 10,
+    page: 1,
     keyword: "",
     tag: [],
     status: "default",
@@ -32,7 +32,8 @@ const useQueryVendorContent = (
   };
 
   const [queryVendorContent, setQueryVendorContent] = useState<TGeneralFilter>({
-    ...initialFilterState,
+    limit: limit ? parseInt(limit) : initialFilterState.limit,
+    page: page ? parseInt(page) : initialFilterState.page,
     keyword: keyword ? keyword : "",
     status: status ? status : "default",
     tag: tags ? tags : [""],
@@ -47,12 +48,12 @@ const useQueryVendorContent = (
   const getVendorContent = async () => {
     const queryParams = objectToQueryParams(queryVendorContent);
     setSearchParams(queryParams);
-    const { data } = await DashboardProductAPI.getAllProducts(queryParams);
+    const { data, meta_data } = await DashboardProductAPI.getAllProducts(queryParams);
 
-    return addIndexToData(data);
+    return { data: addIndexToData(data), meta_data };
   };
 
-  const { data, error, isLoading, refetch } = useQuery({
+  const { data: result, error, isLoading, refetch } = useQuery({
     queryKey: ["vendor", { ...queries }],
     queryFn: getVendorContent,
   });
@@ -79,7 +80,7 @@ const useQueryVendorContent = (
   };
 
   return {
-    data,
+    result,
     error,
     isLoading,
     refetch,

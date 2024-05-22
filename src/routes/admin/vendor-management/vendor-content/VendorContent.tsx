@@ -21,7 +21,7 @@ export const VendorContentContainer = () => {
   const { openModal, closeModal, modalState } = useModalReducer();
 
   const {
-    data,
+    result,
     queryVendorContent,
     setQueryVendorContent,
     isLoading,
@@ -119,7 +119,8 @@ export const VendorContentContainer = () => {
         columns={columns}
         onPaginationChanges={setQueryVendorContent}
         loading={isLoading}
-        data={data}
+        data={result?.data}
+        metadata={result?.meta_data}
         filterComponents={
           <DashboardTableFilter
             form={form}

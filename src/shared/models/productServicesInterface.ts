@@ -1,3 +1,4 @@
+import { Metadata } from "./generalInterfaces"
 
 export interface IDetailProductData {
   id: number,
@@ -12,7 +13,8 @@ export interface IDetailProductData {
 }
 
 export interface IAllProductResponseRoot {
-  data: IDetailProductData[]
+  data: IDetailProductData[];
+  meta_data: Metadata;
 }
 
 export interface ICreateProductPayloadRoot {
