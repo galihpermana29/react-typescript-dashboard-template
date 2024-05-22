@@ -8,6 +8,7 @@ import { ItemsDataI } from './types';
 import { AdminRoleManagementContainer } from '@/routes/admin/admin-management/admin-role-management/AdminRoleManagement';
 import VendorDashboardContainer from '@/routes/vendor/dashboard/VendorDashboard';
 import VendorContentEditContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Edit/VendorContentEdit';
+import VendorContentDetailContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Detail/VendorContentDetail';
 
 export const vendorRoutes: ItemsDataI[] = [
 	{
@@ -140,6 +141,19 @@ export const staffRoutes: ItemsDataI[] = [
 				children: [],
 				icon: <img src={adminManagIconGray} alt="icon" />,
 				components: <VendorContentEditContainer />,
+				show: false,
+			},
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						Vendor Detail
+					</div>
+				),
+				key: '/vendor-content/detail-product',
+				path: 'vendor-content/detail-product/:id',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <VendorContentDetailContainer />,
 				show: false,
 			},
 		],

@@ -7,7 +7,6 @@ const useQueryVendorContentsDetail = (id: string, form?: FormInstance<any>) => {
 		const { data } = await DashboardProductAPI.getProductDetail(id as string);
 		form!.setFieldsValue({
 			...data,
-			images: data.images[0],
 		});
 		return data;
 	};
@@ -16,6 +15,8 @@ const useQueryVendorContentsDetail = (id: string, form?: FormInstance<any>) => {
 		queryKey: ['vendor-content-detail', id],
 		queryFn: getDetail,
 		enabled: id ? true : false,
+		retryOnMount: false,
+		refetchOnWindowFocus: false,
 	});
 
 	return {

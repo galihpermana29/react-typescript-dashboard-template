@@ -36,8 +36,8 @@ export async function PermissionLoader(): Promise<ILoaderData> {
 	const permissions: IPermissionsData = parsedPermissions
 		? {
 				create: parsedPermissions.feature_access.includes('create'),
-				edit: parsedPermissions.feature_access.includes('edit'),
-				remove: parsedPermissions.feature_access.includes('remove'),
+				edit: parsedPermissions.feature_access.includes('update'),
+				remove: parsedPermissions.feature_access.includes('delete'),
 				view: parsedPermissions.feature_access.includes('view'),
 		  }
 		: {

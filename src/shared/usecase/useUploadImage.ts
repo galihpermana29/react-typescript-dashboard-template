@@ -1,4 +1,3 @@
-import { FormInstance } from 'antd';
 import { useMutation } from 'react-query';
 import { DashboardUploadAPI } from '../repositories/uploadDocumentService';
 import useErrorAxios from './useErrorAxios';
@@ -9,16 +8,10 @@ const useUploadImage = () => {
 	const { generateErrorMsg, showPopError } = useErrorAxios();
 	const { showSuccessMessage } = useSuccessAxios();
 
-	const uploadImage = async ({
-		form,
-		fieldName,
-	}: {
-		form: FormInstance<any>;
-		fieldName: string;
-	}) => {
+	const uploadImage = async (file: File) => {
 		const formData = new FormData();
-		formData.append('image', form.getFieldValue(fieldName)[fieldName]);
-		const data = await DashboardUploadAPI.uploadDocs(formData);
+		formData.append('image', file);
+		const { data } = await DashboardUploadAPI.uploadDocs(formData);
 		return data;
 	};
 
@@ -27,21 +20,15 @@ const useUploadImage = () => {
 		showPopError(msg);
 	};
 
-	const { mutate, error, isLoading, data } = useMutation({
-		mutationFn: ({
-			form,
-			fieldName,
-		}: {
-			form: FormInstance<any>;
-			fieldName: string;
-		}) => uploadImage({ form, fieldName }),
+	const { mutateAsync, error, isLoading, data } = useMutation({
+		mutationFn: (file: File) => uploadImage(file),
 		onError: handleError,
 		onSuccess: () => {
 			showSuccessMessage('Image has successfully uploaded!');
 		},
 	});
 
-	return { mutate, error, isLoading, resultImage: data };
+	return { mutate: mutateAsync, error, isLoading, resultImage: data };
 };
 
 export default useUploadImage;
