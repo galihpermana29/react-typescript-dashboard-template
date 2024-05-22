@@ -1,7 +1,23 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Row, Space, TableProps, Tag } from "antd";
+import { TModalType } from "./useModalReducer";
+import { UseMutateFunction } from "react-query";
+import { AxiosError } from "axios";
+import { IUpdateProductPayloadRoot, IUpdateProductResponseRoot } from "@/shared/models/productServicesInterface";
 
-const useGenerateColumnVendorProduct = () => {
+const useGenerateColumnVendorProduct = (
+  onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
+  onChangeStatus?: UseMutateFunction<
+    IUpdateProductResponseRoot,
+    AxiosError,
+    {
+      payload: IUpdateProductPayloadRoot;
+      id: string;
+      type: 'update' | 'delete';
+    },
+    unknown
+  >
+) => {
   const columns: TableProps<any>["columns"] = [
     {
       title: "Id",
@@ -47,31 +63,43 @@ const useGenerateColumnVendorProduct = () => {
       title: "Actions",
       dataIndex: "",
       key: "actions",
-      render: ({status}) => (
+      render: ({ id, status }) => (
         <Row gutter={[12, 12]}>
-					<Dropdown
-						menu={{
-							items: [
-								{
-									label: 'View Detail',
-									key: '1',
-									onClick: () => {},
-								},
-								{
-									label: status === 'active' ? 'Deactivate' : 'Activate',
-									key: '2',
-									onClick: () => {}
-								},
-							],
-						}}>
-						<Button className="bg-ny-primary-100 text-caption-1 text-ny-primary-500 hover:!bg-ny-primary-100 hover:!text-ny-primary-500">
-							<Space>
-								Actions
-								<DownOutlined />
-							</Space>
-						</Button>
-					</Dropdown>
-				</Row>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  label: 'Edit',
+                  key: '1',
+                  onClick: () => onOpenModal!("edit", id),
+                },
+                {
+                  label: 'View Detail',
+                  key: '2',
+                  onClick: () => onOpenModal!("detail", id),
+                },
+                {
+                  label: status === 'active' ? 'Deactivate' : 'Activate',
+                  key: '3',
+                  onClick: () =>
+                    onChangeStatus!({
+                      payload: {
+                        status: status === "active" ? "inactive" : "active",
+                      },
+                      id,
+                      type: "delete",
+                    }),
+                },
+              ],
+            }}>
+            <Button className="bg-ny-primary-100 text-caption-1 text-ny-primary-500 hover:!bg-ny-primary-100 hover:!text-ny-primary-500">
+              <Space>
+                Actions
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        </Row>
       ),
     },
   ];

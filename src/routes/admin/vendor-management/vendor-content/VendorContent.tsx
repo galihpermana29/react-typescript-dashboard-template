@@ -1,17 +1,24 @@
 import DashboardTable from "@/shared/view/presentations/dashboard-table/DashboardTable";
 import DashboardTableFilter from "@/shared/view/presentations/dashboard-table/DashboardTableFilter";
 import TableHeaderTitle from "@/shared/view/presentations/table-header-title/TableHeaderTitle";
-import { Form, Input, Select } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import ErrorBoundary from "antd/es/alert/ErrorBoundary";
 import { useForm } from "antd/es/form/Form";
 import PriceIcon from "@/assets/icon/price.png";
 import useQueryVendorContent from "./repositories/useGetAllContent";
 import useGenerateColumnVendorProduct from "./usecase/useGenerateColumn";
+import useModalReducer from "./usecase/useModalReducer";
+import useQueryVendorContentsDetail from "./repositories/useGetDetailContent";
+import LoadingHandler from "@/shared/view/container/loading/Loading";
+import FormEdit from "./view/presentations/Modal/FormEdit";
+import FormFooter from "./view/presentations/Modal/FormFooter";
+import useMutateEditVendorContent from "./repositories/useUpdateContent";
 
 export const VendorContentContainer = () => {
   const [form] = useForm();
-
-  const { columns } = useGenerateColumnVendorProduct();
+  const [formModal] = useForm();
+  
+  const { openModal, closeModal, modalState } = useModalReducer();
 
   const {
     data,
@@ -20,12 +27,93 @@ export const VendorContentContainer = () => {
     isLoading,
     handleFilter,
     clearFilter,
+    refetch
   } = useQueryVendorContent(form);
+
+  const { isLoading: loadingGetDetail } = useQueryVendorContentsDetail(
+    modalState,
+    formModal
+  );
+
+  const { mutate: mutateEdit } = useMutateEditVendorContent(closeModal, refetch)
+  
+  const { columns } = useGenerateColumnVendorProduct(openModal, mutateEdit);
+
+  const modalType = {
+    detail: (
+      <LoadingHandler
+        isLoading={loadingGetDetail}
+        fullscreen={false}
+        classname="h-[400px]"
+      >
+        <FormEdit
+          id={modalState?.id}
+          form={formModal}
+          handleMutate={undefined}
+          disable={true}
+          footer={
+            <FormFooter
+              primaryText="Edit"
+              primaryProps={{
+                onclick: (e) => {
+                  e.preventDefault();
+                  openModal!('edit', modalState?.id);
+                },
+                type: 'button'
+              }}
+              secondaryText="Cancel"
+              secondaryProps={{
+                onclick: () => closeModal!()
+              }}
+            />
+          }
+        />
+      </LoadingHandler>
+    ),
+    edit: (
+      <LoadingHandler
+        isLoading={loadingGetDetail}
+        fullscreen={false}
+        classname="h-[400px]"
+      >
+        <FormEdit
+          id={modalState?.id}
+          handleMutate={mutateEdit}
+          form={formModal}
+          disable={false}
+          footer={
+            <FormFooter
+              secondaryText="Cancel"
+              secondaryProps={{
+                onClick: () => closeModal!(),
+              }}
+              primaryText="Save"
+              primaryProps={{
+                type: 'submit',
+              }}
+            />
+          }
+        />
+      </LoadingHandler>
+    )
+  }
 
 
   return (
     <ErrorBoundary>
       <TableHeaderTitle title="Vendor Content" />
+      <Modal
+        title={
+          <div className="capitalize">
+            {`${modalState?.type} Content`}
+          </div>
+        }
+        open={modalState?.isOpen}
+        footer={null}
+        onCancel={closeModal}
+      >
+        {modalType[modalState!.type]}
+      </Modal>
 
       <DashboardTable<any>
         columns={columns}
