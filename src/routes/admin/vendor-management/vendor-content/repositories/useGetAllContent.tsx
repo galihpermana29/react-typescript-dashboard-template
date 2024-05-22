@@ -10,25 +10,35 @@ import { useSearchParams } from "react-router-dom";
 
 const useQueryVendorContent = (
   form: FormInstance<any>,
-  page: number = 1,
-  limit: number = 5
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const limit = searchParams.get("limit");
+  const page = searchParams.get("page");
   const keyword = searchParams.get("keyword");
   const status = searchParams.get("status");
+  const tags = searchParams.getAll("tag").filter(tag => tag !== "");
+  const maxPrice = searchParams.get("max_price");
+  const minPrice = searchParams.get("min_price");
 
   const initialFilterState: TGeneralFilter = {
-    limit: limit,
-    page: page,
+    limit: 10,
+    page: 1,
     keyword: "",
+    tag: [],
     status: "default",
+    max_price: "",
+    min_price: "",
   };
 
   const [queryVendorContent, setQueryVendorContent] = useState<TGeneralFilter>({
-    ...initialFilterState,
+    limit: limit ? parseInt(limit) : initialFilterState.limit,
+    page: page ? parseInt(page) : initialFilterState.page,
     keyword: keyword ? keyword : "",
     status: status ? status : "default",
+    tag: tags ? tags : [""],
+    max_price: maxPrice ? maxPrice : "",
+    min_price: minPrice ? minPrice : "",
   });
 
   const { objectToQueryParams } = useConvertQuery();
@@ -36,17 +46,14 @@ const useQueryVendorContent = (
   const queries = useDebounce(queryVendorContent, 1000);
 
   const getVendorContent = async () => {
-    const keywordQuery = {
-      keyword: queryVendorContent.keyword,
-    };
-    const queryParams = objectToQueryParams(keywordQuery);
+    const queryParams = objectToQueryParams(queryVendorContent);
     setSearchParams(queryParams);
-    const { data } = await DashboardProductAPI.getAllProducts(queryParams);
+    const { data, meta_data } = await DashboardProductAPI.getAllProducts(queryParams);
 
-    return addIndexToData(data);
+    return { data: addIndexToData(data), meta_data };
   };
 
-  const { data, error, isLoading, refetch } = useQuery({
+  const { data: result, error, isLoading, refetch } = useQuery({
     queryKey: ["vendor", { ...queries }],
     queryFn: getVendorContent,
   });
@@ -73,7 +80,7 @@ const useQueryVendorContent = (
   };
 
   return {
-    data,
+    result,
     error,
     isLoading,
     refetch,

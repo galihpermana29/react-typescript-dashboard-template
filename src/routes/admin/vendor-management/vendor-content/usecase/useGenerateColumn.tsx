@@ -1,66 +1,106 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Row, Space, TableProps, Tag } from "antd";
+import { DownOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Row, Space, TableProps, Tag } from 'antd';
+import { UseMutateFunction } from 'react-query';
+import { AxiosError } from 'axios';
+import {
+	IUpdateProductPayloadRoot,
+	IUpdateProductResponseRoot,
+} from '@/shared/models/productServicesInterface';
+import { NavigateFunction } from 'react-router-dom';
 
-const useGenerateColumnVendorProduct = () => {
-  const columns: TableProps<any>["columns"] = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Product",
-      dataIndex: "title",
-      key: "title",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      render: (text) => <a>{text?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</a>,
-    },
-    {
-      title: "Tag",
-      dataIndex: "tags",
-      key: "tags",
-      render: (tags) => <a className="capitalize">{tags?.join(', ')}</a>,
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => <a>{text}</a>
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text: string) => (
-        <Tag className="capitalize" color={text === "active" ? "green" : "red"}>
-          {text}
-        </Tag>
-      ),
-    },
-    {
-      title: "Actions",
-      dataIndex: "",
-      key: "actions",
-      render: ({status}) => (
-        <Row gutter={[12, 12]}>
+const useGenerateColumnVendorProduct = (
+	onNavigate?: NavigateFunction,
+	onChangeStatus?: UseMutateFunction<
+		IUpdateProductResponseRoot,
+		AxiosError,
+		{
+			payload: IUpdateProductPayloadRoot;
+			id: string;
+			type: 'update' | 'delete';
+		},
+		unknown
+	>
+) => {
+	const columns: TableProps<any>['columns'] = [
+		{
+			title: 'Product',
+			dataIndex: 'title',
+			key: 'title',
+			render: (text) => <a>{text}</a>,
+		},
+		{
+			title: 'Price',
+			dataIndex: 'price',
+			key: 'price',
+			render: (text) => (
+				<a>
+					{text?.toLocaleString('id-ID', {
+						style: 'currency',
+						currency: 'IDR',
+					})}
+				</a>
+			),
+		},
+		{
+			title: 'Vendor',
+			dataIndex: 'vendor_name',
+			key: 'vendor_name',
+			render: (text) => <a className="capitalize">{text}</a>,
+		},
+		{
+			title: 'Tag',
+			dataIndex: 'tags',
+			key: 'tags',
+			render: (tags) => (
+				<div>
+					{tags.map((data, idx) => (
+						<Tag className="capitalize" key={idx}>
+							{data}
+						</Tag>
+					))}
+				</div>
+			),
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			key: 'status',
+			render: (text: string) => (
+				<Tag className="capitalize" color={text === 'active' ? 'green' : 'red'}>
+					{text}
+				</Tag>
+			),
+		},
+		{
+			title: 'Actions',
+			dataIndex: '',
+			key: 'actions',
+			render: ({ id, status }) => (
+				<Row gutter={[12, 12]}>
 					<Dropdown
 						menu={{
 							items: [
 								{
-									label: 'View Detail',
+									label: 'Edit',
 									key: '1',
-									onClick: () => {},
+									onClick: () => onNavigate!('/vendor-content/edit-product'),
+								},
+								{
+									label: 'View Detail',
+									key: '2',
+									onClick: () => onNavigate!('/vendor-content/detail-product'),
 								},
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
-									key: '2',
-									onClick: () => {}
+									key: '3',
+									onClick: () =>
+										onChangeStatus!({
+											payload: {
+												status: status === 'active' ? 'inactive' : 'active',
+											},
+											id,
+											type: 'delete',
+										}),
 								},
 							],
 						}}>
@@ -72,11 +112,11 @@ const useGenerateColumnVendorProduct = () => {
 						</Button>
 					</Dropdown>
 				</Row>
-      ),
-    },
-  ];
+			),
+		},
+	];
 
-  return { columns };
+	return { columns };
 };
 
 export default useGenerateColumnVendorProduct;
