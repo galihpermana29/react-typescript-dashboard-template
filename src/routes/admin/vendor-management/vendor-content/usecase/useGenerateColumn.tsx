@@ -83,12 +83,14 @@ const useGenerateColumnVendorProduct = (
 								{
 									label: 'Edit',
 									key: '1',
-									onClick: () => onNavigate!('/vendor-content/edit-product'),
+									onClick: () =>
+										onNavigate!(`/vendor-content/edit-product/${id}`),
 								},
 								{
 									label: 'View Detail',
 									key: '2',
-									onClick: () => onNavigate!('/vendor-content/detail-product'),
+									onClick: () =>
+										onNavigate!(`/vendor-content/detail-product/${id}`),
 								},
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
