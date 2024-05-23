@@ -1,5 +1,5 @@
 import { Button, Form } from 'antd';
-import type { TVendorFormType } from '../../repositories/vendor-form-type';
+import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
 
 export default function VendorProfileHeader() {
 	const form = Form.useFormInstance();
@@ -8,7 +8,7 @@ export default function VendorProfileHeader() {
 		<div className="flex items-center justify-between -mb-7">
 			<h1 className="text-xl font-medium">Profile Details</h1>
 
-			<Form.Item<TVendorFormType>>
+			<Form.Item<ICreateUserVendorInput>>
 				<div className="flex items-center gap-2">
 					<Button type="link" className="text-ny-primary-400">
 						Change password

@@ -1,6 +1,6 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { Form } from 'antd';
-import type { TVendorFormType } from '../../repositories/vendor-form-type';
+import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
 
 export default function VendorAlbum() {
 	const form = Form.useFormInstance();
@@ -15,7 +15,9 @@ export default function VendorAlbum() {
 				</h4>
 			</div>
 
-			<Form.Item<TVendorFormType> className="mr-auto" name="vendor_album">
+			<Form.Item<ICreateUserVendorInput>
+				className="mr-auto"
+				name="vendor_album">
 				<DraggerUpload
 					form={form}
 					formItemName="vendor_album"

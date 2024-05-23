@@ -1,6 +1,6 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { Avatar, Form } from 'antd';
-import type { TVendorFormType } from '../../repositories/vendor-form-type';
+import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
 
 export default function VendorProfilePicture() {
 	const form = Form.useFormInstance();
@@ -22,7 +22,9 @@ export default function VendorProfilePicture() {
 					tes
 				</Avatar>
 
-				<Form.Item<TVendorFormType> className="w-full" name="profile_image_uri">
+				<Form.Item<ICreateUserVendorInput>
+					className="w-full"
+					name="profile_image_uri">
 					<DraggerUpload form={form} formItemName="profile_image_uri" />
 				</Form.Item>
 			</div>

@@ -1,7 +1,7 @@
 import { Form, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import type { TVendorFormType } from '../../repositories/vendor-form-type';
 import { citiesList, vendorTypes } from '../../repositories/constants';
+import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
 
 export default function VendorAdditionalDetails() {
 	return (
@@ -14,7 +14,7 @@ export default function VendorAdditionalDetails() {
 			</div>
 
 			<div className="flex flex-col gap-5 flex-grow">
-				<Form.Item<TVendorFormType>
+				<Form.Item<ICreateUserVendorInput>
 					label="Description"
 					name="vendor_description"
 					className="flex flex-col gap-1 max-w-lg">
@@ -34,7 +34,7 @@ export default function VendorAdditionalDetails() {
 							options: vendorTypes,
 						},
 					].map((field) => (
-						<Form.Item<TVendorFormType>
+						<Form.Item<ICreateUserVendorInput>
 							label={field.label}
 							name={field.name}
 							className="flex flex-col gap-1 w-full">

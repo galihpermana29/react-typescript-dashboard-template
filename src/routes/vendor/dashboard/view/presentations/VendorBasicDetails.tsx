@@ -1,6 +1,6 @@
 import { DatePicker, Form, Input } from 'antd';
-import type { TVendorFormType } from '../../repositories/vendor-form-type';
 import dayjs from 'dayjs';
+import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
 
 export default function VendorBasicDetails() {
 	return (
@@ -17,7 +17,7 @@ export default function VendorBasicDetails() {
 					{ label: 'E-mail', name: 'email' as const },
 					{ label: 'Name', name: 'name' as const },
 				].map((field) => (
-					<Form.Item<TVendorFormType>
+					<Form.Item<ICreateUserVendorInput>
 						label={field.label}
 						name={field.name}
 						className="flex flex-col gap-1 max-w-lg">
@@ -25,7 +25,7 @@ export default function VendorBasicDetails() {
 					</Form.Item>
 				))}
 
-				<Form.Item<TVendorFormType>
+				<Form.Item<ICreateUserVendorInput>
 					label="Date of birth"
 					name="date_of_birth"
 					className="flex flex-col gap-1 max-w-lg">

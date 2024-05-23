@@ -1,8 +1,10 @@
 import { Form } from 'antd';
 import { useGetVendor } from '../../usecase/useGetVendor';
-import type { TVendorFormType } from '../../repositories/vendor-form-type';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
-import type { ILoginData } from '@/shared/models/userServicesInterface';
+import type {
+	ICreateUserVendorInput,
+	ILoginData,
+} from '@/shared/models/userServicesInterface';
 
 export default function VendorProfileContainer({
 	children,
@@ -41,7 +43,7 @@ export default function VendorProfileContainer({
 		<LoadingHandler
 			classname="min-h-screen w-full justify-center items-center flex"
 			isLoading={isLoading}>
-			<Form<TVendorFormType>
+			<Form<ICreateUserVendorInput>
 				layout="vertical"
 				initialValues={initialValues}
 				form={form}
