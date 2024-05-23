@@ -1,4 +1,4 @@
-import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
+// import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { Avatar } from 'antd';
 
 export default function VendorProfilePicture() {
@@ -18,7 +18,7 @@ export default function VendorProfilePicture() {
 					tes
 				</Avatar>
 
-				<DraggerUpload className="w-full" />
+				{/* <DraggerUpload /> */}
 			</div>
 		</section>
 	);
