@@ -116,7 +116,7 @@ export const VendorContentContainer = () => {
 				onPaginationChanges={setQueryVendorContent}
 				loading={isLoading}
 				data={result?.data}
-				metadata={result?.meta_data}
+				metadata={result ? result.meta_data : undefined}
 				filterComponents={
 					<DashboardTableFilter
 						form={form}
