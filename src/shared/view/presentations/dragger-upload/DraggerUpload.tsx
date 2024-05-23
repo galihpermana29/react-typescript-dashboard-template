@@ -25,8 +25,15 @@ const DraggerUpload = ({
 	const { generateErrorMsg, showPopError } = useErrorAxios();
 	const [fileList, setFileList] = useState<any[]>([]);
 
-	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+	const handleChange: UploadProps['onChange'] = ({
+		fileList: newFileList,
+		file,
+	}) => {
+		if (file.size! > 2000000) {
+			return;
+		}
 		setFileList(newFileList);
+	};
 
 	const beforeUpload = async (file: File) => {
 		try {
@@ -40,6 +47,7 @@ const DraggerUpload = ({
 		} catch (error) {
 			const msg = generateErrorMsg(error as AxiosError);
 			showPopError(msg);
+			setLoadingUpload(false);
 		}
 	};
 
@@ -98,16 +106,17 @@ const DraggerUpload = ({
 					className="dragger-upload !bg-white"
 					beforeUpload={async (file) => {
 						const data = await beforeUpload(file);
-						const val = await form.getFieldsValue();
-						if (limit === 1) {
-							form.setFieldValue(formItemName, data);
-						} else {
-							form.setFieldValue(
-								formItemName,
-								val[formItemName] ? [...val[formItemName], data] : [data]
-							);
+						if (data) {
+							const val = await form.getFieldsValue();
+							if (limit === 1) {
+								form.setFieldValue(formItemName, data);
+							} else {
+								form.setFieldValue(
+									formItemName,
+									val[formItemName] ? [...val[formItemName], data] : [data]
+								);
+							}
 						}
-
 						return false;
 					}}
 					listType="picture-card"
