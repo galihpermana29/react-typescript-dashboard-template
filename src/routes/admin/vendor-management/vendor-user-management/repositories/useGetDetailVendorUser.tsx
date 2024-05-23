@@ -1,31 +1,33 @@
-import { FormInstance } from "antd";
-import { useQuery } from "react-query";
-import { TModalState } from "../usecase/useModalReducer";
-import { DashboardUserAPI } from "@/shared/repositories/userServices";
-import dayjs from "dayjs";
+import { IUserVendorDetail } from '@/shared/models/userServicesInterface';
+import { DashboardUserAPI } from '@/shared/repositories/userServices';
+import { FormInstance } from 'antd';
+import dayjs from 'dayjs';
+import { useQuery } from 'react-query';
 
-const useQueryVendorUserDetail = (
-  modalState?: TModalState,
-  form?: FormInstance<any>
-) => {
-  const getDetail = async () => {
-    const { data } = await DashboardUserAPI.getUserById(
-      modalState!.id as string
-    );
-    form!.setFieldsValue({
-      ...data,
-      date_of_birth: dayjs(data.date_of_birth),
-    });
-    return data;
-  };
+const useQueryVendorUserDetail = (id: string, form?: FormInstance) => {
+	const getDetail = async () => {
+		const { data } = await DashboardUserAPI.getUserById(id as string);
 
-  const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["vendor-detail", modalState!.id],
-    queryFn: getDetail,
-    enabled: modalState!.id ? true : false,
-  });
+		const vendorDetail: IUserVendorDetail = JSON.parse(data.detail);
 
-  return { data, error, isLoading, refetch };
+		form!.setFieldsValue({
+			...data,
+			date_of_birth: dayjs(data.date_of_birth),
+			vendor_description: vendorDetail.vendor_description,
+			vendor_type: vendorDetail.vendor_type,
+			vendor_location: vendorDetail.vendor_location,
+			vendor_album: vendorDetail.vendor_album,
+		});
+		return data;
+	};
+
+	const { data, error, isLoading, refetch } = useQuery({
+		queryKey: ['vendor-detail', id],
+		queryFn: getDetail,
+		enabled: id ? true : false,
+	});
+
+	return { data, error, isLoading, refetch };
 };
 
 export default useQueryVendorUserDetail;

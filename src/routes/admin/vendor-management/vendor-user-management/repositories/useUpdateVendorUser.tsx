@@ -1,4 +1,9 @@
-import { IUpdateUserPayloadRoot } from '@/shared/models/userServicesInterface';
+import {
+	IUpdateUserPayloadRoot,
+	IUpdateUserVendorInput,
+	IUpdateUserVendorPayload,
+	IUserVendorDetail,
+} from '@/shared/models/userServicesInterface';
 import { DashboardUserAPI } from '@/shared/repositories/userServices';
 import useErrorAxios from '@/shared/usecase/useErrorAxios';
 import useSuccessAxios from '@/shared/usecase/useSuccessAxios';
@@ -6,18 +11,27 @@ import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useMutation } from 'react-query';
 
-const useMutateEditVendorUser = (
-	closeModal?: () => void,
-	refetch?: () => void
-) => {
+const useMutateEditVendorUser = (refetch?: () => void) => {
 	const { generateErrorMsg, showPopError } = useErrorAxios();
 	const { showSuccessMessage } = useSuccessAxios();
 
-	const editRoles = async (payload: IUpdateUserPayloadRoot, id: string) => {
-		const newPayload: IUpdateUserPayloadRoot = {
-			...payload,
-			type: 'vendor',
+	const editVendorUser = async (
+		payload: IUpdateUserVendorInput,
+		id: string
+	) => {
+		const detail: IUserVendorDetail = {
+			vendor_description: payload.vendor_description,
+			vendor_location: payload.vendor_location,
+			vendor_type: payload.vendor_type,
+			vendor_album: payload.vendor_album ?? [],
+		};
+
+		const newPayload: IUpdateUserVendorPayload = {
+			name: payload.name,
+			email: payload.email,
+			profile_image_uri: payload.profile_image_uri ?? '',
 			date_of_birth: dayjs(payload.date_of_birth).format('YYYY-MM-DD'),
+			detail: JSON.stringify(detail),
 		};
 		const data = await DashboardUserAPI.editUser(newPayload, id);
 		return data;
@@ -46,11 +60,10 @@ const useMutateEditVendorUser = (
 			if (type === 'delete') {
 				return updateStatus(payload, id);
 			}
-			return editRoles(payload, id);
+			return editVendorUser(payload, id);
 		},
 		onError: handleError,
 		onSuccess: () => {
-			closeModal!();
 			refetch!();
 			showSuccessMessage('Vendor has been successfully edited!');
 		},
