@@ -1,32 +1,25 @@
 import addIcon from '@/assets/icon/add.png';
 import { ILoaderData } from '@/routes/root';
 import { IDetailUserData } from '@/shared/models/userServicesInterface';
-import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
 import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import DashboardTable from '@/shared/view/presentations/dashboard-table/DashboardTable';
 import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
-import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
-import { Button, Form, Modal, Select } from 'antd';
+import { Button, Form, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { AxiosError } from 'axios';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import useQueryVendorUser from './repositories/useGetAllVendorUser';
 import useMutateEditVendorUser from './repositories/useUpdateVendorUser';
 import useGenerateColumnVendorUser from './usecase/useGenerateColumn';
-import useModalReducer from './usecase/useModalReducer';
-import FormFooter from './view/presentations/Modal/FormFooter';
 
 export const VendorUserManagementContainer = () => {
 	const [form] = useForm();
-	const [formModal] = useForm();
 
 	const navigate = useNavigate();
 
 	const { permissions } = useLoaderData() as ILoaderData;
 	const { create, view, edit, remove } = permissions;
-
-	const { modalState, closeModal } = useModalReducer(formModal);
 
 	const {
 		result,
@@ -49,45 +42,9 @@ export const VendorUserManagementContainer = () => {
 		mutateEdit
 	);
 
-	const { mutate: mutateEditPassword } = useMutateEditPassword(closeModal);
-
-	const modalType = {
-		password: (
-			<FormChangePassword
-				id={modalState?.id}
-				form={formModal}
-				handleMutate={mutateEditPassword}
-				footer={
-					<FormFooter
-						secondaryText="Cancel"
-						secondaryProps={{
-							onClick: () => closeModal!(),
-						}}
-						primaryText="Save"
-						primaryProps={{ type: 'submit' }}
-					/>
-				}
-			/>
-		),
-	};
-
 	return (
 		<ErrorBoundary error={error as AxiosError} refetch={refetch}>
 			<TableHeaderTitle title="Vendor User Management" />
-
-			<Modal
-				title={
-					<div className="capitalize">
-						{modalState?.type === 'password'
-							? 'Change Password'
-							: `${modalState?.type} User`}
-					</div>
-				}
-				open={modalState?.isOpen}
-				footer={null}
-				onCancel={closeModal}>
-				{modalType[modalState!.type]}
-			</Modal>
 
 			<DashboardTable<IDetailUserData>
 				columns={columns}

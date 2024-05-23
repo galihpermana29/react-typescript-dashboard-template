@@ -58,7 +58,7 @@ export const useGenerateTagDataColumn = (
 									label: 'Edit',
 									key: '1',
 									onClick: () => onOpenModal!('edit', id),
-									disabled: edit,
+									disabled: !edit,
 								},
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
@@ -71,7 +71,7 @@ export const useGenerateTagDataColumn = (
 											id,
 											type: 'delete',
 										}),
-									disabled: remove,
+									disabled: !remove,
 								},
 							],
 						}}>

@@ -1,9 +1,10 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
-import { DatePicker, Form, Input, Select } from 'antd';
+import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
 import { FormRow } from './FormRow';
-import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormCreate {
 	form: FormInstance;
@@ -11,6 +12,7 @@ interface IFormCreate {
 	onCancel: () => void;
 	id: string;
 	disabled: boolean;
+	onChangePasswordClick?: () => void;
 	showEditButton?: boolean;
 }
 
@@ -21,7 +23,10 @@ export const PageFormEdit = ({
 	disabled = false,
 	showEditButton = false,
 	id,
+	onChangePasswordClick,
 }: IFormCreate) => {
+	const navigate = useNavigate();
+
 	return (
 		<Form
 			form={form}
@@ -33,7 +38,26 @@ export const PageFormEdit = ({
 				title="Profile Details"
 				onCancel={onCancel}
 				id={id}
-				showEditButton={showEditButton}
+				buttonsBefore={
+					<Button
+						onClick={onChangePasswordClick}
+						type="text"
+						className="text-ny-primary-500">
+						Change Password
+					</Button>
+				}
+				buttonsAfter={
+					showEditButton && (
+						<Button
+							disabled={false}
+							onClick={() =>
+								navigate(`/vendor-user-management/edit-user/${id}`)
+							}
+							className="enabled:hover:!bg-ny-primary-500 enabled:hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
+							Edit
+						</Button>
+					)
+				}
 			/>
 
 			<FormRow
