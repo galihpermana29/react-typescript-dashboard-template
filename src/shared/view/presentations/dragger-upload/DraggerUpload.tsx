@@ -13,7 +13,6 @@ interface DraggerUploadI {
 	formItemName: string;
 	form: FormInstance<any>;
 	limit?: number;
-	className?: string;
 }
 
 const DraggerUpload = ({
@@ -55,7 +54,7 @@ const DraggerUpload = ({
 	const uploadButton = (
 		<button
 			type="button"
-			className="flex flex-col justify-center items-center flex-grow px-[20px] gap-[10px] text-caption-2 text-ny-gray-300">
+			className="flex flex-col justify-center items-center px-[20px] gap-[10px] text-caption-2 text-ny-gray-300">
 			<img src={docIcon} alt="icon" />
 			<h1>Drop profile picture here or click here to browse file</h1>
 		</button>
