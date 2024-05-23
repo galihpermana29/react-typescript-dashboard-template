@@ -6,9 +6,10 @@ import docIcon from '@/assets/icon/document-upload.png';
 
 interface DraggerUploadI {
 	profileImageURL?: string;
-	formItemName: string;
-	form: FormInstance<any>;
+	formItemName?: string;
+	form?: FormInstance<any>;
 	limit?: number;
+	className?: string;
 }
 
 const DraggerUpload = ({
@@ -16,6 +17,7 @@ const DraggerUpload = ({
 	form,
 	formItemName,
 	limit = 1,
+	className,
 }: DraggerUploadI) => {
 	const [fileList, setFileList] = useState<UploadFile[]>(
 		profileImageURL
@@ -36,21 +38,21 @@ const DraggerUpload = ({
 	const uploadButton = (
 		<button
 			type="button"
-			className="flex flex-col justify-center items-center px-[20px] gap-[10px] text-caption-2 text-ny-gray-300">
+			className="flex flex-col justify-center items-center flex-grow px-[20px] gap-[10px] text-caption-2 text-ny-gray-300">
 			<img src={docIcon} alt="icon" />
 			<h1>Drop profile picture here or click here to browse file</h1>
 		</button>
 	);
 
 	return (
-		<div>
+		<div className={className}>
 			<Upload
 				className="dragger-upload !bg-white"
 				beforeUpload={async (file) => {
 					// const value = await form.getFieldsValue();
 					// console.log(value, 'formmm?');
 					// const newValue = { ...value, [formItemName]: file };
-					form.setFieldValue(formItemName, file);
+					form?.setFieldValue(formItemName, file);
 					return false;
 				}}
 				listType="picture-card"
