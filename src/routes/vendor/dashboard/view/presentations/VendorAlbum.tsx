@@ -4,6 +4,10 @@ import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterfa
 
 export default function VendorAlbum() {
 	const form = Form.useFormInstance();
+	const current = form.getFieldValue(
+		'vendor_album'
+	) as ICreateUserVendorInput['vendor_album'];
+
 	const maxLength = 3;
 
 	return (
@@ -19,6 +23,7 @@ export default function VendorAlbum() {
 				className="mr-auto"
 				name="vendor_album">
 				<DraggerUpload
+					profileImageURL={current}
 					form={form}
 					formItemName="vendor_album"
 					limit={maxLength}
