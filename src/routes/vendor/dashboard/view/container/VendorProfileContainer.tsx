@@ -5,6 +5,7 @@ import type {
 	ICreateUserVendorInput,
 	ILoginData,
 } from '@/shared/models/userServicesInterface';
+import useMutateEditVendorUser from '@/routes/admin/vendor-management/vendor-user-management/repositories/useUpdateVendorUser';
 
 export default function VendorProfileContainer({
 	children,
@@ -21,7 +22,7 @@ export default function VendorProfileContainer({
 
 	const userId = parsedUserDetail ? parsedUserDetail.user_id : '';
 
-	const { data, isLoading } = useGetVendor(userId);
+	const { data, isLoading, refetch } = useGetVendor(userId);
 
 	const initialValues = {
 		id: data?.id,
@@ -39,6 +40,8 @@ export default function VendorProfileContainer({
 		vendor_album: data?.detail.vendor_album,
 	};
 
+	const { mutate } = useMutateEditVendorUser(refetch);
+
 	return (
 		<LoadingHandler
 			classname="min-h-screen w-full justify-center items-center flex"
@@ -47,6 +50,7 @@ export default function VendorProfileContainer({
 				layout="vertical"
 				initialValues={initialValues}
 				form={form}
+				onFinish={(payload) => mutate({ payload, id: userId, type: 'update' })}
 				className="relative">
 				<div className="bg-ny-primary-500 h-44 w-full absolute top-0 rounded-xl" />
 
