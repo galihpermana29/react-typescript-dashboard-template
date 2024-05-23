@@ -1,35 +1,32 @@
 import addIcon from '@/assets/icon/add.png';
-import LoadingHandler from '@/shared/view/container/loading/Loading';
+import { ILoaderData } from '@/routes/root';
+import { IDetailUserData } from '@/shared/models/userServicesInterface';
+import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
+import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import DashboardTable from '@/shared/view/presentations/dashboard-table/DashboardTable';
 import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
+import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
 import { Button, Form, Modal, Select } from 'antd';
-import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import { useForm } from 'antd/es/form/Form';
-import useMutateCreateVendorUser from './repositories/useCreateVendorUser';
+import { AxiosError } from 'axios';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import useQueryVendorUser from './repositories/useGetAllVendorUser';
-import useQueryVendorUserDetail from './repositories/useGetDetailVendorUser';
 import useMutateEditVendorUser from './repositories/useUpdateVendorUser';
 import useGenerateColumnVendorUser from './usecase/useGenerateColumn';
 import useModalReducer from './usecase/useModalReducer';
-import FormCreation from './view/presentations/Modal/FormCreation';
-import FormEdit from './view/presentations/Modal/FormEdit';
-import { IDetailUserData } from '@/shared/models/userServicesInterface';
-import { AxiosError } from 'axios';
 import FormFooter from './view/presentations/Modal/FormFooter';
-import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
-import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
-import { useLoaderData } from 'react-router-dom';
-import { ILoaderData } from '@/routes/root';
 
 export const VendorUserManagementContainer = () => {
 	const [form] = useForm();
 	const [formModal] = useForm();
 
+	const navigate = useNavigate();
+
 	const { permissions } = useLoaderData() as ILoaderData;
 	const { create, view, edit, remove } = permissions;
 
-	const { openModal, modalState, closeModal } = useModalReducer(formModal);
+	const { modalState, closeModal } = useModalReducer(formModal);
 
 	const {
 		result,
@@ -42,101 +39,19 @@ export const VendorUserManagementContainer = () => {
 		error,
 	} = useQueryVendorUser(form);
 
-	const { mutate: mutateCreate } = useMutateCreateVendorUser(
-		closeModal,
-		refetch
-	);
-	const { mutate: mutateEdit } = useMutateEditVendorUser(closeModal, refetch);
-
-	const { isLoading: loadingGetDetail } = useQueryVendorUserDetail(
-		modalState,
-		formModal
-	);
+	const { mutate: mutateEdit } = useMutateEditVendorUser(refetch);
 
 	const { columns } = useGenerateColumnVendorUser(
 		remove,
 		edit,
 		view,
-		openModal,
+		navigate,
 		mutateEdit
 	);
 
 	const { mutate: mutateEditPassword } = useMutateEditPassword(closeModal);
 
 	const modalType = {
-		create: (
-			<FormCreation
-				form={formModal}
-				handleMutate={mutateCreate}
-				footer={
-					<FormFooter
-						secondaryText="Cancel"
-						secondaryProps={{
-							onClick: () => closeModal!(),
-						}}
-						primaryText="Create"
-						primaryProps={{ type: 'submit' }}
-					/>
-				}
-			/>
-		),
-		detail: (
-			<LoadingHandler
-				isLoading={loadingGetDetail}
-				fullscreen={false}
-				classname="h-[400px]">
-				<FormEdit
-					id={modalState?.id}
-					form={formModal}
-					handleMutate={undefined}
-					disable={true}
-					onChangePasswordClick={() => openModal!('password')}
-					footer={
-						<FormFooter
-							secondaryText="Cancel"
-							secondaryProps={{
-								onClick: () => closeModal!(),
-							}}
-							primaryText="Edit"
-							primaryProps={{
-								onClick: (e) => {
-									e.preventDefault();
-									openModal!('edit', modalState?.id);
-								},
-								type: 'button',
-								disabled: !edit,
-							}}
-						/>
-					}
-				/>
-			</LoadingHandler>
-		),
-		edit: (
-			<LoadingHandler
-				isLoading={loadingGetDetail}
-				fullscreen={false}
-				classname="h-[500px]">
-				<FormEdit
-					id={modalState?.id}
-					handleMutate={mutateEdit}
-					form={formModal}
-					disable={false}
-					onChangePasswordClick={() => openModal!('password')}
-					footer={
-						<FormFooter
-							secondaryText="Cancel"
-							secondaryProps={{
-								onClick: () => closeModal!(),
-							}}
-							primaryText="Save"
-							primaryProps={{
-								type: 'submit',
-							}}
-						/>
-					}
-				/>
-			</LoadingHandler>
-		),
 		password: (
 			<FormChangePassword
 				id={modalState?.id}
@@ -178,7 +93,7 @@ export const VendorUserManagementContainer = () => {
 				columns={columns}
 				data={result?.data}
 				onPaginationChanges={setQueryVendorUser}
-				loading={loadingGetAll || loadingGetDetail}
+				loading={loadingGetAll}
 				metadata={result?.meta_data}
 				filterComponents={
 					<DashboardTableFilter
@@ -190,7 +105,7 @@ export const VendorUserManagementContainer = () => {
 						buttonComponents={
 							<Button
 								disabled={!create}
-								onClick={() => openModal!('create')}
+								href="vendor-user-management/create-user"
 								className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
 								<img src={addIcon} alt="add-icon" />
 								Create User

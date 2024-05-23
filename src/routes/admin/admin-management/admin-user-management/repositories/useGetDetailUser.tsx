@@ -12,6 +12,7 @@ const useQueryAdminsDetail = (
 		const { data } = await DashboardUserAPI.getUserById(
 			modalState!.id as string
 		);
+
 		form!.setFieldsValue({
 			...data,
 			date_of_birth: dayjs(data.date_of_birth),

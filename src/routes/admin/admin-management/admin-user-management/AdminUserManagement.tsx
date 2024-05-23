@@ -45,11 +45,7 @@ const AdminUserManagementContainer = () => {
 		clearFilter,
 	} = useQueryAdmins(form);
 
-	const { mutate: mutateCreate } = useMutateCreateAdmins(
-		formModal,
-		closeModal,
-		refetch
-	);
+	const { mutate: mutateCreate } = useMutateCreateAdmins(closeModal, refetch);
 
 	const { isLoading: loadingGetDetail } = useQueryAdminsDetail(
 		modalState,

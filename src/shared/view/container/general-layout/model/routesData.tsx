@@ -1,13 +1,17 @@
 import adminManagIconGray from '@/assets/icon/admin-manag-icon-gray.svg';
 import dashboardIconGray from '@/assets/icon/dashboard-icon-gray.svg';
+import { AdminRoleManagementContainer } from '@/routes/admin/admin-management/admin-role-management/AdminRoleManagement';
 import AdminUserManagementContainer from '@/routes/admin/admin-management/admin-user-management/AdminUserManagement';
 import { VendorContentContainer } from '@/routes/admin/vendor-management/vendor-content/VendorContent';
+import VendorContentDetailContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Detail/VendorContentDetail';
+import VendorContentEditContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Edit/VendorContentEdit';
 import { VendorUserManagementContainer } from '@/routes/admin/vendor-management/vendor-user-management/VendorUserManagement';
+import VendorUserCreateContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Create/VendorUserCreate';
+import VendorDashboardContainer from '@/routes/vendor/dashboard/VendorDashboard';
 import DashboardContainer from '../../../../../routes/admin/dashboard/Dashboard';
 import { ItemsDataI } from './types';
-import { AdminRoleManagementContainer } from '@/routes/admin/admin-management/admin-role-management/AdminRoleManagement';
-import VendorDashboardContainer from '@/routes/vendor/dashboard/VendorDashboard';
-import VendorContentEditContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Edit/VendorContentEdit';
+import VendorUserEditContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Edit/VendorUserEdit';
+import VendorUserDetailContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Detail/VendorUserDetail';
 
 export const vendorRoutes: ItemsDataI[] = [
 	{
@@ -119,6 +123,45 @@ export const staffRoutes: ItemsDataI[] = [
 			{
 				label: (
 					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						Vendor User Create
+					</div>
+				),
+				key: '/vendor-user-management/create-user',
+				path: 'vendor-user-management/create-user',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <VendorUserCreateContainer />,
+				show: false,
+			},
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						Vendor User Create
+					</div>
+				),
+				key: '/vendor-user-management/detail-user',
+				path: 'vendor-user-management/detail-user/:id',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <VendorUserDetailContainer />,
+				show: false,
+			},
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						Vendor Edit
+					</div>
+				),
+				key: '/vendor-user-management/edit-user',
+				path: 'vendor-user-management/edit-user/:id',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <VendorUserEditContainer />,
+				show: false,
+			},
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
 						Vendor Content
 					</div>
 				),
@@ -140,6 +183,19 @@ export const staffRoutes: ItemsDataI[] = [
 				children: [],
 				icon: <img src={adminManagIconGray} alt="icon" />,
 				components: <VendorContentEditContainer />,
+				show: false,
+			},
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						Vendor Detail
+					</div>
+				),
+				key: '/vendor-content/detail-product',
+				path: 'vendor-content/detail-product/:id',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <VendorContentDetailContainer />,
 				show: false,
 			},
 		],

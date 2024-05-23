@@ -9,7 +9,7 @@ function generateRoutesChild() {
 	const { mappingRoutes } = useMapRoutes();
 
 	const userType: actionType | null = JSON.parse(localStorage.getItem('admin')!)
-		.type as actionType;
+		?.type as actionType;
 
 	const whichData = userType === 'admin' ? staffRoutes : vendorRoutes;
 

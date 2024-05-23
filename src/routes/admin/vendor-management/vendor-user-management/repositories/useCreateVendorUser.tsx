@@ -1,46 +1,59 @@
-import { ICreateUserPayloadRoot } from "@/shared/models/userServicesInterface";
-import { DashboardUserAPI } from "@/shared/repositories/userServices";
-import useErrorAxios from "@/shared/usecase/useErrorAxios";
-import useSuccessAxios from "@/shared/usecase/useSuccessAxios";
-import { AxiosError } from "axios";
-import dayjs from "dayjs";
-import { useMutation } from "react-query";
+import {
+	ICreateUserVendorInput,
+	ICreateUserVendorPayload,
+	IUserVendorDetail,
+} from '@/shared/models/userServicesInterface';
+import { DashboardUserAPI } from '@/shared/repositories/userServices';
+import useErrorAxios from '@/shared/usecase/useErrorAxios';
+import useSuccessAxios from '@/shared/usecase/useSuccessAxios';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
-const useMutateCreateVendorUser = (
-  closeModal?: () => void,
-  refetch?: () => void
-) => {
-  const { generateErrorMsg, showPopError } = useErrorAxios();
-  const { showSuccessMessage } = useSuccessAxios();
+const useMutateCreateVendorUser = () => {
+	const { generateErrorMsg, showPopError } = useErrorAxios();
+	const { showSuccessMessage } = useSuccessAxios();
 
-  const createAdmins = async (payload: ICreateUserPayloadRoot) => {
-    // TODO: Change profile image uri once the api ready
-    const newPayload: ICreateUserPayloadRoot = {
-      ...payload,
-      profile_image_uri: "",
-      type: "vendor",
-      date_of_birth: dayjs(payload.date_of_birth).format("YYYY-MM-DD"),
-    };
+	const navigate = useNavigate();
 
-    const data = await DashboardUserAPI.createUser(newPayload);
-    return data;
-  };
+	const createAdmins = async (payload: ICreateUserVendorInput) => {
+		const detail: IUserVendorDetail = {
+			vendor_description: payload.vendor_description,
+			vendor_location: payload.vendor_location,
+			vendor_type: payload.vendor_type,
+			vendor_album: payload.vendor_album ?? [],
+		};
 
-  const handleError = (error: AxiosError) => {
-    const msg = generateErrorMsg(error);
-    showPopError(msg);
-  };
+		const newPayload: ICreateUserVendorPayload = {
+			name: payload.name,
+			email: payload.email,
+			password: payload.password,
+			profile_image_uri: payload.profile_image_uri ?? '',
+			type: 'vendor',
+			role_id: 2,
+			date_of_birth: dayjs(payload.date_of_birth).format('YYYY-MM-DD'),
+			detail: JSON.stringify(detail),
+		};
 
-  const { mutate, error, isLoading } = useMutation({
-    mutationFn: (payload: ICreateUserPayloadRoot) => createAdmins(payload),
-    onError: handleError,
-    onSuccess: () => {
-      closeModal!();
-      refetch!();
-      showSuccessMessage("Vendor successfully added!");
-    },
-  });
-  return { mutate, error, isLoading };
+		const data = await DashboardUserAPI.createUser(newPayload);
+		return data;
+	};
+
+	const handleError = (error: AxiosError) => {
+		const msg = generateErrorMsg(error);
+		showPopError(msg);
+	};
+
+	const { mutate, error, isLoading } = useMutation({
+		mutationFn: (payload: ICreateUserVendorInput) => createAdmins(payload),
+		onError: handleError,
+		onSuccess: () => {
+			showSuccessMessage('Vendor successfully added!');
+			navigate('/vendor-user-management');
+		},
+	});
+	return { mutate, error, isLoading };
 };
 
 export default useMutateCreateVendorUser;

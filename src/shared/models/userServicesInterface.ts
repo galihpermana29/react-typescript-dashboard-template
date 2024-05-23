@@ -32,6 +32,7 @@ export interface IDetailUserData {
 	role_name: string;
 	status: string;
 	profile_image_uri: string;
+	detail: string;
 }
 
 // Response
@@ -60,6 +61,19 @@ export interface ICreateUserPayloadRoot {
 	role_id: number;
 }
 
+export interface IUserVendorDetail {
+	vendor_description?: string;
+	vendor_location?: string;
+	vendor_type?: string;
+	vendor_album?: string[];
+}
+
+export type ICreateUserVendorInput = ICreateUserPayloadRoot & IUserVendorDetail;
+
+export interface ICreateUserVendorPayload extends ICreateUserPayloadRoot {
+	detail: string;
+}
+
 // Response
 export interface ICreateUserResponseRoot {
 	data: string;
@@ -77,6 +91,13 @@ export interface IUpdateUserPayloadRoot {
 	status?: string;
 	profile_image_uri?: string;
 }
+
+export type IUpdateUserVendorInput = IUpdateUserPayloadRoot & IUserVendorDetail;
+
+export interface IUpdateUserVendorPayload extends IUpdateUserPayloadRoot {
+	detail: string;
+}
+
 export interface IUpdateUserResponseRoot {
 	data: string;
 }

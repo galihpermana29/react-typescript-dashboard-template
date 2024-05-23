@@ -13,7 +13,6 @@ const useMutateEditAdmins = (closeModal?: () => void, refetch?: () => void) => {
 	const editRoles = async (payload: IUpdateUserPayloadRoot, id: string) => {
 		const newPayload: IUpdateUserPayloadRoot = {
 			...payload,
-			profile_image_uri: '',
 			type: 'admin',
 			date_of_birth: dayjs(payload.date_of_birth).format('YYYY-MM-DD'),
 		};
@@ -53,7 +52,7 @@ const useMutateEditAdmins = (closeModal?: () => void, refetch?: () => void) => {
 			showSuccessMessage('Admin has successfully edited!');
 		},
 	});
-	
+
 	return { mutate, error, isLoading };
 };
 

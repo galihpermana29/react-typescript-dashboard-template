@@ -2,29 +2,18 @@ import { IUpdateProductPayloadRoot } from '@/shared/models/productServicesInterf
 import { DashboardProductAPI } from '@/shared/repositories/productService';
 import useErrorAxios from '@/shared/usecase/useErrorAxios';
 import useSuccessAxios from '@/shared/usecase/useSuccessAxios';
-// import useUploadImage from '@/shared/usecase/useUploadImage';
-// import { FormInstance } from 'antd';
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 
-const useMutateEditVendorContent = (
-	// form: FormInstance<any>,
-	refetch?: () => void
-) => {
+const useMutateEditVendorContent = (refetch?: () => void) => {
 	const { generateErrorMsg, showPopError } = useErrorAxios();
 	const { showSuccessMessage } = useSuccessAxios();
-	// const { mutate: mutateImage, resultImage } = useUploadImage();
 
 	const editContent = async (
 		payload: IUpdateProductPayloadRoot,
 		id: string
 	) => {
-		// await mutateImage({ form, fieldName: 'Uimages' });
-		const newPayload: IUpdateProductPayloadRoot = {
-			...payload,
-			images: [''],
-		};
-		const data = await DashboardProductAPI.editProduct(newPayload, id);
+		const data = await DashboardProductAPI.editProduct(payload, id);
 		return data;
 	};
 

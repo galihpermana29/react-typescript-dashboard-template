@@ -1,6 +1,6 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
-import { Form, FormInstance, Input, Select } from 'antd';
+import { Form, FormInstance, Input, InputNumber, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
 interface IPageFormEdit {
@@ -8,11 +8,19 @@ interface IPageFormEdit {
 	onSave: any;
 	onCancel: any;
 	id: string;
+	disabled: boolean;
 }
-const PageFormEdit = ({ form, onSave, onCancel, id }: IPageFormEdit) => {
+const PageFormEdit = ({
+	form,
+	onSave,
+	onCancel,
+	id,
+	disabled = false,
+}: IPageFormEdit) => {
 	return (
 		<div>
 			<Form
+				disabled={disabled}
 				form={form}
 				layout="vertical"
 				className="flex flex-col gap-[20px]"
@@ -26,11 +34,12 @@ const PageFormEdit = ({ form, onSave, onCancel, id }: IPageFormEdit) => {
 						</p>
 					</div>
 					<div>
-						<Form.Item noStyle name={'Uimages'}>
+						<Form.Item noStyle name={'images'}>
 							<DraggerUpload
+								limit={3}
 								profileImageURL={form.getFieldValue('images')}
 								form={form}
-								formItemName="Uimages"
+								formItemName="images"
 							/>
 						</Form.Item>
 					</div>
@@ -89,9 +98,9 @@ const PageFormEdit = ({ form, onSave, onCancel, id }: IPageFormEdit) => {
 									message: 'Please input your product price',
 								},
 							]}>
-							<Input
-								placeholder="Enter your product name"
-								className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
+							<InputNumber<number>
+								placeholder="Enter your product price"
+								className="h-[40px] rounded-[8px] text-caption-1 font-[400] w-full custom-input"
 							/>
 						</Form.Item>
 						<Form.Item
