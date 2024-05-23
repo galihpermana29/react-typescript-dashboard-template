@@ -86,19 +86,28 @@ const DraggerUpload = ({
 				<Upload
 					onRemove={async (file) => {
 						const val = await form.getFieldsValue();
-						form.setFieldValue(
-							formItemName,
-							val.images.filter((dx) => dx !== file.url)
-						);
+						if (limit === 1) {
+							form.setFieldValue(formItemName, null);
+						} else {
+							form.setFieldValue(
+								formItemName,
+								val[formItemName].filter((dx) => dx !== file.url)
+							);
+						}
 					}}
 					className="dragger-upload !bg-white"
 					beforeUpload={async (file) => {
 						const data = await beforeUpload(file);
 						const val = await form.getFieldsValue();
-						form.setFieldValue(
-							formItemName,
-							val.images ? [...val.images, data] : [data]
-						);
+						if (limit === 1) {
+							form.setFieldValue(formItemName, data);
+						} else {
+							form.setFieldValue(
+								formItemName,
+								val[formItemName] ? [...val[formItemName], data] : [data]
+							);
+						}
+
 						return false;
 					}}
 					listType="picture-card"
