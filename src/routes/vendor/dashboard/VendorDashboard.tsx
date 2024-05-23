@@ -5,28 +5,21 @@ import VendorProfileHeader from './view/presentations/VendorProfileHeader';
 import VendorAdditionalDetails from './view/presentations/VendorAdditionalDetails';
 import VendorAlbum from './view/presentations/VendorAlbum';
 import VendorProfileContainer from './view/container/VendorProfileContainer';
+import { Divider } from 'antd';
 
 const VendorDashboardContainer = () => {
 	return (
 		<VendorProfileContainer>
 			<main className="flex flex-col gap-12 px-8 relative">
 				<VendorInformation />
-
 				<VendorProfileHeader />
-
-				<hr className="w-full" />
-
+				<Divider className="my-[10px]" />
 				<VendorProfilePicture />
-
-				<hr className="w-full" />
-
+				<Divider className="my-[10px]" />
 				<VendorBasicDetails />
-
-				<hr className="w-full" />
-
+				<Divider className="my-[10px]" />
 				<VendorAdditionalDetails />
-
-				<hr className="w-full" />
+				<Divider className="my-[10px]" />
 
 				<VendorAlbum />
 			</main>

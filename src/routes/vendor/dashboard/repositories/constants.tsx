@@ -1,9 +1,9 @@
 export const citiesList = [
-	{ value: 'semarang', label: <span>Semarang</span> },
-	{ value: 'bandung', label: <span>Bandung</span> },
+	{ value: 'bali', label: <span>Bali</span> },
+	{ value: 'jakarta', label: <span>Jakarta</span> },
 ];
 
 export const vendorTypes = [
-	{ value: 'catering', label: <span>Catering</span> },
-	{ value: 'mc', label: <span>MC</span> },
+	{ label: <span>Wedding</span>, value: 'wedding' },
+	{ label: <span>Catering</span>, value: 'catering' },
 ];

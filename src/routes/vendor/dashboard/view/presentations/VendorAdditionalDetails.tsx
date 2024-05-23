@@ -29,7 +29,7 @@ export default function VendorAdditionalDetails() {
 							options: citiesList,
 						},
 						{
-							label: 'Profile',
+							label: 'Vendor Type',
 							name: 'vendor_type' as const,
 							options: vendorTypes,
 						},
