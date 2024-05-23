@@ -33,7 +33,7 @@ const PageHeader = ({
 					{buttonsAfter}
 				</div>
 			</div>
-			<Divider className="my-[20px]" />
+			<Divider className="my-[5px]" />
 		</>
 	);
 };

@@ -9,6 +9,11 @@ import {
 	IUpdateProductResponseRoot,
 	IUpdateProductTagPayloadRoot,
 	IUpdateProductTagResponseRoot,
+	ICreateProductPayloadRoot,
+	ICreateProductResponseRoot,
+	IDetailProductResponseRoot,
+	IUpdateProductPayloadRoot,
+	IUpdateProductResponseRoot,
 } from '../models/productServicesInterface';
 import { ApiClass } from './generalApi';
 
@@ -128,6 +133,23 @@ class DashboardProductServices extends ApiClass {
 					},
 				}
 			);
+
+		return data;
+	}
+  
+  public async createProduct(
+		payload: ICreateProductPayloadRoot
+	): Promise<ICreateProductResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } = await this.axiosInstance.post<ICreateProductResponseRoot>(
+			`/products`,
+			payload,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 
 		return data;
 	}

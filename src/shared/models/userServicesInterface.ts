@@ -65,7 +65,7 @@ export interface IUserVendorDetail {
 	vendor_description?: string;
 	vendor_location?: string;
 	vendor_type?: string;
-	vendor_album?: string[];
+	vendor_album?: string | string[];
 }
 
 export type ICreateUserVendorInput = ICreateUserPayloadRoot & IUserVendorDetail;
