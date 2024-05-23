@@ -1,18 +1,18 @@
-import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Row, Space, TableProps, Tag } from 'antd';
-import { TModalType } from './useModalReducer';
-import { UseMutateFunction } from 'react-query';
 import {
 	IUpdateUserPayloadRoot,
 	IUpdateUserResponseRoot,
 } from '@/shared/models/userServicesInterface';
+import { DownOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Row, Space, TableProps, Tag } from 'antd';
 import { AxiosError } from 'axios';
+import { UseMutateFunction } from 'react-query';
+import { NavigateFunction } from 'react-router-dom';
 
 const useGenerateColumnVendorUser = (
 	remove: boolean,
 	edit: boolean,
 	view: boolean,
-	onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
+	onNavigate?: NavigateFunction,
 	onChangeStatus?: UseMutateFunction<
 		IUpdateUserResponseRoot,
 		AxiosError<unknown, any>,
@@ -66,7 +66,7 @@ const useGenerateColumnVendorUser = (
 									label: 'Edit',
 									key: '1',
 									onClick: () => {
-										onOpenModal!('edit', id);
+										onNavigate!(`/vendor-user-management/edit-user/${id}`);
 									},
 									disabled: !edit,
 								},
@@ -74,7 +74,7 @@ const useGenerateColumnVendorUser = (
 									label: 'View Detail',
 									key: '2',
 									onClick: () => {
-										onOpenModal!('detail', id);
+										onNavigate!(`/vendor-user-management/detail-user/${id}`);
 									},
 									disabled: !view,
 								},
