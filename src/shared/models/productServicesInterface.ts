@@ -1,50 +1,82 @@
-import { Metadata } from "./generalInterfaces"
+import { Metadata } from './generalInterfaces';
 
 export interface IDetailProductData {
-  id: number,
-  title: string,
-  tags: string[],
-  vendor_id: string
-  vendor_name: string
-  price: string
-  description: string
-  images: string[]
-  status: string
+	id: number;
+	title: string;
+	tags: string[];
+	vendor_id: string;
+	vendor_name: string;
+	price: string;
+	description: string;
+	images: string[];
+	status: string;
 }
 
 export interface IAllProductResponseRoot {
-  data: IDetailProductData[];
-  meta_data: Metadata;
+	data: IDetailProductData[];
+	meta_data: Metadata;
 }
 
 export interface ICreateProductPayloadRoot {
-  title?: string
-  tags?: string[]
-  vendor_id?: string
-  price?: number
-  description?: string
-  images?: string[]
-  status: string
+	title?: string;
+	tags?: string[];
+	vendor_id?: string;
+	price?: number;
+	description?: string;
+	images?: string[];
+	status: string;
 }
 
 export interface ICreateProductResponseRoot {
- 	data: string;
+	data: string;
 }
 
 export interface IUpdateProductPayloadRoot {
-  title?: string
-  tags?: string[]
-  vendor_id?: string
-  price?: number
-  description?: string
-  images?: string[]
-  status: string
+	title?: string;
+	tags?: string[];
+	vendor_id?: string;
+	price?: number;
+	description?: string;
+	images?: string[];
+	status: string;
 }
 
 export interface IUpdateProductResponseRoot {
-  data: string;
+	data: string;
 }
 
 export interface IDetailProductResponseRoot {
-  data: IDetailProductData;
+	data: IDetailProductData;
+}
+
+export interface IDetailProductTag {
+	id: string;
+	name: string;
+	status: string;
+}
+
+export interface IAllProductTagResponseRoot {
+	data: IDetailProductData[];
+	meta_data: Metadata;
+}
+
+export interface ICreateProductTagPayloadRoot {
+	name: string;
+}
+
+export interface ICreateProductTagResponseRoot {
+	data: string;
+}
+
+export interface IUpdateProductTagPayloadRoot {
+	name?: string;
+	status?: string;
+}
+
+export interface IUpdateProductTagResponseRoot {
+	data: string;
+}
+
+export interface IDetailProductTagResponseRoot {
+	data: IDetailProductData;
 }

@@ -12,6 +12,7 @@ import DashboardContainer from '../../../../../routes/admin/dashboard/Dashboard'
 import { ItemsDataI } from './types';
 import VendorUserEditContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Edit/VendorUserEdit';
 import VendorUserDetailContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Detail/VendorUserDetail';
+import { VendorMasterDataContainer } from '@/routes/admin/vendor-management/vendor-master-data/VendorMasterData';
 import { VendorProductContainer } from '@/routes/vendor/product/VendorProduct';
 import VendorProductCreateContainer from '@/routes/vendor/product/view/container/Create/VendorContentCreate';
 import VendorProductEditContainer from '@/routes/vendor/product/view/container/Edit/VendorContentEdit';
@@ -234,6 +235,19 @@ export const staffRoutes: ItemsDataI[] = [
 				icon: <img src={adminManagIconGray} alt="icon" />,
 				components: <VendorContentDetailContainer />,
 				show: false,
+			},
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						Vendor Master Data
+					</div>
+				),
+				key: '/vendor-master-data',
+				path: 'vendor-master-data',
+				children: null,
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <VendorMasterDataContainer />,
+				show: true,
 			},
 		],
 		icon: null,

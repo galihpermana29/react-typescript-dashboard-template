@@ -1,30 +1,19 @@
+import { ICreateProductTagPayloadRoot } from '@/shared/models/productServicesInterface';
+import { DashboardProductAPI } from '@/shared/repositories/productService';
 import useErrorAxios from '@/shared/usecase/useErrorAxios';
 import useSuccessAxios from '@/shared/usecase/useSuccessAxios';
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
-import {
-	IUpdatePasswordInputRoot,
-	IUpdatePasswordPayloadRoot,
-} from '../models/userServicesInterface';
-import { DashboardUserAPI } from './userServices';
 
-const useMutateEditPassword = (
+const useMutateCreateProductTag = (
 	closeModal?: () => void,
 	refetch?: () => void
 ) => {
 	const { generateErrorMsg, showPopError } = useErrorAxios();
 	const { showSuccessMessage } = useSuccessAxios();
 
-	const updatePassword = async (
-		payload: IUpdatePasswordInputRoot,
-		id: string
-	) => {
-		const newPayload: IUpdatePasswordPayloadRoot = {
-			user_id: id,
-			...payload,
-		};
-
-		const data = await DashboardUserAPI.updateUserPassword(newPayload);
+	const createTag = async (payload: ICreateProductTagPayloadRoot) => {
+		const data = await DashboardProductAPI.createProductTag(payload);
 		return data;
 	};
 
@@ -34,23 +23,15 @@ const useMutateEditPassword = (
 	};
 
 	const { mutate, error, isLoading } = useMutation({
-		mutationFn: ({
-			payload,
-			id,
-		}: {
-			payload: IUpdatePasswordInputRoot;
-			id: string;
-		}) => {
-			return updatePassword(payload, id);
-		},
+		mutationFn: (payload: ICreateProductTagPayloadRoot) => createTag(payload),
 		onError: handleError,
 		onSuccess: () => {
 			closeModal!();
 			refetch!();
-			showSuccessMessage('Password successfully changed!');
+			showSuccessMessage('Tag successfully added!');
 		},
 	});
 	return { mutate, error, isLoading };
 };
 
-export default useMutateEditPassword;
+export default useMutateCreateProductTag;

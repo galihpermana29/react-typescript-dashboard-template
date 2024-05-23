@@ -1,10 +1,16 @@
 import {
 	IAllProductResponseRoot,
-	ICreateProductPayloadRoot,
-	ICreateProductResponseRoot,
+	IAllProductTagResponseRoot,
+	ICreateProductTagPayloadRoot,
+	ICreateProductTagResponseRoot,
 	IDetailProductResponseRoot,
+	IDetailProductTagResponseRoot,
 	IUpdateProductPayloadRoot,
 	IUpdateProductResponseRoot,
+	IUpdateProductTagPayloadRoot,
+	IUpdateProductTagResponseRoot,
+	ICreateProductPayloadRoot,
+	ICreateProductResponseRoot,
 } from '../models/productServicesInterface';
 import { ApiClass } from './generalApi';
 
@@ -60,6 +66,74 @@ class DashboardProductServices extends ApiClass {
 
 		return data;
 	}
+
+	public async createProductTag(
+		payload: ICreateProductTagPayloadRoot
+	): Promise<ICreateProductTagResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } =
+			await this.axiosInstance.post<ICreateProductTagResponseRoot>(
+				'/tags',
+				payload,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+		return data;
+	}
+
+	public async getAllProductTags(
+		query?: string
+	): Promise<IAllProductTagResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+
+		const { data } = await this.axiosInstance.get<IAllProductTagResponseRoot>(
+			`/tags${query ? `?${query}` : ''}`,
+			{ headers: { Authorization: `Bearer ${token}` } }
+		);
+		return data;
+	}
+
+	public async editProductTag(
+		payload: IUpdateProductTagPayloadRoot,
+		id: string
+	): Promise<IUpdateProductTagResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+
+		const { data } =
+			await this.axiosInstance.patch<IUpdateProductTagResponseRoot>(
+				`/tags/${id}`,
+				payload,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+		return data;
+	}
+
+	public async getProductTagDetail(
+		id: string
+	): Promise<IDetailProductTagResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+
+		const { data } =
+			await this.axiosInstance.get<IDetailProductTagResponseRoot>(
+				`/tags/${id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+		return data;
+	}
+
 	public async createProduct(
 		payload: ICreateProductPayloadRoot
 	): Promise<ICreateProductResponseRoot> {
