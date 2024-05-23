@@ -16,7 +16,7 @@ export const useGetVendor = (id: string) => {
 						vendor_description: '',
 						vendor_location: '',
 						vendor_type: '',
-						vendor_album: [],
+						vendor_album: '',
 				  }) as IUserVendorDetail,
 		};
 

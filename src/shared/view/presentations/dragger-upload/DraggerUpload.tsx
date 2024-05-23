@@ -125,7 +125,7 @@ const DraggerUpload = ({
 					{fileList.length === limit ? null : uploadButton}
 				</Upload>
 			</LoadingHandler>
-			<div className="text-caption-2 text-ny-gray-300 text-center mt-[10px]">
+			<div className="text-caption-2 text-ny-gray-300 text-center mt-[10px] max-w-max">
 				Supported: JPEG, JPG, PNG, Max size: 2 MB
 			</div>
 		</div>
