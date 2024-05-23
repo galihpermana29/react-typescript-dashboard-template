@@ -12,6 +12,10 @@ import DashboardContainer from '../../../../../routes/admin/dashboard/Dashboard'
 import { ItemsDataI } from './types';
 import VendorUserEditContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Edit/VendorUserEdit';
 import VendorUserDetailContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Detail/VendorUserDetail';
+import { VendorProductContainer } from '@/routes/vendor/product/VendorProduct';
+import VendorProductCreateContainer from '@/routes/vendor/product/view/container/Create/VendorContentCreate';
+import VendorProductEditContainer from '@/routes/vendor/product/view/container/Edit/VendorContentEdit';
+import VendorProductDetailContainer from '@/routes/vendor/product/view/container/Detail/VendorContentDetail';
 
 export const vendorRoutes: ItemsDataI[] = [
 	{
@@ -35,8 +39,41 @@ export const vendorRoutes: ItemsDataI[] = [
 		path: 'vendor-product',
 		children: [],
 		icon: <img src={dashboardIconGray} alt="icon" />,
-		components: <VendorDashboardContainer />,
+		components: <VendorProductContainer />,
 		show: true,
+	},
+	{
+		label: (
+			<div className="text-caption-1 font-[400] text-ny-gray-300">Product</div>
+		),
+		key: '/vendor-product/create',
+		path: 'vendor-product/create',
+		children: [],
+		icon: <img src={dashboardIconGray} alt="icon" />,
+		components: <VendorProductCreateContainer />,
+		show: false,
+	},
+	{
+		label: (
+			<div className="text-caption-1 font-[400] text-ny-gray-300">Product</div>
+		),
+		key: '/vendor-product/edit/:id',
+		path: 'vendor-product/edit/:id',
+		children: [],
+		icon: <img src={dashboardIconGray} alt="icon" />,
+		components: <VendorProductEditContainer />,
+		show: false,
+	},
+	{
+		label: (
+			<div className="text-caption-1 font-[400] text-ny-gray-300">Product</div>
+		),
+		key: '/vendor-product/detail/:id',
+		path: 'vendor-product/detail/:id',
+		children: [],
+		icon: <img src={dashboardIconGray} alt="icon" />,
+		components: <VendorProductDetailContainer />,
+		show: false,
 	},
 ];
 
