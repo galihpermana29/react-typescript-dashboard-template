@@ -60,6 +60,19 @@ export interface ICreateUserPayloadRoot {
 	role_id: number;
 }
 
+export interface IUserVendorDetail {
+	vendor_description: string;
+	vendor_location: string;
+	vendor_type: string;
+	vendor_album?: string[];
+}
+
+export type ICreateUserVendorInput = ICreateUserPayloadRoot & IUserVendorDetail;
+
+export interface ICreateUserVendorPayload extends ICreateUserPayloadRoot {
+	detail: string;
+}
+
 // Response
 export interface ICreateUserResponseRoot {
 	data: string;

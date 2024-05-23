@@ -1,39 +1,31 @@
-import defaultProfle from '@/assets/default-profile-image.png';
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { DatePicker, Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
 import { FormRow } from './FormRow';
+import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
 
 interface IFormCreate {
-	// handleMutate: UseMutateFunction<
-	// 	ICreateUserResponseRoot,
-	// 	AxiosError<unknown, any>,
-	// 	ICreateUserPayloadRoot,
-	// 	unknown
-	// >;
 	form: FormInstance;
+	onSave: any;
+	onCancel: any;
 }
 
-export const PageFormCreate = ({ form }: IFormCreate) => {
+export const PageFormCreate = ({ form, onSave, onCancel }: IFormCreate) => {
 	return (
 		<Form
 			form={form}
+			onFinish={(val) => onSave(val)}
 			layout="vertical"
 			className="flex flex-col gap-5 divide-y">
+			<PageHeader title="Profile Details" onCancel={onCancel} />
+
 			<FormRow
 				title="Profile Picture"
 				description="This will be displayed on your profile">
-				<div className="flex gap-2">
-					<div className="w-[100px] h-fit shrink-0 aspect-square rounded-md bg-ny-gray-100">
-						<img
-							src={defaultProfle}
-							alt="profile picture"
-							className="object-cover"
-						/>
-					</div>
-					<DraggerUpload form={form} formItemName="" />
-				</div>
+				<Form.Item noStyle name={'profile_image_uri'}>
+					<DraggerUpload form={form} formItemName="profile_image_uri" />
+				</Form.Item>
 			</FormRow>
 
 			<FormRow
@@ -136,7 +128,7 @@ export const PageFormCreate = ({ form }: IFormCreate) => {
 				<div className="flex flex-col w-full">
 					<Form.Item
 						className="my-[8px]"
-						name={'description'}
+						name={'vendor_description'}
 						label="Vendor Description"
 						rules={[
 							{
@@ -153,7 +145,7 @@ export const PageFormCreate = ({ form }: IFormCreate) => {
 					<div className="flex w-full gap-2">
 						<Form.Item
 							className="my-[8px] w-full"
-							name={'location'}
+							name={'vendor_location'}
 							label="Vendor Location"
 							rules={[
 								{
@@ -172,7 +164,7 @@ export const PageFormCreate = ({ form }: IFormCreate) => {
 						</Form.Item>
 						<Form.Item
 							className="my-[8px] w-full"
-							name={'type'}
+							name={'vendor_type'}
 							label="Vendor Type"
 							rules={[
 								{
@@ -196,7 +188,9 @@ export const PageFormCreate = ({ form }: IFormCreate) => {
 			<FormRow
 				title="Album"
 				description="Set your additional photo to your album">
-				<div></div>
+				<Form.Item noStyle name={'vendor_album'}>
+					<DraggerUpload form={form} formItemName="vendor_album" limit={10} />
+				</Form.Item>
 			</FormRow>
 		</Form>
 	);

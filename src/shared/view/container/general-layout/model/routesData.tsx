@@ -1,14 +1,15 @@
 import adminManagIconGray from '@/assets/icon/admin-manag-icon-gray.svg';
 import dashboardIconGray from '@/assets/icon/dashboard-icon-gray.svg';
+import { AdminRoleManagementContainer } from '@/routes/admin/admin-management/admin-role-management/AdminRoleManagement';
 import AdminUserManagementContainer from '@/routes/admin/admin-management/admin-user-management/AdminUserManagement';
 import { VendorContentContainer } from '@/routes/admin/vendor-management/vendor-content/VendorContent';
+import VendorContentDetailContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Detail/VendorContentDetail';
+import VendorContentEditContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Edit/VendorContentEdit';
 import { VendorUserManagementContainer } from '@/routes/admin/vendor-management/vendor-user-management/VendorUserManagement';
+import VendorUserCreateContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Create/VendorUserCreate';
+import VendorDashboardContainer from '@/routes/vendor/dashboard/VendorDashboard';
 import DashboardContainer from '../../../../../routes/admin/dashboard/Dashboard';
 import { ItemsDataI } from './types';
-import { AdminRoleManagementContainer } from '@/routes/admin/admin-management/admin-role-management/AdminRoleManagement';
-import VendorDashboardContainer from '@/routes/vendor/dashboard/VendorDashboard';
-import VendorContentEditContainer from '@/routes/admin/vendor-management/vendor-content/view/container/Edit/VendorContentEdit';
-import VendorUserCreateContainer from '@/routes/admin/vendor-management/vendor-user-management/view/container/Create/VendorUserCreate';
 
 export const vendorRoutes: ItemsDataI[] = [
 	{

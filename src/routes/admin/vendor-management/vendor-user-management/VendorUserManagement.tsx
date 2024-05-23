@@ -1,26 +1,24 @@
 import addIcon from '@/assets/icon/add.png';
+import { ILoaderData } from '@/routes/root';
+import { IDetailUserData } from '@/shared/models/userServicesInterface';
+import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
+import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import DashboardTable from '@/shared/view/presentations/dashboard-table/DashboardTable';
 import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
+import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
 import { Button, Form, Modal, Select } from 'antd';
-import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import { useForm } from 'antd/es/form/Form';
-import useMutateCreateVendorUser from './repositories/useCreateVendorUser';
+import { AxiosError } from 'axios';
+import { useLoaderData } from 'react-router-dom';
 import useQueryVendorUser from './repositories/useGetAllVendorUser';
 import useQueryVendorUserDetail from './repositories/useGetDetailVendorUser';
 import useMutateEditVendorUser from './repositories/useUpdateVendorUser';
 import useGenerateColumnVendorUser from './usecase/useGenerateColumn';
 import useModalReducer from './usecase/useModalReducer';
-import FormCreation from './view/presentations/Modal/FormCreation';
 import FormEdit from './view/presentations/Modal/FormEdit';
-import { IDetailUserData } from '@/shared/models/userServicesInterface';
-import { AxiosError } from 'axios';
 import FormFooter from './view/presentations/Modal/FormFooter';
-import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
-import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
-import { useLoaderData } from 'react-router-dom';
-import { ILoaderData } from '@/routes/root';
 
 export const VendorUserManagementContainer = () => {
 	const [form] = useForm();
@@ -42,10 +40,6 @@ export const VendorUserManagementContainer = () => {
 		error,
 	} = useQueryVendorUser(form);
 
-	const { mutate: mutateCreate } = useMutateCreateVendorUser(
-		closeModal,
-		refetch
-	);
 	const { mutate: mutateEdit } = useMutateEditVendorUser(closeModal, refetch);
 
 	const { isLoading: loadingGetDetail } = useQueryVendorUserDetail(
@@ -64,22 +58,6 @@ export const VendorUserManagementContainer = () => {
 	const { mutate: mutateEditPassword } = useMutateEditPassword(closeModal);
 
 	const modalType = {
-		create: (
-			<FormCreation
-				form={formModal}
-				handleMutate={mutateCreate}
-				footer={
-					<FormFooter
-						secondaryText="Cancel"
-						secondaryProps={{
-							onClick: () => closeModal!(),
-						}}
-						primaryText="Create"
-						primaryProps={{ type: 'submit' }}
-					/>
-				}
-			/>
-		),
 		detail: (
 			<LoadingHandler
 				isLoading={loadingGetDetail}
