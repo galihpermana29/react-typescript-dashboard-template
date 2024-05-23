@@ -92,6 +92,7 @@ const DraggerUpload = ({
 		<div>
 			<LoadingHandler isLoading={loadingUpload} classname="h-[169px]">
 				<Upload
+					accept="image/*"
 					onRemove={async (file) => {
 						const val = await form.getFieldsValue();
 						if (limit === 1) {

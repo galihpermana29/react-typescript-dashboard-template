@@ -1,7 +1,118 @@
-const VendorProductContainer = () => {
-  return (
-    <div>vendor product container</div>
-  );
-}
- 
-export default VendorProductContainer;
+import DashboardTable from '@/shared/view/presentations/dashboard-table/DashboardTable';
+import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
+import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
+import { Button, Form, Input, Select } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import useQueryVendorContent from './repositories/useGetAllContent';
+import useGenerateColumnVendorProduct from './usecase/useGenerateColumn';
+import useMutateEditVendorContent from './repositories/useUpdateContent';
+import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
+import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+import addIcon from '@/assets/icon/add.png';
+
+export const VendorProductContainer = () => {
+	const [form] = useForm();
+	const navigate = useNavigate();
+
+	const {
+		result,
+		queryVendorContent,
+		setQueryVendorContent,
+		isLoading,
+		handleFilter,
+		clearFilter,
+		refetch,
+		error,
+	} = useQueryVendorContent(form);
+
+	const { mutate: mutateEdit } = useMutateEditVendorContent(refetch);
+
+	const { columns } = useGenerateColumnVendorProduct(navigate, mutateEdit);
+
+	return (
+		<ErrorBoundary error={error as AxiosError} refetch={refetch}>
+			<TableHeaderTitle title="Vendor Product" />
+			<DashboardTable<any>
+				columns={columns}
+				onPaginationChanges={setQueryVendorContent}
+				loading={isLoading}
+				data={result?.data}
+				metadata={result ? result.meta_data : undefined}
+				filterComponents={
+					<DashboardTableFilter
+						form={form}
+						queryAdmins={queryVendorContent}
+						onApplyFilter={handleFilter}
+						onClearFilter={clearFilter}
+						onSearch={setQueryVendorContent}
+						buttonComponents={
+							<Button
+								onClick={() => navigate('/vendor-product/create')}
+								className="hover:!bg-ny-primary-500 hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
+								<img src={addIcon} alt="add-icon" />
+								Create User
+							</Button>
+						}
+						filterComponents={
+							<>
+								<Form.Item
+									name={'status'}
+									label="Status"
+									initialValue={queryVendorContent.status}
+									className="my-[10px]">
+									<Select
+										className="h-[35px]"
+										options={[
+											{ value: 'default', label: 'All' },
+											{ value: 'active', label: 'Active' },
+											{ value: 'inactive', label: 'Inactive' },
+										]}
+									/>
+								</Form.Item>
+								<Form.Item
+									name={'tag'}
+									label="Tag"
+									initialValue={queryVendorContent.tag}
+									className="my-[10px]">
+									<Select
+										mode="multiple"
+										className="w-full max-w-[224px] h-[35px]"
+										placeholder="Tag"
+										options={[
+											{ value: 'book', label: 'Book' },
+											{ value: 'atomic', label: 'Atomic' },
+											{ value: 'habbit', label: 'Habbit' },
+										]}
+									/>
+								</Form.Item>
+								<Form.Item
+									label="Price"
+									name={'min_price'}
+									initialValue={queryVendorContent.min_price}
+									className="my-[10px]">
+									<Input
+										value={queryVendorContent.min_price}
+										className="h-[35px] w-full max-w-[300px] rounded-[8px] [&>input]:!text-caption-1 [&>input]:!font-[400]"
+										placeholder="Min Price"
+									/>
+								</Form.Item>
+								<Form.Item
+									name={'max_price'}
+									initialValue={queryVendorContent.max_price}
+									className="my-[10px]">
+									<Input
+										value={queryVendorContent.max_price}
+										className="h-[35px] w-full max-w-[300px] rounded-[8px] [&>input]:!text-caption-1 [&>input]:!font-[400]"
+										placeholder="Max Price"
+									/>
+								</Form.Item>
+							</>
+						}
+					/>
+				}
+			/>
+		</ErrorBoundary>
+	);
+};

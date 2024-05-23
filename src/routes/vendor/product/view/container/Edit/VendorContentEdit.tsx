@@ -8,7 +8,7 @@ import LoadingHandler from '@/shared/view/container/loading/Loading';
 import useMutateEditVendorContent from '../../../repositories/useUpdateContent';
 import { AxiosError } from 'axios';
 
-const VendorContentEditContainer = () => {
+const VendorProductEditContainer = () => {
 	const [form] = useForm();
 	const navigate = useNavigate();
 	const { id } = useParams();
@@ -40,4 +40,4 @@ const VendorContentEditContainer = () => {
 	);
 };
 
-export default VendorContentEditContainer;
+export default VendorProductEditContainer;

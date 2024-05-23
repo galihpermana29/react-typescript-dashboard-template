@@ -1,4 +1,11 @@
-import { IAllProductResponseRoot, IDetailProductResponseRoot, IUpdateProductPayloadRoot, IUpdateProductResponseRoot } from '../models/productServicesInterface';
+import {
+	IAllProductResponseRoot,
+	ICreateProductPayloadRoot,
+	ICreateProductResponseRoot,
+	IDetailProductResponseRoot,
+	IUpdateProductPayloadRoot,
+	IUpdateProductResponseRoot,
+} from '../models/productServicesInterface';
 import { ApiClass } from './generalApi';
 
 class DashboardProductServices extends ApiClass {
@@ -6,7 +13,9 @@ class DashboardProductServices extends ApiClass {
 		super(baseURL, config);
 	}
 
-	public async getAllProducts(query?: string): Promise<IAllProductResponseRoot> {
+	public async getAllProducts(
+		query?: string
+	): Promise<IAllProductResponseRoot> {
 		const token = JSON.parse(localStorage.getItem('token')!);
 
 		const { data } = await this.axiosInstance.get<IAllProductResponseRoot>(
@@ -16,7 +25,9 @@ class DashboardProductServices extends ApiClass {
 		return data;
 	}
 
-	public async getProductDetail(id: string): Promise<IDetailProductResponseRoot> {
+	public async getProductDetail(
+		id: string
+	): Promise<IDetailProductResponseRoot> {
 		const token = JSON.parse(localStorage.getItem('token')!);
 
 		const { data } = await this.axiosInstance.get<IDetailProductResponseRoot>(
@@ -26,7 +37,7 @@ class DashboardProductServices extends ApiClass {
 					Authorization: `Bearer ${token}`,
 				},
 			}
-		)
+		);
 
 		return data;
 	}
@@ -45,7 +56,23 @@ class DashboardProductServices extends ApiClass {
 					Authorization: `Bearer ${token}`,
 				},
 			}
-		)
+		);
+
+		return data;
+	}
+	public async createProduct(
+		payload: ICreateProductPayloadRoot
+	): Promise<ICreateProductResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } = await this.axiosInstance.post<ICreateProductResponseRoot>(
+			`/products`,
+			payload,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 
 		return data;
 	}
