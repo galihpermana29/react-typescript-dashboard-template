@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useQueryVendorUserDetail from '../../../repositories/useGetDetailVendorUser';
 import useMutateEditVendorUser from '../../../repositories/useUpdateVendorUser';
 import { PageFormEdit } from '../../presentations/PageForm/PageFormEdit';
+import { AxiosError } from 'axios';
 
 const VendorUserDetailContainer = () => {
 	const [form] = useForm();
@@ -14,29 +15,33 @@ const VendorUserDetailContainer = () => {
 
 	const { id } = useParams();
 
-	const { isLoading: loadingGetDetail, refetch } = useQueryVendorUserDetail(
-		id as string,
-		form
-	);
+	const {
+		isLoading: loadingGetDetail,
+		refetch,
+		error,
+	} = useQueryVendorUserDetail(id as string, form);
 
 	const { mutate: mutateEdit } = useMutateEditVendorUser(refetch);
 
 	return (
 		<div>
-			<ErrorBoundary error={undefined as any} refetch={() => ({})}>
+			<ErrorBoundary error={error as AxiosError} refetch={refetch}>
 				<div className="bg-white">
 					<TableHeaderTitle title="Vendor User Detail" withArrow={true} />
-					<LoadingHandler isLoading={loadingGetDetail} fullscreen={true}>
-						<PageFormEdit
-							form={form}
-							onSave={mutateEdit}
-							onCancel={() => {
-								navigate(-1);
-							}}
-							id={id as string}
-							disabled={true}
-						/>
-					</LoadingHandler>
+					<div className="p-[20px]">
+						<LoadingHandler isLoading={loadingGetDetail} fullscreen={true}>
+							<PageFormEdit
+								form={form}
+								onSave={mutateEdit}
+								onCancel={() => {
+									navigate(-1);
+								}}
+								id={id as string}
+								disabled={true}
+								showEditButton
+							/>
+						</LoadingHandler>
+					</div>
 				</div>
 			</ErrorBoundary>
 		</div>

@@ -17,7 +17,7 @@ export const PageFormCreate = ({ form, onSave, onCancel }: IFormCreate) => {
 			form={form}
 			onFinish={(val) => onSave(val)}
 			layout="vertical"
-			className="flex flex-col gap-5 divide-y">
+			className="flex flex-col gap-5">
 			<PageHeader title="Profile Details" onCancel={onCancel} />
 
 			<FormRow

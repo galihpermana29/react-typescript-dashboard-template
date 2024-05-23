@@ -11,6 +11,7 @@ interface IFormCreate {
 	onCancel: () => void;
 	id: string;
 	disabled: boolean;
+	showEditButton?: boolean;
 }
 
 export const PageFormEdit = ({
@@ -18,6 +19,7 @@ export const PageFormEdit = ({
 	onSave,
 	onCancel,
 	disabled = false,
+	showEditButton = false,
 	id,
 }: IFormCreate) => {
 	return (
@@ -26,8 +28,13 @@ export const PageFormEdit = ({
 			onFinish={(val) => onSave({ payload: val, type: 'edit', id })}
 			layout="vertical"
 			disabled={disabled}
-			className="flex flex-col gap-5 divide-y">
-			<PageHeader title="Profile Details" onCancel={onCancel} />
+			className="flex flex-col gap-5">
+			<PageHeader
+				title="Profile Details"
+				onCancel={onCancel}
+				id={id}
+				showEditButton={showEditButton}
+			/>
 
 			<FormRow
 				title="Profile Picture"
