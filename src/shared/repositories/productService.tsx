@@ -11,9 +11,6 @@ import {
 	IUpdateProductTagResponseRoot,
 	ICreateProductPayloadRoot,
 	ICreateProductResponseRoot,
-	IDetailProductResponseRoot,
-	IUpdateProductPayloadRoot,
-	IUpdateProductResponseRoot,
 } from '../models/productServicesInterface';
 import { ApiClass } from './generalApi';
 
@@ -136,8 +133,8 @@ class DashboardProductServices extends ApiClass {
 
 		return data;
 	}
-  
-  public async createProduct(
+
+	public async createProduct(
 		payload: ICreateProductPayloadRoot
 	): Promise<ICreateProductResponseRoot> {
 		const token = JSON.parse(localStorage.getItem('token')!);
