@@ -1,13 +1,55 @@
+import { Form } from 'antd';
+import { useGetVendor } from '../../usecase/useGetVendor';
+import type { TVendorFormType } from '../../repositories/vendor-form-type';
+import LoadingHandler from '@/shared/view/container/loading/Loading';
+import type { ILoginData } from '@/shared/models/userServicesInterface';
+
 export default function VendorProfileContainer({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	return (
-		<div className="relative">
-			<div className="bg-ny-primary-500 h-44 w-full absolute top-0 rounded-xl" />
+	const [form] = Form.useForm();
 
-			{children}
-		</div>
+	const userDetail = localStorage ? localStorage.getItem('admin') : null;
+
+	const parsedUserDetail = userDetail
+		? (JSON.parse(userDetail) as ILoginData)
+		: undefined;
+
+	const userId = parsedUserDetail ? parsedUserDetail.user_id : '';
+
+	const { data, isLoading } = useGetVendor(userId);
+
+	const initialValues = {
+		id: data?.id,
+		name: data?.name,
+		email: data?.email,
+		date_of_birth: data?.date_of_birth,
+		type: data?.type,
+		role_id: data?.role_id,
+		role_name: data?.role_name,
+		status: data?.status,
+		profile_image_uri: data?.profile_image_uri,
+		vendor_description: data?.detail.vendor_description,
+		vendor_type: data?.detail.vendor_type,
+		vendor_location: data?.detail.vendor_location,
+		vendor_album: data?.detail.vendor_album,
+	};
+
+	return (
+		<LoadingHandler
+			classname="min-h-screen w-full justify-center items-center flex"
+			isLoading={isLoading}>
+			<Form<TVendorFormType>
+				layout="vertical"
+				initialValues={initialValues}
+				form={form}
+				className="relative">
+				<div className="bg-ny-primary-500 h-44 w-full absolute top-0 rounded-xl" />
+
+				{children}
+			</Form>
+		</LoadingHandler>
 	);
 }

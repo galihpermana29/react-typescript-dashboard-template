@@ -1,5 +1,7 @@
-import { Select } from 'antd';
+import { Form, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import type { TVendorFormType } from '../../repositories/vendor-form-type';
+import { citiesList, vendorTypes } from '../../repositories/constants';
 
 export default function VendorAdditionalDetails() {
 	return (
@@ -11,23 +13,33 @@ export default function VendorAdditionalDetails() {
 				</h4>
 			</div>
 
-			{/* This should be a form */}
 			<div className="flex flex-col gap-5 flex-grow">
-				<div className="flex flex-col gap-1 max-w-lg">
-					<h4>
-						Description <span className="text-ny-primary-500">*</span>
-					</h4>
+				<Form.Item<TVendorFormType>
+					label="Description"
+					name="vendor_description"
+					className="flex flex-col gap-1 max-w-lg">
 					<TextArea className="w-full" />
-				</div>
+				</Form.Item>
 
 				<div className="flex items-center gap-2 max-w-lg w-full">
-					{['location', 'profile'].map((field) => (
-						<div className="flex flex-col gap-1 w-full">
-							<h4>
-								Vendor {field} <span className="text-ny-primary-500">*</span>
-							</h4>
-							<Select className="w-full" />
-						</div>
+					{[
+						{
+							label: 'Location',
+							name: 'vendor_location' as const,
+							options: citiesList,
+						},
+						{
+							label: 'Profile',
+							name: 'vendor_type' as const,
+							options: vendorTypes,
+						},
+					].map((field) => (
+						<Form.Item<TVendorFormType>
+							label={field.label}
+							name={field.name}
+							className="flex flex-col gap-1 w-full">
+							<Select options={field.options} className="w-full" />
+						</Form.Item>
 					))}
 				</div>
 			</div>

@@ -1,4 +1,6 @@
-import { Input } from 'antd';
+import { DatePicker, Form, Input } from 'antd';
+import type { TVendorFormType } from '../../repositories/vendor-form-type';
+import dayjs from 'dayjs';
 
 export default function VendorBasicDetails() {
 	return (
@@ -10,16 +12,25 @@ export default function VendorBasicDetails() {
 				</h4>
 			</div>
 
-			{/* This should be a form */}
 			<div className="flex flex-col gap-5 flex-grow">
-				{['Email', 'Name', 'Date of Birth'].map((field) => (
-					<div className="flex flex-col gap-1 max-w-lg">
-						<h4>
-							{field} <span className="text-ny-primary-500">*</span>
-						</h4>
+				{[
+					{ label: 'E-mail', name: 'email' as const },
+					{ label: 'Name', name: 'name' as const },
+				].map((field) => (
+					<Form.Item<TVendorFormType>
+						label={field.label}
+						name={field.name}
+						className="flex flex-col gap-1 max-w-lg">
 						<Input className="w-full" />
-					</div>
+					</Form.Item>
 				))}
+
+				<Form.Item<TVendorFormType>
+					label="Date of birth"
+					name="date_of_birth"
+					className="flex flex-col gap-1 max-w-lg">
+					<DatePicker maxDate={dayjs(new Date())} className="w-full" />
+				</Form.Item>
 			</div>
 		</section>
 	);
