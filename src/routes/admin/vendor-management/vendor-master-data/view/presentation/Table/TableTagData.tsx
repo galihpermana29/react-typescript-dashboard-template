@@ -11,10 +11,10 @@ import useMutateEditProductTag from '../../../respositories/useUpdateTag';
 import useModalReducer from '../../../usecase/useModalReducer';
 import FormCreation from '../Modal/FormCreation';
 import useMutateCreateProductTag from '../../../respositories/useCreateTag';
-import FormFooter from '../Modal/FormFooter';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import useQueryProductTagDetail from '../../../respositories/useGetDetailTag';
 import FormEdit from '../Modal/FormEdit';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 export const TableTagData = () => {
 	const [form] = useForm();

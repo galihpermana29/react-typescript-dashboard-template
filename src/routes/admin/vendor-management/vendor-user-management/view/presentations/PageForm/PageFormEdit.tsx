@@ -1,9 +1,9 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
+import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
 import { Button, DatePicker, Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
-import { FormRow } from './FormRow';
 import { useNavigate } from 'react-router-dom';
 
 interface IFormCreate {

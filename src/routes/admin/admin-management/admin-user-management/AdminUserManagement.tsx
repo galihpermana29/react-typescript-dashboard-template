@@ -9,7 +9,6 @@ import DashboardTable from '@/shared/view/presentations/dashboard-table/Dashboar
 import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
 import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import FormCreation from './view/presentations/Modal/FormCreation';
-import FormFooter from './view/presentations/Modal/FormFooter';
 import useGenerateColumnAdminUser from './usecase/useGenerateColumn';
 import useModalReducer from './usecase/useModalReducer';
 import useMutateCreateAdmins from './repositories/useCreateUser';
@@ -23,6 +22,7 @@ import FormChangePassword from '@/shared/view/presentations/modal/ChangePassword
 import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
 import { useLoaderData } from 'react-router-dom';
 import { ILoaderData } from '@/routes/root';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 const AdminUserManagementContainer = () => {
 	const [form] = useForm();
