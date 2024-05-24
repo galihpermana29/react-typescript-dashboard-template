@@ -1,27 +1,21 @@
-import { Button, Form } from 'antd';
-import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
-import VendorChangePassword from './VendorChangePassword';
+import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
+import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
+import { Form } from 'antd';
 
 export default function VendorProfileHeader() {
 	const form = Form.useFormInstance();
 
 	return (
-		<div className="flex items-center justify-between -mb-7">
-			<h1 className="text-xl font-medium">Profile Details</h1>
-
-			<Form.Item<ICreateUserVendorInput>>
-				<div className="flex items-center gap-2">
-					<VendorChangePassword />
-
-					<Button onClick={() => form.resetFields()} type="default">
-						Cancel
-					</Button>
-
-					<Button htmlType="submit" type="primary">
-						Save
-					</Button>
-				</div>
+		<FormRow
+			title="Profile Picture"
+			description="This will be displayed on your profile">
+			<Form.Item noStyle name={'profile_image_uri'}>
+				<DraggerUpload
+					form={form}
+					formItemName="profile_image_uri"
+					profileImageURL={form.getFieldValue('profile_image_uri')}
+				/>
 			</Form.Item>
-		</div>
+		</FormRow>
 	);
 }

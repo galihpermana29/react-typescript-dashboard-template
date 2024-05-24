@@ -1,4 +1,5 @@
 import { useReducer } from 'react';
+import { FormInstance } from 'antd';
 
 const OPEN_MODAL = 'OPEN_MODAL';
 const CLOSE_MODAL = 'CLOSE_MODAL';
@@ -46,10 +47,11 @@ const initialState: TModalState = {
 	id: undefined,
 };
 
-const useModalReducer = (): IModalReducerReturn => {
+const useModalReducer = (form?: FormInstance<any>): IModalReducerReturn => {
 	const [modalState, dispatch] = useReducer(modalReducer, initialState);
 
 	const openModal = (modalType: TModalType, id?: string) => {
+		if (modalType === 'create') form!.resetFields();
 		dispatch({ type: 'OPEN_MODAL', modalType, id });
 	};
 

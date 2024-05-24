@@ -1,37 +1,102 @@
-import VendorInformation from './view/presentations/VendorInformation';
-import VendorProfilePicture from './view/presentations/VendorProfilePicture';
-import VendorBasicDetails from './view/presentations/VendorBasicDetails';
-import VendorProfileHeader from './view/presentations/VendorProfileHeader';
-import VendorAdditionalDetails from './view/presentations/VendorAdditionalDetails';
-import VendorAlbum from './view/presentations/VendorAlbum';
-import VendorProfileContainer from './view/container/VendorProfileContainer';
+import { Form, Modal } from 'antd';
+import LoadingHandler from '@/shared/view/container/loading/Loading';
+import useMutateEditVendorUser from '@/routes/admin/vendor-management/vendor-user-management/repositories/useUpdateVendorUser';
+import { useNavigate } from 'react-router-dom';
+import useQueryVendorUserDetail from '@/routes/admin/vendor-management/vendor-user-management/repositories/useGetDetailVendorUser';
+import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
+import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
+import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
+import type { AxiosError } from 'axios';
+import useModalReducer from './usecase/useModalReducer';
+import { PageFormEdit } from './view/presentations/Form/PageFormEdit';
+import type { ILoginData } from '@/shared/models/userServicesInterface';
 
-const VendorDashboardContainer = () => {
-	return (
-		<VendorProfileContainer>
-			<main className="flex flex-col gap-12 px-8 relative">
-				<VendorInformation />
+export default function VendorProfileContainer() {
+	const [form] = Form.useForm();
+	const [formModal] = Form.useForm();
 
-				<VendorProfileHeader />
+	const { modalState, closeModal, openModal } = useModalReducer(formModal);
 
-				<hr className="w-full" />
+	const navigate = useNavigate();
 
-				<VendorProfilePicture />
+	const userDetail = localStorage ? localStorage.getItem('admin') : null;
 
-				<hr className="w-full" />
+	const parsedUserDetail = userDetail
+		? (JSON.parse(userDetail) as ILoginData)
+		: undefined;
 
-				<VendorBasicDetails />
+	const userId = parsedUserDetail ? parsedUserDetail.user_id : '';
 
-				<hr className="w-full" />
+	const {
+		data: initialValues,
+		isLoading: loadingGetDetail,
+		refetch,
+		error,
+	} = useQueryVendorUserDetail(userId as string, form);
 
-				<VendorAdditionalDetails />
+	const { mutate: mutateEdit } = useMutateEditVendorUser(refetch);
 
-				<hr className="w-full" />
-
-				<VendorAlbum />
-			</main>
-		</VendorProfileContainer>
+	const { mutate: mutateEditPassword } = useMutateEditPassword(
+		closeModal,
+		refetch
 	);
-};
 
-export default VendorDashboardContainer;
+	const modalType = {
+		password: (
+			<FormChangePassword
+				id={modalState?.id}
+				form={formModal}
+				handleMutate={mutateEditPassword}
+				footer={
+					<FormFooter
+						secondaryText="Cancel"
+						secondaryProps={{
+							onClick: () => closeModal!(),
+						}}
+						primaryText="Save"
+						primaryProps={{ type: 'submit' }}
+					/>
+				}
+			/>
+		),
+	};
+
+	return (
+		<div>
+			<ErrorBoundary error={error as AxiosError} refetch={refetch}>
+				<Modal
+					title={
+						<div className="capitalize">
+							{modalState?.type === 'password'
+								? 'Change Password'
+								: `${modalState?.type} User`}
+						</div>
+					}
+					open={modalState?.isOpen}
+					footer={null}
+					onCancel={closeModal}>
+					{modalType[modalState!.type]}
+				</Modal>
+
+				<div className="bg-white">
+					<div className="p-[20px]">
+						<LoadingHandler isLoading={loadingGetDetail} fullscreen={true}>
+							<PageFormEdit
+								initialValues={initialValues}
+								form={form}
+								onSave={mutateEdit}
+								onChangePasswordClick={() => openModal!('password', userId)}
+								onCancel={() => {
+									navigate(-1);
+								}}
+								id={userId as string}
+								disabled={false}
+							/>
+						</LoadingHandler>
+					</div>
+				</div>
+			</ErrorBoundary>
+		</div>
+	);
+}
