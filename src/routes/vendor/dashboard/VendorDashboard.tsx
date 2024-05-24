@@ -11,6 +11,7 @@ import type { AxiosError } from 'axios';
 import useModalReducer from './usecase/useModalReducer';
 import { PageFormEdit } from './view/presentations/Form/PageFormEdit';
 import type { ILoginData } from '@/shared/models/userServicesInterface';
+import profileCover from '@/assets/vendor-profile-cover.jpeg';
 
 export default function VendorProfileContainer() {
 	const [form] = Form.useForm();
@@ -79,7 +80,11 @@ export default function VendorProfileContainer() {
 					{modalType[modalState!.type]}
 				</Modal>
 
-				<div className="bg-white">
+				<div className="bg-white relative">
+					<div className="bg-ny-primary-500 h-[12.5rem] w-full absolute top-0 rounded-xl overflow-hidden bg-bottom">
+						<img src={profileCover} className="bg-ny-primary-500 bg-cover" />
+					</div>
+
 					<div className="p-[20px]">
 						<LoadingHandler isLoading={loadingGetDetail} fullscreen={true}>
 							<PageFormEdit

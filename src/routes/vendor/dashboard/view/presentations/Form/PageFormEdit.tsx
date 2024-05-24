@@ -40,8 +40,6 @@ export const PageFormEdit = ({
 			layout="vertical"
 			disabled={disabled}
 			className="flex flex-col gap-5 relative">
-			<div className="bg-ny-primary-500 h-44 w-full absolute top-0 rounded-xl" />
-
 			<VendorInformation />
 
 			<PageHeader

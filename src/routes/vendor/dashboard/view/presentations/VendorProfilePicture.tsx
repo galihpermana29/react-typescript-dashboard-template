@@ -1,6 +1,7 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { Avatar, Form } from 'antd';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
+import defaultImage from '@/assets/default-profile-image.png';
 
 export default function VendorProfilePicture() {
 	const form = Form.useFormInstance();
@@ -13,7 +14,7 @@ export default function VendorProfilePicture() {
 				<Avatar
 					shape="square"
 					className="border-2 border-white size-36 shrink-0 bg-white"
-					src={form.getFieldValue('profile_image_uri')}>
+					src={form.getFieldValue('profile_image_uri') ?? defaultImage}>
 					Avatar
 				</Avatar>
 
