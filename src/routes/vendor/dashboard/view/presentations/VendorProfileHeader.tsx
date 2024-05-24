@@ -1,5 +1,6 @@
 import { Button, Form } from 'antd';
 import type { ICreateUserVendorInput } from '@/shared/models/userServicesInterface';
+import VendorChangePassword from './VendorChangePassword';
 
 export default function VendorProfileHeader() {
 	const form = Form.useFormInstance();
@@ -10,9 +11,7 @@ export default function VendorProfileHeader() {
 
 			<Form.Item<ICreateUserVendorInput>>
 				<div className="flex items-center gap-2">
-					<Button type="link" className="text-ny-primary-400">
-						Change password
-					</Button>
+					<VendorChangePassword />
 
 					<Button onClick={() => form.resetFields()} type="default">
 						Cancel
