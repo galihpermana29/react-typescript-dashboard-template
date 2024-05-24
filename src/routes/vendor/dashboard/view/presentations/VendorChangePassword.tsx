@@ -34,13 +34,12 @@ export default function VendorChangePassword() {
 					id={userId}
 					form={form}
 					handleMutate={mutate}
-					initialValues={{ old_password: '', new_password: '' }}
 					footer={
 						<FormFooter
 							secondaryText="Cancel"
 							secondaryProps={{
 								onClick: () => {
-									form.resetFields();
+									form.setFieldsValue({ new_password: '', old_password: '' });
 									closeModal!();
 								},
 							}}

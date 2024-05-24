@@ -20,15 +20,8 @@ interface IFormEdit {
 	>;
 	footer: React.ReactNode;
 	id?: string;
-	initialValues?: IUpdatePasswordInputRoot;
 }
-const FormChangePassword = ({
-	form,
-	handleMutate,
-	footer,
-	id,
-	initialValues,
-}: IFormEdit) => {
+const FormChangePassword = ({ form, handleMutate, footer, id }: IFormEdit) => {
 	return (
 		<div>
 			<Form
@@ -36,8 +29,7 @@ const FormChangePassword = ({
 				layout="vertical"
 				onFinish={(value) => {
 					handleMutate!({ payload: value, id: id! });
-				}}
-				initialValues={initialValues}>
+				}}>
 				<div className="flex-1">
 					<Form.Item
 						className="my-[8px]"
