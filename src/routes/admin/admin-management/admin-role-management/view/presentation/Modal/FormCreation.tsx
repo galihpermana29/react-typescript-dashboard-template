@@ -6,7 +6,7 @@ import { Cascader, Form, FormInstance, Input } from 'antd';
 import { AxiosError } from 'axios';
 import { UseMutateFunction } from 'react-query';
 import useGenerateModalProps from '../../../usecase/useGenerateModalProps';
-import { options } from '../../../usecase/useGenerateColumn';
+import { useGenerateCascaderOptions } from '../../../usecase/useGenerateCascaderOptions';
 
 interface IFormCreation {
 	form: FormInstance<any>;
@@ -21,6 +21,8 @@ interface IFormCreation {
 
 const FormCreation = ({ form, handleMutate, footer }: IFormCreation) => {
 	const { transformToPayload } = useGenerateModalProps();
+
+	const { options } = useGenerateCascaderOptions();
 
 	return (
 		<div>
