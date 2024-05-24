@@ -41,8 +41,7 @@ const FormChangePassword = ({ form, handleMutate, footer, id }: IFormEdit) => {
 								message: 'Please input old password!',
 							},
 						]}>
-						<Input
-							type="password"
+						<Input.Password
 							placeholder="Enter old password"
 							className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
 						/>
@@ -57,8 +56,7 @@ const FormChangePassword = ({ form, handleMutate, footer, id }: IFormEdit) => {
 								message: 'Please input a new password!',
 							},
 						]}>
-						<Input
-							type="password"
+						<Input.Password
 							placeholder="Enter new password"
 							className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
 						/>
