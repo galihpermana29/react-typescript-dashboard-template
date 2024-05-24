@@ -42,7 +42,7 @@ const FormCreation = ({ form, handleMutate, footer, type }: IFormCreation) => {
 						<Form.Item
 							className="my-[8px]"
 							name={'name'}
-							label={isTag ? 'Tag name' : 'Type name'}
+							label={isTag ? 'Tag name' : 'Product Type name'}
 							rules={[
 								{
 									required: true,
