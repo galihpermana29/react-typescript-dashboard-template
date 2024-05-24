@@ -8,129 +8,11 @@ import { Button, Checkbox, Dropdown, Row, Space, TableProps, Tag } from 'antd';
 import { AxiosError } from 'axios';
 import { UseMutateFunction } from 'react-query';
 import { TModalType } from './useModalReducer';
-
-interface Option {
-	value: string | number;
-	label: string;
-	children?: Option[];
-}
+import { useGenerateCascaderOptions } from './useGenerateCascaderOptions';
 
 const formatLabelSubject = (permission: string) => {
 	return permission.split(' ')[0] + ' ' + permission.split(' ')[1];
 };
-
-export const options: Option[] = [
-	{
-		label: 'Admin User Management',
-		value: 'admin user management',
-		children: [
-			{
-				label: 'Create Admin User',
-				value: 'create',
-			},
-			{
-				label: 'View Admin User',
-				value: 'view',
-			},
-			{
-				label: 'Update Admin User',
-				value: 'update',
-			},
-			{
-				label: 'Delete Admin User',
-				value: 'delete',
-			},
-		],
-	},
-	{
-		label: 'Admin Role Management',
-		value: 'admin role management',
-		children: [
-			{
-				label: 'Create Admin Role',
-				value: 'create',
-			},
-			{
-				label: 'View Admin Role',
-				value: 'view',
-			},
-			{
-				label: 'Update Admin Role',
-				value: 'update',
-			},
-			{
-				label: 'Delete Admin Role',
-				value: 'delete',
-			},
-		],
-	},
-	{
-		label: 'Vendor User Management',
-		value: 'vendor user management',
-		children: [
-			{
-				label: 'Create Vendor User',
-				value: 'create',
-			},
-			{
-				label: 'View Vendor User',
-				value: 'view',
-			},
-			{
-				label: 'Update Vendor User',
-				value: 'update',
-			},
-			{
-				label: 'Delete Vendor User',
-				value: 'delete',
-			},
-		],
-	},
-	{
-		label: 'Vendor Content',
-		value: 'vendor content',
-		children: [
-			{
-				label: 'Create Vendor Content',
-				value: 'create',
-			},
-			{
-				label: 'View Vendor Content',
-				value: 'view',
-			},
-			{
-				label: 'Update Vendor Content',
-				value: 'update',
-			},
-			{
-				label: 'Delete Vendor Content',
-				value: 'delete',
-			},
-		],
-	},
-	{
-		label: 'Vendor Master Data',
-		value: 'vendor master data',
-		children: [
-			{
-				label: 'Create Master Data',
-				value: 'create',
-			},
-			{
-				label: 'View Master Data',
-				value: 'view',
-			},
-			{
-				label: 'Update Master Data',
-				value: 'update',
-			},
-			{
-				label: 'Delete Master Data',
-				value: 'delete',
-			},
-		],
-	},
-];
 
 const useGenerateColumnAdminRole = (
 	remove: boolean,
@@ -147,6 +29,8 @@ const useGenerateColumnAdminRole = (
 		unknown
 	>
 ) => {
+	const { options } = useGenerateCascaderOptions();
+
 	const columns: TableProps['columns'] = [
 		{
 			title: 'Role',

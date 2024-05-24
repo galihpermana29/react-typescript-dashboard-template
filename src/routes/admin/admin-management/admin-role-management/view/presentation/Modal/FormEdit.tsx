@@ -6,8 +6,8 @@ import {
 import { Cascader, Form, FormInstance, Input } from 'antd';
 import { AxiosError } from 'axios';
 import { UseMutateFunction } from 'react-query';
+import { useGenerateCascaderOptions } from '../../../usecase/useGenerateCascaderOptions';
 import useGenerateModalProps from '../../../usecase/useGenerateModalProps';
-import { options } from '../../../usecase/useGenerateColumn';
 
 interface IFormEdit {
 	form: FormInstance;
@@ -29,6 +29,8 @@ interface IFormEdit {
 const FormEdit = ({ form, handleMutate, footer, id, detail }: IFormEdit) => {
 	const { transformToPayload, transformToCascaderData } =
 		useGenerateModalProps();
+
+	const { options } = useGenerateCascaderOptions();
 
 	const defaultValue = transformToCascaderData(detail);
 
