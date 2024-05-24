@@ -9,11 +9,11 @@ import useModalReducer from './usecase/useModalReducer';
 import useQueryVendorContentsDetail from './repositories/useGetDetailContent';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import FormEdit from './view/presentations/Modal/FormEdit';
-import FormFooter from './view/presentations/Modal/FormFooter';
 import useMutateEditVendorContent from './repositories/useUpdateContent';
 import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 export const VendorContentContainer = () => {
 	const [form] = useForm();

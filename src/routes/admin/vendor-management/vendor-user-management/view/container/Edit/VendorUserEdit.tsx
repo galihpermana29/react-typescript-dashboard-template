@@ -9,9 +9,9 @@ import { PageFormEdit } from '../../presentations/PageForm/PageFormEdit';
 import { AxiosError } from 'axios';
 import useModalReducer from '../../../usecase/useModalReducer';
 import FormChangePassword from '@/shared/view/presentations/modal/ChangePasswordModal';
-import FormFooter from '../../presentations/Modal/FormFooter';
 import { Modal } from 'antd';
 import useMutateEditPassword from '@/shared/repositories/useUpdatePassword';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 const VendorUserEditContainer = () => {
 	const [form] = useForm();

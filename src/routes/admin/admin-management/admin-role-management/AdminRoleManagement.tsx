@@ -13,12 +13,12 @@ import useGenerateColumnAdminRole from './usecase/useGenerateColumn';
 import useModalReducer from './usecase/useModalReducer';
 import FormCreation from './view/presentation/Modal/FormCreation';
 import { IAllRolesData } from '@/shared/models/roleServicesInterface';
-import FormFooter from './view/presentation/Modal/FormFooter';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import FormEdit from './view/presentation/Modal/FormEdit';
 import useQueryRoleDetail from './repositories/useGetDetailRole';
 import { useLoaderData } from 'react-router-dom';
 import { ILoaderData } from '@/routes/root';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 export const AdminRoleManagementContainer = () => {
 	const [form] = useForm();

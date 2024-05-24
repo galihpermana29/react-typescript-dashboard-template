@@ -2,8 +2,8 @@ import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpl
 import { DatePicker, Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
-import { FormRow } from './FormRow';
 import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
+import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 
 interface IFormCreate {
 	form: FormInstance;
