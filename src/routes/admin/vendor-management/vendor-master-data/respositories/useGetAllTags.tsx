@@ -1,5 +1,5 @@
 import { TGeneralFilter } from '@/shared/models/generalInterfaces';
-import { DashboardRoleAPI } from '@/shared/repositories/roleServies';
+import { DashboardProductAPI } from '@/shared/repositories/productService';
 import useConvertQuery from '@/shared/usecase/useConvertQuery';
 import useSuccessAxios from '@/shared/usecase/useSuccessAxios';
 import { useDebounce } from '@uidotdev/usehooks';
@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 
-const useQueryAdminRoles = (form: FormInstance<any>) => {
+const useQueryProductTags = (form: FormInstance<any>) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const keyword = searchParams.get('keyword');
@@ -18,13 +18,13 @@ const useQueryAdminRoles = (form: FormInstance<any>) => {
 
 	// Default filter state
 	const initialFilterState: TGeneralFilter = {
-		limit: 3,
+		limit: 10,
 		page: 1,
 		keyword: '',
 		status: 'default',
 	};
 
-	const [queryAdminRoles, setQueryAdminRoles] = useState<TGeneralFilter>({
+	const [queryProductTags, setQueryProductTags] = useState<TGeneralFilter>({
 		limit: limit ? parseInt(limit) : initialFilterState.limit,
 		page: page ? parseInt(page) : initialFilterState.page,
 		keyword: keyword ?? initialFilterState.keyword,
@@ -33,29 +33,28 @@ const useQueryAdminRoles = (form: FormInstance<any>) => {
 
 	const { objectToQueryParams } = useConvertQuery();
 	const { addIndexToData } = useSuccessAxios();
-	const queries = useDebounce(queryAdminRoles, 1000);
+	const queries = useDebounce(queryProductTags, 1000);
 
-	const getAllRoles = async () => {
-		const queryParams = objectToQueryParams(queryAdminRoles);
+	const getProducTags = async () => {
+		const queryParams = objectToQueryParams(queryProductTags);
 		setSearchParams(queryParams);
-		const { data, meta_data } = await DashboardRoleAPI.getAllRoles(queryParams);
+
+		const { data, meta_data } = await DashboardProductAPI.getAllProductTags(
+			queryParams
+		);
 
 		return { data: addIndexToData(data), meta_data };
 	};
-	const {
-		data: result,
-		error,
-		isLoading,
-		refetch,
-	} = useQuery({
-		queryKey: ['admins', { ...queries }],
-		queryFn: getAllRoles,
+
+	const { data, error, isLoading, refetch } = useQuery({
+		queryKey: ['vendor', { ...queries }],
+		queryFn: getProducTags,
 	});
 
 	const handleFilter = (value: any) => {
 		for (const x in value) {
 			if (value[x]) {
-				setQueryAdminRoles((val) => ({ ...val, [x]: value[x] }));
+				setQueryProductTags((val) => ({ ...val, [x]: value[x] }));
 			}
 		}
 	};
@@ -68,21 +67,21 @@ const useQueryAdminRoles = (form: FormInstance<any>) => {
 		};
 		form.setFieldsValue(clearFilterQuery);
 
-		setQueryAdminRoles(() => ({
+		setQueryProductTags(() => ({
 			...clearFilterQuery,
 		}));
 	};
 
 	return {
-		result,
+		data,
 		error,
 		isLoading,
 		refetch,
-		setQueryAdminRoles,
-		queryAdminRoles,
+		setQueryProductTags,
+		queryProductTags,
 		handleFilter,
 		clearFilter,
 	};
 };
 
-export default useQueryAdminRoles;
+export default useQueryProductTags;

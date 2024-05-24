@@ -108,6 +108,28 @@ export const options: Option[] = [
 			},
 		],
 	},
+	{
+		label: 'Vendor Master Data',
+		value: 'vendor master data',
+		children: [
+			{
+				label: 'Create Master Data',
+				value: 'create',
+			},
+			{
+				label: 'View Master Data',
+				value: 'view',
+			},
+			{
+				label: 'Update Master Data',
+				value: 'update',
+			},
+			{
+				label: 'Delete Master Data',
+				value: 'delete',
+			},
+		],
+	},
 ];
 
 const useGenerateColumnAdminRole = (
