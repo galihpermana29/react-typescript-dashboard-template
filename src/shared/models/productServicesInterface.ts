@@ -80,3 +80,35 @@ export interface IUpdateProductTagResponseRoot {
 export interface IDetailProductTagResponseRoot {
 	data: IDetailProductData;
 }
+
+export interface IDetailProductTypeData {
+	id: string;
+	name: string;
+	status: string;
+}
+
+export interface IDetailProductTypeResponseRoot {
+	data: IDetailProductTypeData;
+}
+
+export interface IAllProductTypeResponseRoot {
+	data: IDetailProductTypeResponseRoot[];
+	meta_data: Metadata;
+}
+
+export interface ICreateProductTypePayloadRoot {
+	name: string;
+}
+
+export interface ICreateProductTypeResponseRoot {
+	data: string;
+}
+
+export interface IUpdateProductTypePayloadRoot {
+	name?: string;
+	status?: string;
+}
+
+export interface IUpdateProductTypeResponseRoot {
+	data: string;
+}

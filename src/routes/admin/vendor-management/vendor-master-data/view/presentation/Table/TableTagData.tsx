@@ -59,6 +59,7 @@ export const TableTagData = () => {
 			<FormCreation
 				form={formModal}
 				handleMutate={mutateCreate}
+				type='tag'
 				footer={
 					<FormFooter
 						secondaryText="Cancel"
@@ -81,6 +82,7 @@ export const TableTagData = () => {
 					handleMutate={mutateEdit}
 					form={formModal}
 					disable={false}
+					type='tag'
 					footer={
 						<FormFooter
 							secondaryText="Cancel"

@@ -8,7 +8,7 @@ export const VendorMasterDataContainer = () => {
 		useGenerateTabItems();
 
 	return (
-		<ErrorBoundary error={undefined as any} refetch={() => {}}>
+		<ErrorBoundary error={undefined as any} refetch={() => { }}>
 			<TableHeaderTitle
 				title={tabItems[currentActiveTab - 1].label as string}
 			/>
