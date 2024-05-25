@@ -1,27 +1,22 @@
-import { AxiosError } from "axios";
-import {
-	Button,
-	Form,
-	Modal,
-	Select
-} from "antd";
-import { ILoaderData } from "@/routes/root";
-import { useForm } from "antd/es/form/Form";
-import { useGenerateProductTypeColumn } from "../../../usecase/useGenerateProductTypeColumn";
-import { useLoaderData } from "react-router-dom";
+import { AxiosError } from 'axios';
+import { Button, Form, Modal, Select } from 'antd';
+import { ILoaderData } from '@/routes/root';
+import { useForm } from 'antd/es/form/Form';
+import { useGenerateProductTypeColumn } from '../../../usecase/useGenerateProductTypeColumn';
+import { useLoaderData } from 'react-router-dom';
 import addIcon from '@/assets/icon/add.png';
-import DashboardTable from "@/shared/view/presentations/dashboard-table/DashboardTable";
-import DashboardTableFilter from "@/shared/view/presentations/dashboard-table/DashboardTableFilter";
-import ErrorBoundary from "@/shared/view/container/error-boundary/ErrorBoundary";
-import FormCreation from "../Modal/FormCreation";
-import FormEdit from "../Modal/FormEdit";
-import FormFooter from "../Modal/FormFooter";
-import LoadingHandler from "@/shared/view/container/loading/Loading";
-import useModalReducer from "../../../usecase/useModalReducer";
-import useMutateCreateProductType from "../../../respositories/useCreateProducType";
-import useMutateEditProductType from "../../../respositories/useUpdateProductType";
-import useQueryProductTypeDetail from "../../../respositories/useGetDetailProductType";
-import useQueryProductTypes from "../../../respositories/useGetAllProductTypes";
+import DashboardTable from '@/shared/view/presentations/dashboard-table/DashboardTable';
+import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
+import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
+import FormCreation from '../Modal/FormCreation';
+import FormEdit from '../Modal/FormEdit';
+import LoadingHandler from '@/shared/view/container/loading/Loading';
+import useModalReducer from '../../../usecase/useModalReducer';
+import useMutateCreateProductType from '../../../respositories/useCreateProducType';
+import useMutateEditProductType from '../../../respositories/useUpdateProductType';
+import useQueryProductTypeDetail from '../../../respositories/useGetDetailProductType';
+import useQueryProductTypes from '../../../respositories/useGetAllProductTypes';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 export const TableProductType = () => {
 	const [form] = useForm();
@@ -43,7 +38,6 @@ export const TableProductType = () => {
 		isLoading: loadingGetAll,
 	} = useQueryProductTypes(form);
 
-
 	const { mutate: mutateEdit } = useMutateEditProductType(closeModal, refetch);
 	const { isLoading: loadingGetDetail } = useQueryProductTypeDetail(
 		modalState,
@@ -57,7 +51,6 @@ export const TableProductType = () => {
 		mutateEdit
 	);
 
-
 	const { mutate: mutateCreate } = useMutateCreateProductType(
 		closeModal,
 		refetch
@@ -68,7 +61,7 @@ export const TableProductType = () => {
 			<FormCreation
 				form={formModal}
 				handleMutate={mutateCreate}
-				type='product-type'
+				type="product-type"
 				footer={
 					<FormFooter
 						secondaryText="Cancel"
@@ -91,7 +84,7 @@ export const TableProductType = () => {
 					handleMutate={mutateEdit}
 					form={formModal}
 					disable={false}
-					type='product-type'
+					type="product-type"
 					footer={
 						<FormFooter
 							secondaryText="Cancel"
@@ -105,13 +98,15 @@ export const TableProductType = () => {
 				/>
 			</LoadingHandler>
 		),
-	}
+	};
 
 	return (
 		<ErrorBoundary error={error as AxiosError} refetch={refetch}>
 			<>
 				<Modal
-					title={<div className="capitalize">{`${modalState?.type} Product Type`}</div>}
+					title={
+						<div className="capitalize">{`${modalState?.type} Product Type`}</div>
+					}
 					open={modalState?.isOpen}
 					footer={null}
 					onCancel={closeModal}>
