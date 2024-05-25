@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import {
 	Button,
 	Form,
@@ -11,6 +12,7 @@ import { useLoaderData } from "react-router-dom";
 import addIcon from '@/assets/icon/add.png';
 import DashboardTable from "@/shared/view/presentations/dashboard-table/DashboardTable";
 import DashboardTableFilter from "@/shared/view/presentations/dashboard-table/DashboardTableFilter";
+import ErrorBoundary from "@/shared/view/container/error-boundary/ErrorBoundary";
 import FormCreation from "../Modal/FormCreation";
 import FormEdit from "../Modal/FormEdit";
 import FormFooter from "../Modal/FormFooter";
@@ -32,6 +34,7 @@ export const TableProductType = () => {
 
 	const {
 		result,
+		error,
 		queryProductTypes,
 		setQueryProductTypes,
 		handleFilter,
@@ -105,55 +108,57 @@ export const TableProductType = () => {
 	}
 
 	return (
-		<>
-			<Modal
-				title={<div className="capitalize">{`${modalState?.type} Product Type`}</div>}
-				open={modalState?.isOpen}
-				footer={null}
-				onCancel={closeModal}>
-				{modalType[modalState!.type]}
-			</Modal>
-			<DashboardTable
-				columns={columns}
-				onPaginationChanges={setQueryProductTypes}
-				data={result?.data}
-				loading={loadingGetAll}
-				metadata={result ? result.meta_data : undefined}
-				filterComponents={
-					<DashboardTableFilter
-						form={form}
-						queryAdmins={queryProductTypes}
-						onApplyFilter={handleFilter}
-						onClearFilter={clearFilter}
-						onSearch={setQueryProductTypes}
-						filterComponents={
-							<Form.Item
-								name={'status'}
-								label="Status"
-								initialValue={queryProductTypes.status}
-								className="my-[10px]">
-								<Select
-									className="h-[35px]"
-									options={[
-										{ value: 'default', label: 'All' },
-										{ value: 'active', label: 'Active' },
-										{ value: 'inactive', label: 'Inactive' },
-									]}
-								/>
-							</Form.Item>
-						}
-						buttonComponents={
-							<Button
-								disabled={!create}
-								onClick={() => openModal!('create')}
-								className="enabled:hover:!bg-ny-primary-500 enabled:hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
-								<img src={addIcon} alt="add-icon" />
-								Create Tag
-							</Button>
-						}
-					/>
-				}
-			/>
-		</>
+		<ErrorBoundary error={error as AxiosError} refetch={refetch}>
+			<>
+				<Modal
+					title={<div className="capitalize">{`${modalState?.type} Product Type`}</div>}
+					open={modalState?.isOpen}
+					footer={null}
+					onCancel={closeModal}>
+					{modalType[modalState!.type]}
+				</Modal>
+				<DashboardTable
+					columns={columns}
+					onPaginationChanges={setQueryProductTypes}
+					data={result?.data}
+					loading={loadingGetAll}
+					metadata={result ? result.meta_data : undefined}
+					filterComponents={
+						<DashboardTableFilter
+							form={form}
+							queryAdmins={queryProductTypes}
+							onApplyFilter={handleFilter}
+							onClearFilter={clearFilter}
+							onSearch={setQueryProductTypes}
+							filterComponents={
+								<Form.Item
+									name={'status'}
+									label="Status"
+									initialValue={queryProductTypes.status}
+									className="my-[10px]">
+									<Select
+										className="h-[35px]"
+										options={[
+											{ value: 'default', label: 'All' },
+											{ value: 'active', label: 'Active' },
+											{ value: 'inactive', label: 'Inactive' },
+										]}
+									/>
+								</Form.Item>
+							}
+							buttonComponents={
+								<Button
+									disabled={!create}
+									onClick={() => openModal!('create')}
+									className="enabled:hover:!bg-ny-primary-500 enabled:hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
+									<img src={addIcon} alt="add-icon" />
+									Create Tag
+								</Button>
+							}
+						/>
+					}
+				/>
+			</>
+		</ErrorBoundary>
 	);
 };
