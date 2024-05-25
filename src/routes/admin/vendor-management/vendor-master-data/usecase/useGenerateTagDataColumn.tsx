@@ -25,11 +25,6 @@ export const useGenerateTagDataColumn = (
 ) => {
 	const columns: TableProps['columns'] = [
 		{
-			title: 'No',
-			key: 'no',
-			render: (_, __, index) => <a>{index + 1}</a>,
-		},
-		{
 			title: 'Tag Name',
 			key: 'tag_name',
 			dataIndex: 'name',
