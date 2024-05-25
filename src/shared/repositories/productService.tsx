@@ -11,6 +11,11 @@ import {
 	IUpdateProductTagResponseRoot,
 	ICreateProductPayloadRoot,
 	ICreateProductResponseRoot,
+	IAllProductTypeResponseRoot,
+	ICreateProductTypePayloadRoot,
+	ICreateProductTypeResponseRoot,
+	IUpdateProductTypePayloadRoot,
+	IDetailProductTypeResponseRoot
 } from '../models/productServicesInterface';
 import { ApiClass } from './generalApi';
 
@@ -147,6 +152,73 @@ class DashboardProductServices extends ApiClass {
 				},
 			}
 		);
+
+		return data;
+	}
+
+	public async getAllProductTypes(
+		query?: string
+	): Promise<IAllProductTypeResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+
+		const { data } = await this.axiosInstance.get<IAllProductTypeResponseRoot>(
+			`/product-types${query ? `?${query}` : ''}`,
+			{ headers: { Authorization: `Bearer ${token}` } }
+		);
+		return data;
+	}
+
+	public async createProductType(
+		payload: ICreateProductTypePayloadRoot
+	): Promise<ICreateProductTypeResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+		const { data } =
+			await this.axiosInstance.post<ICreateProductTypeResponseRoot>(
+				'/product-types',
+				payload,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+		return data;
+	}
+
+	public async editProductType(
+		payload: IUpdateProductTypePayloadRoot,
+		id: string
+	): Promise<IUpdateProductResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+
+		const { data } =
+			await this.axiosInstance.patch<IUpdateProductResponseRoot>(
+				`/product-types/${id}`,
+				payload,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+		return data;
+	}
+
+	public async getProductTypeDetail(
+		id: string
+	): Promise<IDetailProductTypeResponseRoot> {
+		const token = JSON.parse(localStorage.getItem('token')!);
+
+		const { data } =
+			await this.axiosInstance.get<IDetailProductTypeResponseRoot>(
+				`/product-types/${id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
 
 		return data;
 	}

@@ -1,6 +1,8 @@
 import {
 	IUpdateProductTagPayloadRoot,
 	IUpdateProductTagResponseRoot,
+	IUpdateProductTypePayloadRoot,
+	IUpdateProductTypeResponseRoot,
 } from '@/shared/models/productServicesInterface';
 import { Form, FormInstance, Input } from 'antd';
 import { AxiosError } from 'axios';
@@ -8,7 +10,8 @@ import { UseMutateFunction } from 'react-query';
 
 interface IFormEdit {
 	form: FormInstance;
-	handleMutate: UseMutateFunction<
+	handleMutate:
+	| UseMutateFunction<
 		IUpdateProductTagResponseRoot,
 		AxiosError,
 		{
@@ -17,12 +20,25 @@ interface IFormEdit {
 			type: 'delete' | 'update';
 		},
 		unknown
+	>
+	| UseMutateFunction<
+		IUpdateProductTypeResponseRoot,
+		AxiosError,
+		{
+			payload: IUpdateProductTypePayloadRoot;
+			id: string;
+			type: 'delete' | 'update';
+		},
+		unknown
 	>;
+	type: 'tag' | 'product-type';
 	footer: React.ReactNode;
 	disable: boolean;
 	id?: string;
 }
-const FormEdit = ({ form, handleMutate, footer, id }: IFormEdit) => {
+const FormEdit = ({ form, handleMutate, footer, id, type }: IFormEdit) => {
+	const isTag = type === 'tag';
+
 	return (
 		<div>
 			<Form
@@ -40,15 +56,15 @@ const FormEdit = ({ form, handleMutate, footer, id }: IFormEdit) => {
 						<Form.Item
 							className="my-[8px]"
 							name={'name'}
-							label="Tag name"
+							label={isTag ? 'Tag name' : 'Product Type name'}
 							rules={[
 								{
 									required: true,
-									message: 'Please input tag name!',
+									message: `Please input ${isTag ? 'tag' : 'product type'} name!`,
 								},
 							]}>
 							<Input
-								placeholder="Enter tag name"
+								placeholder={`Enter ${isTag ? 'tag' : 'product type'} name`}
 								className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
 							/>
 						</Form.Item>
