@@ -14,8 +14,8 @@ const useCreateProduct = () => {
 	const createProduct = async (payload: ICreateProductPayloadRoot) => {
 		const newPayload = {
 			...payload,
-			product_type_id: 1,
 			status: 'active',
+			tags: payload.tags!.map((dx) => ({ id: dx })),
 		};
 		const data = await DashboardProductAPI.createProduct(newPayload);
 		return data;

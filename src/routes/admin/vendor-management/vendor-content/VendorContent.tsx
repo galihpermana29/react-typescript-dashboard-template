@@ -1,25 +1,20 @@
 import DashboardTable from '@/shared/view/presentations/dashboard-table/DashboardTable';
 import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
-import { Form, Input, Modal, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import useQueryVendorContent from './repositories/useGetAllContent';
 import useGenerateColumnVendorProduct from './usecase/useGenerateColumn';
-import useModalReducer from './usecase/useModalReducer';
-import useQueryVendorContentsDetail from './repositories/useGetDetailContent';
-import LoadingHandler from '@/shared/view/container/loading/Loading';
-import FormEdit from './view/presentations/Modal/FormEdit';
 import useMutateEditVendorContent from './repositories/useUpdateContent';
 import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
+import { IDetailProductData } from '@/shared/models/productServicesInterface';
+import useQueryTags from './repositories/useGetAllTags';
 
 export const VendorContentContainer = () => {
 	const [form] = useForm();
-	const [formModal] = useForm();
 	const navigate = useNavigate();
-	const { openModal, closeModal, modalState } = useModalReducer();
 
 	const {
 		result,
@@ -32,86 +27,16 @@ export const VendorContentContainer = () => {
 		error,
 	} = useQueryVendorContent(form);
 
-	const { isLoading: loadingGetDetail } = useQueryVendorContentsDetail(
-		'11',
-		formModal
-	);
-
+	const { result: resultTags } = useQueryTags();
 	const { mutate: mutateEdit } = useMutateEditVendorContent(refetch);
 
 	const { columns } = useGenerateColumnVendorProduct(navigate, mutateEdit);
 
-	const modalType = {
-		detail: (
-			<LoadingHandler
-				isLoading={loadingGetDetail}
-				fullscreen={false}
-				classname="h-[400px]">
-				<FormEdit
-					id={modalState?.id}
-					form={formModal}
-					handleMutate={undefined}
-					disable={true}
-					footer={
-						<FormFooter
-							primaryText="Edit"
-							primaryProps={{
-								onClick: (e) => {
-									e.preventDefault();
-									openModal!('edit', modalState?.id);
-								},
-								type: 'button',
-							}}
-							secondaryText="Cancel"
-							secondaryProps={{
-								onClick: () => closeModal!(),
-							}}
-						/>
-					}
-				/>
-			</LoadingHandler>
-		),
-		edit: (
-			<LoadingHandler
-				isLoading={loadingGetDetail}
-				fullscreen={false}
-				classname="h-[400px]">
-				<FormEdit
-					id={modalState?.id}
-					handleMutate={mutateEdit}
-					form={formModal}
-					disable={false}
-					footer={
-						<FormFooter
-							secondaryText="Cancel"
-							secondaryProps={{
-								onClick: () => closeModal!(),
-							}}
-							primaryText="Save"
-							primaryProps={{
-								type: 'submit',
-							}}
-						/>
-					}
-				/>
-			</LoadingHandler>
-		),
-	};
-
 	return (
 		<ErrorBoundary error={error as AxiosError} refetch={refetch}>
 			<TableHeaderTitle title="Vendor Content" />
-			<Modal
-				title={
-					<div className="capitalize">{`${modalState?.type} Content`}</div>
-				}
-				open={modalState?.isOpen}
-				footer={null}
-				onCancel={closeModal}>
-				{modalType[modalState!.type]}
-			</Modal>
 
-			<DashboardTable<any>
+			<DashboardTable<IDetailProductData[]>
 				columns={columns}
 				onPaginationChanges={setQueryVendorContent}
 				loading={isLoading}
@@ -142,19 +67,26 @@ export const VendorContentContainer = () => {
 									/>
 								</Form.Item>
 								<Form.Item
-									name={'tag'}
+									name={'tags'}
 									label="Tag"
-									initialValue={queryVendorContent.tag}
+									initialValue={queryVendorContent.tags}
 									className="my-[10px]">
 									<Select
+										showSearch
+										filterOption={(input, option) =>
+											(option?.label.toLowerCase() ?? '').includes(
+												input.toLowerCase()
+											)
+										}
+										filterSort={(optionA, optionB) =>
+											(optionA?.label ?? '')
+												.toLowerCase()
+												.localeCompare((optionB?.label ?? '').toLowerCase())
+										}
 										mode="multiple"
 										className="w-full max-w-[224px] h-[35px]"
 										placeholder="Tag"
-										options={[
-											{ value: 'book', label: 'Book' },
-											{ value: 'atomic', label: 'Atomic' },
-											{ value: 'habbit', label: 'Habbit' },
-										]}
+										options={resultTags?.filterOptions}
 									/>
 								</Form.Item>
 								<Form.Item

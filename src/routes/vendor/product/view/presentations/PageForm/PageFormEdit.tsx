@@ -9,6 +9,10 @@ interface IPageFormEdit {
 	onCancel: any;
 	id: string;
 	disabled: boolean;
+	dynamicSelectOptions: {
+		tags: { value: number; label: string }[];
+		productTypes: { value: number; label: string }[];
+	};
 }
 const PageFormEdit = ({
 	form,
@@ -16,6 +20,7 @@ const PageFormEdit = ({
 	onCancel,
 	id,
 	disabled = false,
+	dynamicSelectOptions,
 }: IPageFormEdit) => {
 	return (
 		<div>
@@ -68,6 +73,33 @@ const PageFormEdit = ({
 							/>
 						</Form.Item>
 						<Form.Item
+							name={'product_type_id'}
+							label="Product Type"
+							className="my-[8px]"
+							rules={[
+								{
+									required: true,
+									message: 'Please select product type',
+								},
+							]}>
+							<Select
+								showSearch
+								filterOption={(input, option) =>
+									(option?.label.toLowerCase() ?? '').includes(
+										input.toLowerCase()
+									)
+								}
+								filterSort={(optionA, optionB) =>
+									(optionA?.label ?? '')
+										.toLowerCase()
+										.localeCompare((optionB?.label ?? '').toLowerCase())
+								}
+								className="h-[40px]"
+								placeholder="Product Type"
+								options={dynamicSelectOptions.productTypes}
+							/>
+						</Form.Item>
+						<Form.Item
 							name={'tags'}
 							label="Tag"
 							className="my-[8px]"
@@ -78,14 +110,21 @@ const PageFormEdit = ({
 								},
 							]}>
 							<Select
+								showSearch
+								filterOption={(input, option) =>
+									(option?.label.toLowerCase() ?? '').includes(
+										input.toLowerCase()
+									)
+								}
+								filterSort={(optionA, optionB) =>
+									(optionA?.label ?? '')
+										.toLowerCase()
+										.localeCompare((optionB?.label ?? '').toLowerCase())
+								}
 								mode="multiple"
 								className="h-[40px]"
 								placeholder="Tag"
-								options={[
-									{ value: 'book', label: 'Book' },
-									{ value: 'atomic', label: 'Atomic' },
-									{ value: 'habbit', label: 'Habbit' },
-								]}
+								options={dynamicSelectOptions.tags}
 							/>
 						</Form.Item>
 						<Form.Item

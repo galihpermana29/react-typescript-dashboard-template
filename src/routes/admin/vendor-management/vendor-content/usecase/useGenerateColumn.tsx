@@ -55,7 +55,7 @@ const useGenerateColumnVendorProduct = (
 				<div>
 					{tags.map((data, idx) => (
 						<Tag className="capitalize" key={idx}>
-							{data}
+							{data?.name}
 						</Tag>
 					))}
 				</div>

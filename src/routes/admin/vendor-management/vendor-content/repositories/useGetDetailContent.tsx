@@ -7,6 +7,7 @@ const useQueryVendorContentsDetail = (id: string, form?: FormInstance<any>) => {
 		const { data } = await DashboardProductAPI.getProductDetail(id as string);
 		form!.setFieldsValue({
 			...data,
+			tags: data.tags.map((dx) => dx.id),
 		});
 		return data;
 	};

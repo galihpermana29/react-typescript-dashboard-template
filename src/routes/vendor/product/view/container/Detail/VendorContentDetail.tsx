@@ -2,11 +2,13 @@ import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary'
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
 import PageFormEdit from '../../presentations/PageForm/PageFormEdit';
 import { useForm } from 'antd/es/form/Form';
-import useQueryVendorContentsDetail from '../../../repositories/useGetDetailContent';
 import { useNavigate, useParams } from 'react-router-dom';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
-import useMutateEditVendorContent from '../../../repositories/useUpdateContent';
 import { AxiosError } from 'axios';
+import useQueryVendorContentsDetail from '@/routes/admin/vendor-management/vendor-content/repositories/useGetDetailContent';
+import useMutateEditVendorContent from '@/routes/admin/vendor-management/vendor-content/repositories/useUpdateContent';
+import useQueryProductTypes from '@/routes/admin/vendor-management/vendor-content/repositories/useGetAllProductTypes';
+import useQueryTags from '@/routes/admin/vendor-management/vendor-content/repositories/useGetAllTags';
 
 const VendorProductDetailContainer = () => {
 	const [form] = useForm();
@@ -17,16 +19,24 @@ const VendorProductDetailContainer = () => {
 		refetch,
 		error,
 	} = useQueryVendorContentsDetail(id as string, form);
-
+	const { result: resultProductTypes, error: errorProductTypes } =
+		useQueryProductTypes();
+	const { result: resultTags, error: errorTags } = useQueryTags();
 	const { mutate: mutateEdit } = useMutateEditVendorContent(refetch);
 
 	return (
 		<div>
-			<ErrorBoundary error={error as AxiosError} refetch={refetch}>
+			<ErrorBoundary
+				error={(error || errorTags || errorProductTypes) as AxiosError}
+				refetch={refetch}>
 				<TableHeaderTitle title="Detail Vendor Product" withArrow={true} />
 				<div className="p-[20px]">
 					<LoadingHandler isLoading={loadingGetDetail} fullscreen={true}>
 						<PageFormEdit
+							dynamicSelectOptions={{
+								tags: resultTags!.selectOptions!,
+								productTypes: resultProductTypes!.selectOptions!,
+							}}
 							disabled={true}
 							id={id as string}
 							form={form}

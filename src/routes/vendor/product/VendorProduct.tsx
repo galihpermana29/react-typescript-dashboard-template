@@ -3,14 +3,15 @@ import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/Da
 import TableHeaderTitle from '@/shared/view/presentations/table-header-title/TableHeaderTitle';
 import { Button, Form, Input, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import useQueryVendorContent from './repositories/useGetAllContent';
 import useGenerateColumnVendorProduct from './usecase/useGenerateColumn';
-import useMutateEditVendorContent from './repositories/useUpdateContent';
 import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import addIcon from '@/assets/icon/add.png';
+import useQueryVendorContent from '@/routes/admin/vendor-management/vendor-content/repositories/useGetAllContent';
+import useMutateEditVendorContent from '@/routes/admin/vendor-management/vendor-content/repositories/useUpdateContent';
+import useQueryTags from '@/routes/admin/vendor-management/vendor-content/repositories/useGetAllTags';
 
 export const VendorProductContainer = () => {
 	const [form] = useForm();
@@ -28,11 +29,11 @@ export const VendorProductContainer = () => {
 	} = useQueryVendorContent(form);
 
 	const { mutate: mutateEdit } = useMutateEditVendorContent(refetch);
-
+	const { result: resultTags, error: errorTags } = useQueryTags();
 	const { columns } = useGenerateColumnVendorProduct(navigate, mutateEdit);
 
 	return (
-		<ErrorBoundary error={error as AxiosError} refetch={refetch}>
+		<ErrorBoundary error={(error || errorTags) as AxiosError} refetch={refetch}>
 			<TableHeaderTitle title="Vendor Product" />
 			<DashboardTable<any>
 				columns={columns}
@@ -72,19 +73,26 @@ export const VendorProductContainer = () => {
 									/>
 								</Form.Item>
 								<Form.Item
-									name={'tag'}
+									name={'tags'}
 									label="Tag"
-									initialValue={queryVendorContent.tag}
+									initialValue={queryVendorContent.tags}
 									className="my-[10px]">
 									<Select
+										showSearch
+										filterOption={(input, option) =>
+											(option?.label.toLowerCase() ?? '').includes(
+												input.toLowerCase()
+											)
+										}
+										filterSort={(optionA, optionB) =>
+											(optionA?.label ?? '')
+												.toLowerCase()
+												.localeCompare((optionB?.label ?? '').toLowerCase())
+										}
 										mode="multiple"
 										className="w-full max-w-[224px] h-[35px]"
 										placeholder="Tag"
-										options={[
-											{ value: 'book', label: 'Book' },
-											{ value: 'atomic', label: 'Atomic' },
-											{ value: 'habbit', label: 'Habbit' },
-										]}
+										options={resultTags?.filterOptions}
 									/>
 								</Form.Item>
 								<Form.Item

@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import useMutateEditVendorContent from '../../../repositories/useUpdateContent';
 import { AxiosError } from 'axios';
+import useQueryTags from '../../../repositories/useGetAllTags';
+import useQueryProductTypes from '../../../repositories/useGetAllProductTypes';
 
 const VendorContentDetailContainer = () => {
 	const [form] = useForm();
@@ -18,15 +20,25 @@ const VendorContentDetailContainer = () => {
 		error,
 	} = useQueryVendorContentsDetail(id as string, form);
 
+	const { result: resultProductTypes, error: errorProductTypes } =
+		useQueryProductTypes();
+	const { result: resultTags, error: errorTags } = useQueryTags();
+
 	const { mutate: mutateEdit } = useMutateEditVendorContent(refetch);
 
 	return (
 		<div>
-			<ErrorBoundary error={error as AxiosError} refetch={refetch}>
+			<ErrorBoundary
+				error={(error || errorTags || errorProductTypes) as AxiosError}
+				refetch={refetch}>
 				<TableHeaderTitle title="Detail Vendor Product" withArrow={true} />
 				<div className="p-[20px]">
 					<LoadingHandler isLoading={loadingGetDetail} fullscreen={true}>
 						<PageFormEdit
+							dynamicSelectOptions={{
+								tags: resultTags!.selectOptions!,
+								productTypes: resultProductTypes!.selectOptions!,
+							}}
 							disabled={true}
 							id={id as string}
 							form={form}

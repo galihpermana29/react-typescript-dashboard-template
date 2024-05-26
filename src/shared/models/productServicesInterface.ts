@@ -3,7 +3,7 @@ import { Metadata } from './generalInterfaces';
 export interface IDetailProductData {
 	id: number;
 	title: string;
-	tags: string[];
+	tags: any[];
 	vendor_id: string;
 	vendor_name: string;
 	price: string;
@@ -19,7 +19,7 @@ export interface IAllProductResponseRoot {
 
 export interface ICreateProductPayloadRoot {
 	title?: string;
-	tags?: string[];
+	tags?: any[];
 	vendor_id?: string;
 	price?: number;
 	description?: string;
@@ -33,7 +33,7 @@ export interface ICreateProductResponseRoot {
 
 export interface IUpdateProductPayloadRoot {
 	title?: string;
-	tags?: string[];
+	tags?: any[];
 	vendor_id?: string;
 	price?: number;
 	description?: string;
@@ -49,14 +49,20 @@ export interface IDetailProductResponseRoot {
 	data: IDetailProductData;
 }
 
+export interface IDetailTagsData {
+	id: number;
+	name: string;
+	status: string;
+}
+
 export interface IDetailProductTag {
-	id: string;
+	id: number;
 	name: string;
 	status: string;
 }
 
 export interface IAllProductTagResponseRoot {
-	data: IDetailProductData[];
+	data: IDetailTagsData[];
 	meta_data: Metadata;
 }
 
@@ -82,17 +88,13 @@ export interface IDetailProductTagResponseRoot {
 }
 
 export interface IDetailProductTypeData {
-	id: string;
+	id: number;
 	name: string;
 	status: string;
 }
 
-export interface IDetailProductTypeResponseRoot {
-	data: IDetailProductTypeData;
-}
-
 export interface IAllProductTypeResponseRoot {
-	data: IDetailProductTypeResponseRoot[];
+	data: IDetailProductTypeData[];
 	meta_data: Metadata;
 }
 

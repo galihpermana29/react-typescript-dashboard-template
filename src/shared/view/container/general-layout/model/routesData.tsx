@@ -95,9 +95,7 @@ export const staffRoutes: ItemsDataI[] = [
 	{
 		label: (
 			<div>
-				<div className="text-caption-1 font-[400] text-ny-gray-300">
-					ADMIN MANAGEMENT
-				</div>
+				<div className="text-caption-1 font-[400] text-ny-gray-300">ADMIN</div>
 			</div>
 		),
 		key: '/admin-management',
@@ -106,7 +104,7 @@ export const staffRoutes: ItemsDataI[] = [
 			{
 				label: (
 					<div className="text-caption-1 font-[400] text-ny-gray-300">
-						Admin User Management
+						Admin Account
 					</div>
 				),
 				key: '/admin-user-management',
@@ -119,7 +117,7 @@ export const staffRoutes: ItemsDataI[] = [
 			{
 				label: (
 					<div className="text-caption-1 font-[400] text-ny-gray-300">
-						Admin Role Management
+						Role Management
 					</div>
 				),
 				key: '/admin-role-management',
@@ -137,9 +135,7 @@ export const staffRoutes: ItemsDataI[] = [
 	{
 		label: (
 			<div>
-				<div className="text-caption-1 font-[400] text-ny-gray-300">
-					VENDOR MANAGEMENT
-				</div>
+				<div className="text-caption-1 font-[400] text-ny-gray-300">VENDOR</div>
 			</div>
 		),
 		key: '/vendor-management',
@@ -148,7 +144,7 @@ export const staffRoutes: ItemsDataI[] = [
 			{
 				label: (
 					<div className="text-caption-1 font-[400] text-ny-gray-300">
-						Vendor User Management
+						Vendor Account
 					</div>
 				),
 				key: '/vendor-user-management',
@@ -239,7 +235,7 @@ export const staffRoutes: ItemsDataI[] = [
 			{
 				label: (
 					<div className="text-caption-1 font-[400] text-ny-gray-300">
-						Vendor Master Data
+						Master Data
 					</div>
 				),
 				key: '/vendor-master-data',

@@ -13,7 +13,12 @@ const useMutateEditVendorContent = (refetch?: () => void) => {
 		payload: IUpdateProductPayloadRoot,
 		id: string
 	) => {
-		const data = await DashboardProductAPI.editProduct(payload, id);
+		const newPayload = {
+			...payload,
+			tags: payload.tags!.map((dx) => ({ id: dx })),
+		};
+
+		const data = await DashboardProductAPI.editProduct(newPayload, id);
 		return data;
 	};
 

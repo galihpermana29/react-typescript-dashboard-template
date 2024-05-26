@@ -4,6 +4,10 @@ import PageFormCreate from '../../presentations/PageForm/PageFormCreate';
 import useCreateProduct from '../../../repositories/useCreateProduct';
 import { useForm } from 'antd/es/form/Form';
 import { useNavigate } from 'react-router-dom';
+import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
+import { AxiosError } from 'axios';
+import useQueryProductTypes from '@/routes/admin/vendor-management/vendor-content/repositories/useGetAllProductTypes';
+import useQueryTags from '@/routes/admin/vendor-management/vendor-content/repositories/useGetAllTags';
 
 const VendorProductCreateContainer = () => {
 	const { mutate, isLoading } = useCreateProduct();
@@ -13,12 +17,22 @@ const VendorProductCreateContainer = () => {
 
 	const navigate = useNavigate();
 
+	const { result: resultProductTypes, error: errorProductTypes } =
+		useQueryProductTypes();
+	const { result: resultTags, error: errorTags, refetch } = useQueryTags();
+
 	return (
-		<div>
+		<ErrorBoundary
+			error={(errorTags || errorProductTypes) as AxiosError}
+			refetch={refetch}>
 			<TableHeaderTitle title="Create Vendor Product" withArrow={true} />
 			<div className="p-[20px]">
 				<LoadingHandler isLoading={isLoading} fullscreen={true}>
 					<PageFormCreate
+						dynamicSelectOptions={{
+							tags: resultTags!.selectOptions!,
+							productTypes: resultProductTypes!.selectOptions!,
+						}}
 						disabled={false}
 						id={userId as string}
 						form={form}
@@ -27,7 +41,7 @@ const VendorProductCreateContainer = () => {
 					/>
 				</LoadingHandler>
 			</div>
-		</div>
+		</ErrorBoundary>
 	);
 };
 
