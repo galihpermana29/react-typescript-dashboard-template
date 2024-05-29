@@ -2,21 +2,21 @@ import { AxiosError } from 'axios';
 import { Button, Dropdown, Row, Space, TableProps, Tag } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import {
-  IUpdateProductTypePayloadRoot,
-  IUpdateProductTypeResponseRoot,
-} from '@/shared/models/productServicesInterface';
+  IUpdateVendorTypePayloadRoot,
+  IUpdateVendorTypeResponseRoot,
+} from '@/shared/models/vendorTypeInterface';
 import { TModalType } from './useModalReducer';
 import { UseMutateFunction } from 'react-query';
 
-export const useGenerateProductTypeColumn = (
+export const useGenerateVendorTypeColumn = (
   remove: boolean,
   edit: boolean,
   onOpenModal?: (modalType: TModalType, id?: string | undefined) => void,
   onChangeStatus?: UseMutateFunction<
-    IUpdateProductTypeResponseRoot,
+    IUpdateVendorTypeResponseRoot,
     AxiosError,
     {
-      payload: IUpdateProductTypePayloadRoot;
+      payload: IUpdateVendorTypePayloadRoot;
       id: string;
       type: 'delete' | 'update';
     },
@@ -25,7 +25,7 @@ export const useGenerateProductTypeColumn = (
 ) => {
   const columns: TableProps['columns'] = [
     {
-      title: 'Product Type',
+      title: 'Vendor Type',
       key: 'type_name',
       dataIndex: 'name',
       render: (text) => <a>{text}</a>,
@@ -82,5 +82,6 @@ export const useGenerateProductTypeColumn = (
       ),
     },
   ];
+
   return { columns };
 };
