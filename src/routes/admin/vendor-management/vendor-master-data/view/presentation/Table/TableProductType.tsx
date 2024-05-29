@@ -10,13 +10,13 @@ import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/Da
 import ErrorBoundary from '@/shared/view/container/error-boundary/ErrorBoundary';
 import FormCreation from '../Modal/FormCreation';
 import FormEdit from '../Modal/FormEdit';
+import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import useModalReducer from '../../../usecase/useModalReducer';
 import useMutateCreateProductType from '../../../respositories/useCreateProducType';
 import useMutateEditProductType from '../../../respositories/useUpdateProductType';
 import useQueryProductTypeDetail from '../../../respositories/useGetDetailProductType';
 import useQueryProductTypes from '../../../respositories/useGetAllProductTypes';
-import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 
 export const TableProductType = () => {
 	const [form] = useForm();
@@ -61,7 +61,7 @@ export const TableProductType = () => {
 			<FormCreation
 				form={formModal}
 				handleMutate={mutateCreate}
-				type="product-type"
+				type="Product Type"
 				footer={
 					<FormFooter
 						secondaryText="Cancel"
@@ -84,7 +84,7 @@ export const TableProductType = () => {
 					handleMutate={mutateEdit}
 					form={formModal}
 					disable={false}
-					type="product-type"
+					type="Product Type"
 					footer={
 						<FormFooter
 							secondaryText="Cancel"

@@ -3,6 +3,8 @@ import {
 	IUpdateProductTagResponseRoot,
 	IUpdateProductTypePayloadRoot,
 	IUpdateProductTypeResponseRoot,
+	IUpdateVendorTypePayloadRoot,
+	IUpdateVendorTypeResponseRoot,
 } from '@/shared/models/productServicesInterface';
 import { Form, FormInstance, Input } from 'antd';
 import { AxiosError } from 'axios';
@@ -10,35 +12,22 @@ import { UseMutateFunction } from 'react-query';
 
 interface IFormEdit {
 	form: FormInstance;
-	handleMutate:
-	| UseMutateFunction<
-		IUpdateProductTagResponseRoot,
+	handleMutate: UseMutateFunction<
+		IUpdateProductTagResponseRoot | IUpdateProductTypeResponseRoot | IUpdateVendorTypeResponseRoot,
 		AxiosError,
 		{
-			payload: IUpdateProductTagPayloadRoot;
+			payload: IUpdateProductTagPayloadRoot | IUpdateProductTypePayloadRoot | IUpdateVendorTypePayloadRoot;
 			id: string;
 			type: 'delete' | 'update';
 		},
 		unknown
 	>
-	| UseMutateFunction<
-		IUpdateProductTypeResponseRoot,
-		AxiosError,
-		{
-			payload: IUpdateProductTypePayloadRoot;
-			id: string;
-			type: 'delete' | 'update';
-		},
-		unknown
-	>;
-	type: 'tag' | 'product-type';
+	type: 'Tag' | 'Product Type' | 'Vendor Type';
 	footer: React.ReactNode;
 	disable: boolean;
 	id?: string;
 }
 const FormEdit = ({ form, handleMutate, footer, id, type }: IFormEdit) => {
-	const isTag = type === 'tag';
-
 	return (
 		<div>
 			<Form
@@ -56,15 +45,15 @@ const FormEdit = ({ form, handleMutate, footer, id, type }: IFormEdit) => {
 						<Form.Item
 							className="my-[8px]"
 							name={'name'}
-							label={isTag ? 'Tag name' : 'Product Type name'}
+							label={`${type} name`}
 							rules={[
 								{
 									required: true,
-									message: `Please input ${isTag ? 'tag' : 'product type'} name!`,
+									message: `Please input ${type.toLowerCase()} name!`,
 								},
 							]}>
 							<Input
-								placeholder={`Enter ${isTag ? 'tag' : 'product type'} name`}
+								placeholder={`Enter ${type.toLowerCase()} name`}
 								className="h-[40px] rounded-[8px] text-caption-1 font-[400]"
 							/>
 						</Form.Item>
