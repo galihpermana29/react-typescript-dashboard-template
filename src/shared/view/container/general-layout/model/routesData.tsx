@@ -17,6 +17,9 @@ import { VendorProductContainer } from '@/routes/vendor/product/VendorProduct';
 import VendorProductCreateContainer from '@/routes/vendor/product/view/container/Create/VendorContentCreate';
 import VendorProductEditContainer from '@/routes/vendor/product/view/container/Edit/VendorContentEdit';
 import VendorProductDetailContainer from '@/routes/vendor/product/view/container/Detail/VendorContentDetail';
+import { UserManagementContainer } from '@/routes/admin/user-management/UserManagement';
+import ClientUserEditContainer from '@/routes/admin/user-management/view/container/Edit/ClientUserEdit';
+import ClientUserDetailContainer from '@/routes/admin/user-management/view/container/Detail/ClientUserDetail';
 
 export const vendorRoutes: ItemsDataI[] = [
 	{
@@ -244,6 +247,47 @@ export const staffRoutes: ItemsDataI[] = [
 				icon: <img src={adminManagIconGray} alt="icon" />,
 				components: <VendorMasterDataContainer />,
 				show: true,
+			},
+		],
+		icon: null,
+		components: <DashboardContainer />,
+		show: true,
+	},
+	{
+		label: null,
+		key: '/user-management',
+		path: 'user-management',
+		children: [
+			{
+				label: (
+					<div className="text-caption-1 font-[400] text-ny-gray-300">
+						User Management
+					</div>
+				),
+				key: '/user-management',
+				path: 'user-management',
+				children: null,
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <UserManagementContainer />,
+				show: true,
+			},
+			{
+				label: null,
+				key: '/user-management/detail-user',
+				path: 'user-management/detail-user/:id',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <ClientUserDetailContainer />,
+				show: false,
+			},
+			{
+				label: null,
+				key: '/user-management/edit-user',
+				path: 'user-management/edit-user/:id',
+				children: [],
+				icon: <img src={adminManagIconGray} alt="icon" />,
+				components: <ClientUserEditContainer />,
+				show: false,
 			},
 		],
 		icon: null,
