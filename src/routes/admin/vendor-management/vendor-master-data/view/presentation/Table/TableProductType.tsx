@@ -13,10 +13,10 @@ import FormEdit from '../Modal/FormEdit';
 import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
 import useModalReducer from '../../../usecase/useModalReducer';
-import useMutateCreateProductType from '../../../respositories/useCreateProducType';
-import useMutateEditProductType from '../../../respositories/useUpdateProductType';
-import useQueryProductTypeDetail from '../../../respositories/useGetDetailProductType';
-import useQueryProductTypes from '../../../respositories/useGetAllProductTypes';
+import useMutateCreateProductType from '../../../respositories/product-type/useCreateProductType';
+import useMutateEditProductType from '../../../respositories/product-type/useUpdateProductType';
+import useQueryProductTypeDetail from '../../../respositories/product-type/useGetDetailProductType';
+import useQueryProductTypes from '../../../respositories/product-type/useGetAllProductTypes';
 
 export const TableProductType = () => {
 	const [form] = useForm();
@@ -147,7 +147,7 @@ export const TableProductType = () => {
 									onClick={() => openModal!('create')}
 									className="enabled:hover:!bg-ny-primary-500 enabled:hover:!text-white h-[40px] bg-ny-primary-500 text-white text-body-2  font-[400] rounded-[8px] flex items-center gap-[8px] cursor-pointer">
 									<img src={addIcon} alt="add-icon" />
-									Create Tag
+									Create Product Type
 								</Button>
 							}
 						/>

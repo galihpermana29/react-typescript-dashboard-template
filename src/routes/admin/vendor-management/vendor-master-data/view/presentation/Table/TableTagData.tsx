@@ -3,16 +3,16 @@ import DashboardTable from '@/shared/view/presentations/dashboard-table/Dashboar
 import DashboardTableFilter from '@/shared/view/presentations/dashboard-table/DashboardTableFilter';
 import { Button, Form, Modal, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import useQueryProductTags from '../../../respositories/useGetAllTags';
+import useQueryProductTags from '../../../respositories/tag/useGetAllTags';
 import { useGenerateTagDataColumn } from '../../../usecase/useGenerateTagDataColumn';
 import { useLoaderData } from 'react-router-dom';
 import { ILoaderData } from '@/routes/root';
-import useMutateEditProductTag from '../../../respositories/useUpdateTag';
+import useMutateEditProductTag from '../../../respositories/tag/useUpdateTag';
 import useModalReducer from '../../../usecase/useModalReducer';
 import FormCreation from '../Modal/FormCreation';
-import useMutateCreateProductTag from '../../../respositories/useCreateTag';
+import useMutateCreateProductTag from '../../../respositories/tag/useCreateTag';
 import LoadingHandler from '@/shared/view/container/loading/Loading';
-import useQueryProductTagDetail from '../../../respositories/useGetDetailTag';
+import useQueryProductTagDetail from '../../../respositories/tag/useGetDetailTag';
 import FormEdit from '../Modal/FormEdit';
 import FormFooter from '@/shared/view/presentations/form-footer/FormFooter';
 

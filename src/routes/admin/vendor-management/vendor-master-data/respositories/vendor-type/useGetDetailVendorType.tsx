@@ -1,15 +1,16 @@
 import { DashboardProductAPI } from "@/shared/repositories/productService";
 import { FormInstance } from "antd";
-import { TModalState } from "../usecase/useModalReducer";
+import { TModalState } from "../../usecase/useModalReducer";
 import { useQuery } from "react-query";
 
-const useQueryProductTypeDetail = (
+
+const useQueryVendorTypeDetail = (
     modalState?: TModalState,
     form?: FormInstance<any>
 ) => {
 
     const getDetail = async () => {
-        const { data } = await DashboardProductAPI.getProductTypeDetail(
+        const { data } = await DashboardProductAPI.getVendorTypeDetail(
             modalState?.id as string
         );
 
@@ -21,12 +22,17 @@ const useQueryProductTypeDetail = (
     };
 
     const { data, error, isLoading, refetch } = useQuery({
-        queryKey: ['vendor-product-type-detail', modalState?.id],
+        queryKey: ['vendor-vendor-type-detail', modalState?.id],
         queryFn: getDetail,
         enabled: modalState?.id ? true : false,
     });
 
-    return { data, error, isLoading, refetch };
-};
+    return {
+        data,
+        error,
+        isLoading,
+        refetch
+    };
+}
 
-export default useQueryProductTypeDetail;
+export default useQueryVendorTypeDetail;
