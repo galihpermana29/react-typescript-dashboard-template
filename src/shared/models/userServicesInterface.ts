@@ -114,3 +114,29 @@ export interface IUpdatePasswordPayloadRoot extends IUpdatePasswordInputRoot {
 export interface IUpdatePasswordResponseRoot {
 	data: string;
 }
+
+export interface IUserClientDetail {
+	wedding_date?: string;
+	location?: string;
+	gender?: string;
+}
+
+export interface IUserClientDetailExtra {
+	wedding_role?: number;
+	groom_name?: string;
+	bride_name?: string;
+	plan_for?: number;
+	wedding_theme?: number;
+}
+
+export interface IUserClientDetailPayload extends IUserClientDetail {
+	json_text?: string;
+}
+
+export type IUpdateUserClientInput = IUpdateUserPayloadRoot &
+	IUserClientDetail &
+	IUserClientDetailExtra;
+
+export interface IUpdateUserClientPayload extends IUpdateUserPayloadRoot {
+	detail?: IUserClientDetailPayload;
+}
