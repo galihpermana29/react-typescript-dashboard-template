@@ -6,13 +6,11 @@ class DashboardVendorServices extends ApiClass {
 		super(baseURL, config);
 	}
 
-	public async getAllTypes(
-		query?: string
-	): Promise<IAllVendorTypesResponseRoot> {
+	public async getAllTypes(): Promise<IAllVendorTypesResponseRoot> {
 		const token = JSON.parse(localStorage.getItem('token')!);
 
 		const { data } = await this.axiosInstance.get<IAllVendorTypesResponseRoot>(
-			`/vendor-types${query ? `&${query}` : ''}`,
+			`/vendor-types?is_pagination=false`,
 			{ headers: { Authorization: `Bearer ${token}` } }
 		);
 
