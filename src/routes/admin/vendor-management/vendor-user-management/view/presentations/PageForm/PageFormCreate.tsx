@@ -1,17 +1,26 @@
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { DatePicker, Form, Input, Select } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
-import TextArea from 'antd/es/input/TextArea';
 import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
+import TextArea from 'antd/es/input/TextArea';
+import type { IAllVendorTypesData } from '@/shared/models/roleServicesInterface';
 
 interface IFormCreate {
 	form: FormInstance;
 	onSave: any;
 	onCancel: any;
+	dynamicSelectOptions: {
+		vendorTypes: IAllVendorTypesData[];
+	};
 }
 
-export const PageFormCreate = ({ form, onSave, onCancel }: IFormCreate) => {
+export const PageFormCreate = ({
+	form,
+	onSave,
+	onCancel,
+	dynamicSelectOptions,
+}: IFormCreate) => {
 	return (
 		<Form
 			form={form}
@@ -145,7 +154,7 @@ export const PageFormCreate = ({ form, onSave, onCancel }: IFormCreate) => {
 					<div className="flex w-full gap-2">
 						<Form.Item
 							className="my-[8px] w-full"
-							name={'vendor_location'}
+							name={'location'}
 							label="Vendor Location"
 							rules={[
 								{
@@ -164,7 +173,7 @@ export const PageFormCreate = ({ form, onSave, onCancel }: IFormCreate) => {
 						</Form.Item>
 						<Form.Item
 							className="my-[8px] w-full"
-							name={'vendor_type'}
+							name={'vendor_type_id'}
 							label="Vendor Type"
 							rules={[
 								{
@@ -173,10 +182,27 @@ export const PageFormCreate = ({ form, onSave, onCancel }: IFormCreate) => {
 								},
 							]}>
 							<Select
-								options={[
-									{ label: 'Wedding', value: 'wedding' },
-									{ label: 'Catering', value: 'catering' },
-								]}
+								showSearch
+								optionFilterProp="children"
+								filterOption={(
+									input: string,
+									option?: { label: string; value: string }
+								) =>
+									(option?.label ?? '')
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								filterSort={(optionA, optionB) =>
+									(optionA?.label ?? '')
+										.toLowerCase()
+										.localeCompare((optionB?.label ?? '').toLowerCase())
+								}
+								options={dynamicSelectOptions.vendorTypes
+									.filter((type) => type.status === 'active')
+									.map((type) => ({
+										label: type.name,
+										value: type.id.toString(),
+									}))}
 								placeholder="Enter your detail here!"
 								className="text-caption-1"
 							/>

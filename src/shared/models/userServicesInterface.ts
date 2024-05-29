@@ -32,7 +32,7 @@ export interface IDetailUserData {
 	role_name: string;
 	status: string;
 	profile_image_uri: string;
-	detail: string;
+	detail: IUserVendorDetail;
 }
 
 // Response
@@ -62,16 +62,26 @@ export interface ICreateUserPayloadRoot {
 }
 
 export interface IUserVendorDetail {
+	vendor_type_id?: number;
+	location?: string;
+	json_text?: string;
+}
+
+export type IUserVendorDetailPayload = IUserVendorDetailJSON & {
+	vendor_type_id?: string;
+	location?: string;
+};
+
+export interface IUserVendorDetailJSON {
 	vendor_description?: string;
-	vendor_location?: string;
-	vendor_type?: string;
 	vendor_album?: string | string[];
 }
 
-export type ICreateUserVendorInput = ICreateUserPayloadRoot & IUserVendorDetail;
+export type ICreateUserVendorInput = ICreateUserPayloadRoot &
+	IUserVendorDetailPayload;
 
 export interface ICreateUserVendorPayload extends ICreateUserPayloadRoot {
-	detail: string;
+	detail: IUserVendorDetail;
 }
 
 // Response
@@ -92,10 +102,11 @@ export interface IUpdateUserPayloadRoot {
 	profile_image_uri?: string;
 }
 
-export type IUpdateUserVendorInput = IUpdateUserPayloadRoot & IUserVendorDetail;
+export type IUpdateUserVendorInput = IUpdateUserPayloadRoot &
+	IUserVendorDetailPayload;
 
 export interface IUpdateUserVendorPayload extends IUpdateUserPayloadRoot {
-	detail: string;
+	detail: IUserVendorDetail;
 }
 
 export interface IUpdateUserResponseRoot {

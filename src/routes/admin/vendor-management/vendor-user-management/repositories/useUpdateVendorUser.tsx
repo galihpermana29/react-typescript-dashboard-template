@@ -3,6 +3,7 @@ import {
 	IUpdateUserVendorInput,
 	IUpdateUserVendorPayload,
 	IUserVendorDetail,
+	type IUserVendorDetailJSON,
 } from '@/shared/models/userServicesInterface';
 import { DashboardUserAPI } from '@/shared/repositories/userServices';
 import useErrorAxios from '@/shared/usecase/useErrorAxios';
@@ -20,10 +21,14 @@ const useMutateEditVendorUser = (refetch?: () => void) => {
 		id: string
 	) => {
 		const detail: IUserVendorDetail = {
-			vendor_description: payload.vendor_description,
-			vendor_location: payload.vendor_location,
-			vendor_type: payload.vendor_type,
-			vendor_album: payload.vendor_album ?? [],
+			vendor_type_id: payload.vendor_type_id
+				? parseInt(payload.vendor_type_id)
+				: undefined,
+			location: payload.location,
+			json_text: JSON.stringify({
+				vendor_description: payload.vendor_description,
+				vendor_album: payload.vendor_album,
+			} as IUserVendorDetailJSON),
 		};
 
 		const newPayload: IUpdateUserVendorPayload = {
@@ -31,7 +36,7 @@ const useMutateEditVendorUser = (refetch?: () => void) => {
 			email: payload.email,
 			profile_image_uri: payload.profile_image_uri ?? '',
 			date_of_birth: dayjs(payload.date_of_birth).format('YYYY-MM-DD'),
-			detail: JSON.stringify(detail),
+			detail,
 		};
 		const data = await DashboardUserAPI.editUser(newPayload, id);
 		return data;

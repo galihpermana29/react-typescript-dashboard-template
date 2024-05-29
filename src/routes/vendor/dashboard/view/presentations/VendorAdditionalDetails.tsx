@@ -1,8 +1,12 @@
+import useQueryVendorTypes from '@/routes/admin/vendor-management/vendor-user-management/repositories/useGetVendorTypes';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 import { Form, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
 export default function VendorAdditionalDetails() {
+	const { result } = useQueryVendorTypes();
+	const vendorTypes = result?.data ?? [];
+
 	return (
 		<FormRow
 			title="Additional Details"
@@ -27,7 +31,7 @@ export default function VendorAdditionalDetails() {
 				<div className="flex w-full gap-2">
 					<Form.Item
 						className="my-[8px] w-full"
-						name={'vendor_location'}
+						name={'location'}
 						label="Vendor Location"
 						rules={[
 							{
@@ -46,7 +50,7 @@ export default function VendorAdditionalDetails() {
 					</Form.Item>
 					<Form.Item
 						className="my-[8px] w-full"
-						name={'vendor_type'}
+						name={'vendor_type_id'}
 						label="Vendor Type"
 						rules={[
 							{
@@ -55,10 +59,27 @@ export default function VendorAdditionalDetails() {
 							},
 						]}>
 						<Select
-							options={[
-								{ label: 'Wedding', value: 'wedding' },
-								{ label: 'Catering', value: 'catering' },
-							]}
+							showSearch
+							optionFilterProp="children"
+							filterOption={(
+								input: string,
+								option?: { label: string; value: string }
+							) =>
+								(option?.label ?? '')
+									.toLowerCase()
+									.includes(input.toLowerCase())
+							}
+							filterSort={(optionA, optionB) =>
+								(optionA?.label ?? '')
+									.toLowerCase()
+									.localeCompare((optionB?.label ?? '').toLowerCase())
+							}
+							options={vendorTypes
+								.filter((type) => type.status === 'active')
+								.map((type) => ({
+									label: type.name,
+									value: type.id.toString(),
+								}))}
 							placeholder="Enter your detail here!"
 							className="text-caption-1"
 						/>

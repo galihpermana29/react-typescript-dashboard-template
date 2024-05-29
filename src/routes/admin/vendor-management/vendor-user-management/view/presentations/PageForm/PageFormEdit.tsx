@@ -1,3 +1,4 @@
+import type { IAllVendorTypesData } from '@/shared/models/roleServicesInterface';
 import DraggerUpload from '@/shared/view/presentations/dragger-upload/DraggerUpload';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
@@ -14,6 +15,9 @@ interface IFormCreate {
 	disabled: boolean;
 	onChangePasswordClick?: () => void;
 	showEditButton?: boolean;
+	dynamicSelectOptions: {
+		vendorTypes: IAllVendorTypesData[];
+	};
 }
 
 export const PageFormEdit = ({
@@ -24,6 +28,7 @@ export const PageFormEdit = ({
 	showEditButton = false,
 	id,
 	onChangePasswordClick,
+	dynamicSelectOptions,
 }: IFormCreate) => {
 	const navigate = useNavigate();
 
@@ -149,7 +154,7 @@ export const PageFormEdit = ({
 					<div className="flex w-full gap-2">
 						<Form.Item
 							className="my-[8px] w-full"
-							name={'vendor_location'}
+							name={'location'}
 							label="Vendor Location"
 							rules={[
 								{
@@ -168,7 +173,7 @@ export const PageFormEdit = ({
 						</Form.Item>
 						<Form.Item
 							className="my-[8px] w-full"
-							name={'vendor_type'}
+							name={'vendor_type_id'}
 							label="Vendor Type"
 							rules={[
 								{
@@ -177,10 +182,27 @@ export const PageFormEdit = ({
 								},
 							]}>
 							<Select
-								options={[
-									{ label: 'Wedding', value: 'wedding' },
-									{ label: 'Catering', value: 'catering' },
-								]}
+								showSearch
+								optionFilterProp="children"
+								filterOption={(
+									input: string,
+									option?: { label: string; value: string }
+								) =>
+									(option?.label ?? '')
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								filterSort={(optionA, optionB) =>
+									(optionA?.label ?? '')
+										.toLowerCase()
+										.localeCompare((optionB?.label ?? '').toLowerCase())
+								}
+								options={dynamicSelectOptions.vendorTypes
+									.filter((type) => type.status === 'active')
+									.map((type) => ({
+										label: type.name,
+										value: type.id.toString(),
+									}))}
 								placeholder="Enter your detail here!"
 								className="text-caption-1"
 							/>
