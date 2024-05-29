@@ -2,10 +2,15 @@ import useFilterVendorTypes from '@/routes/admin/vendor-management/vendor-user-m
 import useQueryVendorTypes from '@/routes/admin/vendor-management/vendor-user-management/repositories/useGetVendorTypes';
 import useSortVendorTypes from '@/routes/admin/vendor-management/vendor-user-management/repositories/useSortVendorTypes';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
-import { Form, Select } from 'antd';
+import { Geocoder } from '@mapbox/search-js-react';
+import { Form, Select, type FormInstance } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
-export default function VendorAdditionalDetails() {
+export default function VendorAdditionalDetails({
+  form,
+}: {
+  form: FormInstance<any>;
+}) {
   const { result } = useQueryVendorTypes();
   const vendorTypes = result?.data ?? [];
 
@@ -41,13 +46,11 @@ export default function VendorAdditionalDetails() {
                 message: 'Please select vendor location!',
               },
             ]}>
-            <Select
-              options={[
-                { label: 'Bali', value: 'bali' },
-                { label: 'Jakarta', value: 'jakarta' },
-              ]}
-              placeholder="Enter your detail here!"
-              className="text-caption-1"
+            <Geocoder
+              onRetrieve={(res) => {
+                form.setFieldValue('location', res.properties.full_address);
+              }}
+              accessToken={import.meta.env.VITE_MAPBOX_KEY}
             />
           </Form.Item>
           <Form.Item

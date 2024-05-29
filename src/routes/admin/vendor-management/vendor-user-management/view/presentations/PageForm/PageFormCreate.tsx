@@ -6,6 +6,7 @@ import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 import TextArea from 'antd/es/input/TextArea';
 import useFilterVendorTypes from '../../../repositories/useFilterVendorTypes';
 import useSortVendorTypes from '../../../repositories/useSortVendorTypes';
+import { Geocoder } from '@mapbox/search-js-react';
 
 interface IFormCreate {
   form: FormInstance;
@@ -163,13 +164,11 @@ export const PageFormCreate = ({
                   message: 'Please select vendor location!',
                 },
               ]}>
-              <Select
-                options={[
-                  { label: 'Bali', value: 'bali' },
-                  { label: 'Jakarta', value: 'jakarta' },
-                ]}
-                placeholder="Enter your detail here!"
-                className="text-caption-1"
+              <Geocoder
+                onRetrieve={(res) => {
+                  form.setFieldValue('location', res.properties.full_address);
+                }}
+                accessToken={import.meta.env.VITE_MAPBOX_KEY}
               />
             </Form.Item>
             <Form.Item
