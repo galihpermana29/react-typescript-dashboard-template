@@ -87,7 +87,7 @@ export const useGenerateColumn = (
 									onClick: () => {
 										onNavigate!(`/user-management/edit-user/${id}`);
 									},
-									disabled: edit,
+									disabled: !edit,
 								},
 								{
 									label: 'View Detail',
@@ -95,7 +95,7 @@ export const useGenerateColumn = (
 									onClick: () => {
 										onNavigate!(`/user-management/detail-user/${id}`);
 									},
-									disabled: view,
+									disabled: !view,
 								},
 								{
 									label: status === 'active' ? 'Deactivate' : 'Activate',
@@ -108,7 +108,7 @@ export const useGenerateColumn = (
 											id,
 											type: 'delete',
 										}),
-									disabled: remove,
+									disabled: !remove,
 								},
 							],
 						}}>
