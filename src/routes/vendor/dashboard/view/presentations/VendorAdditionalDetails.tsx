@@ -1,6 +1,6 @@
 import useFilterVendorTypes from '@/routes/admin/vendor-management/vendor-user-management/repositories/useFilterVendorTypes';
 import useQueryVendorTypes from '@/routes/admin/vendor-management/vendor-user-management/repositories/useGetVendorTypes';
-import useSortVendorTypes from '@/routes/admin/vendor-management/vendor-user-management/repositories/useSortVendorTypes';
+import useSortSelectOptions from '@/shared/repositories/useSortSelectOptions';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 import { Geocoder } from '@mapbox/search-js-react';
 import { Form, Select, type FormInstance } from 'antd';
@@ -67,7 +67,7 @@ export default function VendorAdditionalDetails({
               showSearch
               optionFilterProp="children"
               filterOption={useFilterVendorTypes}
-              filterSort={useSortVendorTypes}
+              filterSort={useSortSelectOptions}
               options={vendorTypes}
               placeholder="Enter your detail here!"
               className="text-caption-1"

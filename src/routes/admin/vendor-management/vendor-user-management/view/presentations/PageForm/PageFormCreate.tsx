@@ -5,8 +5,8 @@ import PageHeader from '@/shared/view/presentations/page-header/PageHeader';
 import { FormRow } from '@/shared/view/presentations/form-row/FormRow';
 import TextArea from 'antd/es/input/TextArea';
 import useFilterVendorTypes from '../../../repositories/useFilterVendorTypes';
-import useSortVendorTypes from '../../../repositories/useSortVendorTypes';
 import { Geocoder } from '@mapbox/search-js-react';
+import useSortSelectOptions from '@/shared/repositories/useSortSelectOptions';
 
 interface IFormCreate {
   form: FormInstance;
@@ -185,7 +185,7 @@ export const PageFormCreate = ({
                 showSearch
                 optionFilterProp="children"
                 filterOption={useFilterVendorTypes}
-                filterSort={useSortVendorTypes}
+                filterSort={useSortSelectOptions}
                 options={dynamicSelectOptions.vendorTypes}
                 placeholder="Enter your detail here!"
                 className="text-caption-1"

@@ -1,6 +1,6 @@
 import type { BaseOptionType } from 'antd/es/select';
 
-export default function useSortVendorTypes(
+export default function useSortSelectOptions(
   optionA: BaseOptionType,
   optionB: BaseOptionType
 ) {

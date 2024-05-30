@@ -6,8 +6,8 @@ import { FormInstance } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
 import { useNavigate } from 'react-router-dom';
 import useFilterVendorTypes from '../../../repositories/useFilterVendorTypes';
-import useSortVendorTypes from '../../../repositories/useSortVendorTypes';
 import { Geocoder } from '@mapbox/search-js-react';
+import useSortSelectOptions from '@/shared/repositories/useSortSelectOptions';
 
 interface IFormCreate {
   form: FormInstance;
@@ -185,7 +185,7 @@ export const PageFormEdit = ({
                 showSearch
                 optionFilterProp="children"
                 filterOption={useFilterVendorTypes}
-                filterSort={useSortVendorTypes}
+                filterSort={useSortSelectOptions}
                 options={dynamicSelectOptions.vendorTypes}
                 placeholder="Enter your detail here!"
                 className="text-caption-1"
