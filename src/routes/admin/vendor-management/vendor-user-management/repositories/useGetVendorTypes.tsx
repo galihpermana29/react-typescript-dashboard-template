@@ -1,10 +1,18 @@
 import { DashboardVendorTypeAPI } from '@/shared/repositories/vendorTypeService';
+import useConvertQuery from '@/shared/usecase/useConvertQuery';
 import { useQuery } from 'react-query';
 
 const useQueryVendorTypes = () => {
+  const { objectToQueryParams } = useConvertQuery();
+
   const getVendorTypes = async () => {
+    const queryParams = objectToQueryParams({
+      status: 'active',
+      is_pagination: false,
+    });
+
     const { data: result, meta_data } =
-      await DashboardVendorTypeAPI.getAllVendorTypes();
+      await DashboardVendorTypeAPI.getAllVendorTypes(queryParams);
 
     const data = result
       .filter((type) => type.status === 'active')
