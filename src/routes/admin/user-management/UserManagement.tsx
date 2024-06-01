@@ -41,7 +41,7 @@ export const UserManagementContainer = () => {
   );
   return (
     <ErrorBoundary error={error as AxiosError} refetch={refetch}>
-      <TableHeaderTitle title="User Management" />
+      <TableHeaderTitle title="User Account" />
       <DashboardTable
         columns={columns}
         data={data?.data}
